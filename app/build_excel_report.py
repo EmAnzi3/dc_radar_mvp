@@ -27,10 +27,32 @@ def run():
     contractor_hits = read_csv_safe(OUTPUT_DIR / "contractor_site_hits.csv")
     contractor_project_leads = read_csv_safe(OUTPUT_DIR / "contractor_project_leads.csv")
     contractor_project_pages = read_csv_safe(OUTPUT_DIR / "contractor_project_pages.csv")
+    contractor_project_facts = read_csv_safe(OUTPUT_DIR / "contractor_project_facts.csv")
+    developer_master = read_csv_safe(OUTPUT_DIR / "developer_master.csv")
+    ida_queries = read_csv_safe(OUTPUT_DIR / "ida_generated_queries.csv")
+    ida_watchlist = read_csv_safe(OUTPUT_DIR / "ida_ecosystem_watchlist.csv")
+    ecosystem_graph = read_csv_safe(OUTPUT_DIR / "ecosystem_graph.csv")
     source_watchlist = read_csv_safe(INPUT_DIR / "source_watchlist.csv")
     manual_leads = read_csv_safe(OUTPUT_DIR / "manual_contractor_leads.csv")
 
     combined_rows = []
+
+    if not developer_master.empty:
+        for _, row in developer_master.iterrows():
+            combined_rows.append({
+                "project": row.get("project", ""),
+                "developer": row.get("developer", ""),
+                "location": row.get("city", ""),
+                "region": row.get("region", ""),
+                "lead_type": "Developer master project",
+                "company": row.get("contractor", ""),
+                "role": "contractor",
+                "package": row.get("work_scope", ""),
+                "confidence": row.get("confidence", ""),
+                "evidence": "",
+                "keyword_hits": "",
+                "source_url": row.get("source_url", ""),
+            })
 
     if not manual_leads.empty:
         for _, row in manual_leads.iterrows():
@@ -150,10 +172,15 @@ def run():
 
     with pd.ExcelWriter(xlsx_path, engine="openpyxl") as writer:
         combined.to_excel(writer, sheet_name="Combined Leads", index=False)
+        developer_master.to_excel(writer, sheet_name="Developer Master", index=False)
+        contractor_project_facts.to_excel(writer, sheet_name="Contractor Project Facts", index=False)
         manual_leads.to_excel(writer, sheet_name="Manual Contractor Leads", index=False)
         contractor_project_pages.to_excel(writer, sheet_name="Contractor Project Pages", index=False)
         contractor_project_leads.to_excel(writer, sheet_name="Contractor Project Leads", index=False)
         contractor_hits.to_excel(writer, sheet_name="Contractor Site Hits", index=False)
+        ecosystem_graph.to_excel(writer, sheet_name="Ecosystem Graph", index=False)
+        ida_watchlist.to_excel(writer, sheet_name="IDA Watchlist", index=False)
+        ida_queries.to_excel(writer, sheet_name="IDA Queries", index=False)
         generated_queries.to_excel(writer, sheet_name="Generated Queries", index=False)
         local_authority_queries.to_excel(writer, sheet_name="Local Authority Queries", index=False)
         source_watchlist.to_excel(writer, sheet_name="Source Watchlist", index=False)
@@ -168,3 +195,4 @@ def run():
 
 if __name__ == "__main__":
     run()
+
