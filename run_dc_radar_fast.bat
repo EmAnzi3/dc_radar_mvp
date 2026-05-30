@@ -1,12 +1,9 @@
 @echo off
-call .venv\Scripts\activate
 
-echo === DC RADAR FAST MODE ===
+echo === DC RADAR FAST RUN ===
 
-python -m app.project_fact_extractor
-python -m app.developer_master
-python -m app.manual_leads
-python -m app.build_excel_report
+call run_stage_2_build.bat
+call run_stage_3_report.bat
 
 echo Fast pipeline completata
 pause
