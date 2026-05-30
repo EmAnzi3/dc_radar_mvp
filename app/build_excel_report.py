@@ -1,0 +1,83 @@
+﻿from pathlib import Path
+import pandas as pd
+
+
+OUTPUT_DIR = Path("data/output")
+
+
+def read_csv_safe(path: Path) -> pd.DataFrame:
+    if not path.exists() or path.stat().st_size == 0:
+        return pd.DataFrame()
+    try:
+        return pd.read_csv(path)
+    except Exception:
+        return pd.DataFrame()
+
+
+def run():
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
+    mase_docs = read_csv_safe(OUTPUT_DIR / "mase_documents.csv")
+    mase_files = read_csv_safe(OUTPUT_DIR / "mase_document_files.csv")
+    mase_leads = read_csv_safe(OUTPUT_DIR / "mase_contractor_leads.csv")
+    terna = read_csv_safe(OUTPUT_DIR / "terna_connection_leads.csv")
+
+    combined_rows = []
+
+    if not mase_files.empty:
+        for _, row in mase_files.iterrows():
+            hits = str(row.get("keyword_hits", "") or "").strip()
+            if not hits:
+                continue
+
+            combined_rows.append({
+                "project": row.get("project", ""),
+                "developer": row.get("developer", ""),
+                "location": row.get("location", ""),
+                "region": row.get("region", ""),
+                "lead_type": "MASE keyword hit",
+                "company": "",
+                "role": "",
+                "package": "",
+                "confidence": 30,
+                "evidence": row.get("page_text_sample", ""),
+                "keyword_hits": hits,
+                "source_url": row.get("document_page_url", ""),
+            })
+
+    if not terna.empty:
+        for _, row in terna.iterrows():
+            combined_rows.append({
+                "project": row.get("project", ""),
+                "developer": row.get("developer", ""),
+                "location": row.get("location", ""),
+                "region": row.get("region", ""),
+                "lead_type": "Terna connection seed",
+                "company": "",
+                "role": "grid connection lead",
+                "package": "electrical / HV",
+                "confidence": 20,
+                "evidence": row.get("notes", ""),
+                "keyword_hits": "",
+                "source_url": row.get("source_url", ""),
+            })
+
+    combined = pd.DataFrame(combined_rows)
+    combined_path = OUTPUT_DIR / "combined_public_leads.csv"
+    combined.to_csv(combined_path, index=False, encoding="utf-8-sig")
+
+    xlsx_path = OUTPUT_DIR / "dc_radar_public_parser_report.xlsx"
+
+    with pd.ExcelWriter(xlsx_path, engine="openpyxl") as writer:
+        combined.to_excel(writer, sheet_name="Combined Leads", index=False)
+        mase_docs.to_excel(writer, sheet_name="MASE Pages", index=False)
+        mase_files.to_excel(writer, sheet_name="MASE Document Pages", index=False)
+        mase_leads.to_excel(writer, sheet_name="MASE Contractor Leads", index=False)
+        terna.to_excel(writer, sheet_name="Terna Seeds", index=False)
+
+    print(f"Creato {combined_path} ({len(combined)} righe)")
+    print(f"Creato {xlsx_path}")
+
+
+if __name__ == "__main__":
+    run()
