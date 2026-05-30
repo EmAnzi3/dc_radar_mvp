@@ -24,8 +24,26 @@ def run():
     terna = read_csv_safe(OUTPUT_DIR / "terna_connection_leads.csv")
     generated_queries = read_csv_safe(OUTPUT_DIR / "generated_queries.csv")
     source_watchlist = read_csv_safe(INPUT_DIR / "source_watchlist.csv")
+    manual_leads = read_csv_safe(OUTPUT_DIR / "manual_contractor_leads.csv")
 
     combined_rows = []
+
+    if not manual_leads.empty:
+        for _, row in manual_leads.iterrows():
+            combined_rows.append({
+                "project": row.get("project", ""),
+                "developer": row.get("developer", ""),
+                "location": row.get("location", ""),
+                "region": row.get("region", ""),
+                "lead_type": "Manual confirmed contractor lead",
+                "company": row.get("company", ""),
+                "role": row.get("role", ""),
+                "package": row.get("package", ""),
+                "confidence": row.get("confidence", ""),
+                "evidence": row.get("evidence", ""),
+                "keyword_hits": "",
+                "source_url": row.get("source_url", ""),
+            })
 
     if not mase_files.empty:
         for _, row in mase_files.iterrows():
@@ -73,6 +91,7 @@ def run():
 
     with pd.ExcelWriter(xlsx_path, engine="openpyxl") as writer:
         combined.to_excel(writer, sheet_name="Combined Leads", index=False)
+        manual_leads.to_excel(writer, sheet_name="Manual Contractor Leads", index=False)
         generated_queries.to_excel(writer, sheet_name="Generated Queries", index=False)
         source_watchlist.to_excel(writer, sheet_name="Source Watchlist", index=False)
         mase_docs.to_excel(writer, sheet_name="MASE Pages", index=False)
