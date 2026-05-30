@@ -12,6 +12,8 @@ python -m app.developer_master
 python -m app.ida_intelligence
 python -m app.manual_leads
 python -m app.ecosystem_graph
+python -m app.italy_project_summary
+python -m app.italy_rankings
 
 echo Stage 2 build completato
 pause
