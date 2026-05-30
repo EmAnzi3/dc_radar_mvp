@@ -1,6 +1,7 @@
 ﻿from app import mase_parser
 from app import mase_document_parser
 from app import terna_ingest
+from app import query_generator
 
 
 def main():
@@ -9,6 +10,7 @@ def main():
     mase_parser.run()
     mase_document_parser.run()
     terna_ingest.run()
+    query_generator.run()
 
     print("Pipeline completata")
 

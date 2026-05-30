@@ -3,6 +3,7 @@ import pandas as pd
 
 
 OUTPUT_DIR = Path("data/output")
+INPUT_DIR = Path("data/input")
 
 
 def read_csv_safe(path: Path) -> pd.DataFrame:
@@ -21,6 +22,8 @@ def run():
     mase_files = read_csv_safe(OUTPUT_DIR / "mase_document_files.csv")
     mase_leads = read_csv_safe(OUTPUT_DIR / "mase_contractor_leads.csv")
     terna = read_csv_safe(OUTPUT_DIR / "terna_connection_leads.csv")
+    generated_queries = read_csv_safe(OUTPUT_DIR / "generated_queries.csv")
+    source_watchlist = read_csv_safe(INPUT_DIR / "source_watchlist.csv")
 
     combined_rows = []
 
@@ -70,6 +73,8 @@ def run():
 
     with pd.ExcelWriter(xlsx_path, engine="openpyxl") as writer:
         combined.to_excel(writer, sheet_name="Combined Leads", index=False)
+        generated_queries.to_excel(writer, sheet_name="Generated Queries", index=False)
+        source_watchlist.to_excel(writer, sheet_name="Source Watchlist", index=False)
         mase_docs.to_excel(writer, sheet_name="MASE Pages", index=False)
         mase_files.to_excel(writer, sheet_name="MASE Document Pages", index=False)
         mase_leads.to_excel(writer, sheet_name="MASE Contractor Leads", index=False)
