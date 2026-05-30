@@ -15,6 +15,18 @@ def read_csv_safe(path: Path) -> pd.DataFrame:
         return pd.DataFrame()
 
 
+def sort_if_possible(df: pd.DataFrame, by: list[str], ascending=True) -> pd.DataFrame:
+    if df.empty:
+        return df
+
+    existing = [col for col in by if col in df.columns]
+
+    if not existing:
+        return df
+
+    return df.sort_values(by=existing, ascending=ascending)
+
+
 def run():
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -22,16 +34,23 @@ def run():
     mase_files = read_csv_safe(OUTPUT_DIR / "mase_document_files.csv")
     mase_leads = read_csv_safe(OUTPUT_DIR / "mase_contractor_leads.csv")
     terna = read_csv_safe(OUTPUT_DIR / "terna_connection_leads.csv")
+
     generated_queries = read_csv_safe(OUTPUT_DIR / "generated_queries.csv")
     local_authority_queries = read_csv_safe(OUTPUT_DIR / "local_authority_queries.csv")
+
     contractor_hits = read_csv_safe(OUTPUT_DIR / "contractor_site_hits.csv")
     contractor_project_leads = read_csv_safe(OUTPUT_DIR / "contractor_project_leads.csv")
     contractor_project_pages = read_csv_safe(OUTPUT_DIR / "contractor_project_pages.csv")
     contractor_project_facts = read_csv_safe(OUTPUT_DIR / "contractor_project_facts.csv")
+
     developer_master = read_csv_safe(OUTPUT_DIR / "developer_master.csv")
+    ecosystem_graph = read_csv_safe(OUTPUT_DIR / "ecosystem_graph.csv")
+
+    mercury_projects = read_csv_safe(OUTPUT_DIR / "mercury_projects.csv")
+
     ida_queries = read_csv_safe(OUTPUT_DIR / "ida_generated_queries.csv")
     ida_watchlist = read_csv_safe(OUTPUT_DIR / "ida_ecosystem_watchlist.csv")
-    ecosystem_graph = read_csv_safe(OUTPUT_DIR / "ecosystem_graph.csv")
+
     source_watchlist = read_csv_safe(INPUT_DIR / "source_watchlist.csv")
     manual_leads = read_csv_safe(OUTPUT_DIR / "manual_contractor_leads.csv")
 
@@ -165,25 +184,57 @@ def run():
             })
 
     combined = pd.DataFrame(combined_rows)
+
     combined_path = OUTPUT_DIR / "combined_public_leads.csv"
     combined.to_csv(combined_path, index=False, encoding="utf-8-sig")
 
     xlsx_path = OUTPUT_DIR / "dc_radar_public_parser_report.xlsx"
 
+    developer_master = sort_if_possible(
+        developer_master,
+        by=["status", "province", "it_power_mw"],
+        ascending=[True, True, False],
+    )
+
+    contractor_project_facts = sort_if_possible(
+        contractor_project_facts,
+        by=["province", "city", "it_power_mw"],
+        ascending=[True, True, False],
+    )
+
+    ecosystem_graph = sort_if_possible(
+        ecosystem_graph,
+        by=["confidence", "source_company", "target_company"],
+        ascending=[False, True, True],
+    )
+
+    mercury_projects = sort_if_possible(
+        mercury_projects,
+        by=["contract_value_eur", "project"],
+        ascending=[False, True],
+    )
+
     with pd.ExcelWriter(xlsx_path, engine="openpyxl") as writer:
         combined.to_excel(writer, sheet_name="Combined Leads", index=False)
+
         developer_master.to_excel(writer, sheet_name="Developer Master", index=False)
+        ecosystem_graph.to_excel(writer, sheet_name="Ecosystem Graph", index=False)
         contractor_project_facts.to_excel(writer, sheet_name="Contractor Project Facts", index=False)
+
+        mercury_projects.to_excel(writer, sheet_name="Mercury Benchmark", index=False)
+
         manual_leads.to_excel(writer, sheet_name="Manual Contractor Leads", index=False)
         contractor_project_pages.to_excel(writer, sheet_name="Contractor Project Pages", index=False)
         contractor_project_leads.to_excel(writer, sheet_name="Contractor Project Leads", index=False)
         contractor_hits.to_excel(writer, sheet_name="Contractor Site Hits", index=False)
-        ecosystem_graph.to_excel(writer, sheet_name="Ecosystem Graph", index=False)
+
         ida_watchlist.to_excel(writer, sheet_name="IDA Watchlist", index=False)
         ida_queries.to_excel(writer, sheet_name="IDA Queries", index=False)
+
         generated_queries.to_excel(writer, sheet_name="Generated Queries", index=False)
         local_authority_queries.to_excel(writer, sheet_name="Local Authority Queries", index=False)
         source_watchlist.to_excel(writer, sheet_name="Source Watchlist", index=False)
+
         mase_docs.to_excel(writer, sheet_name="MASE Pages", index=False)
         mase_files.to_excel(writer, sheet_name="MASE Document Pages", index=False)
         mase_leads.to_excel(writer, sheet_name="MASE Contractor Leads", index=False)
@@ -195,4 +246,3 @@ def run():
 
 if __name__ == "__main__":
     run()
-
