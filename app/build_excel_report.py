@@ -24,6 +24,8 @@ def run():
     terna = read_csv_safe(OUTPUT_DIR / "terna_connection_leads.csv")
     generated_queries = read_csv_safe(OUTPUT_DIR / "generated_queries.csv")
     local_authority_queries = read_csv_safe(OUTPUT_DIR / "local_authority_queries.csv")
+    contractor_hits = read_csv_safe(OUTPUT_DIR / "contractor_site_hits.csv")
+    contractor_project_leads = read_csv_safe(OUTPUT_DIR / "contractor_project_leads.csv")
     source_watchlist = read_csv_safe(INPUT_DIR / "source_watchlist.csv")
     manual_leads = read_csv_safe(OUTPUT_DIR / "manual_contractor_leads.csv")
 
@@ -44,6 +46,44 @@ def run():
                 "evidence": row.get("evidence", ""),
                 "keyword_hits": "",
                 "source_url": row.get("source_url", ""),
+            })
+
+    if not contractor_project_leads.empty:
+        for _, row in contractor_project_leads.iterrows():
+            combined_rows.append({
+                "project": row.get("project", ""),
+                "developer": row.get("developer", ""),
+                "location": row.get("location", ""),
+                "region": row.get("region", ""),
+                "lead_type": "Contractor project extraction",
+                "company": row.get("contractor", ""),
+                "role": row.get("role", ""),
+                "package": row.get("package", ""),
+                "confidence": row.get("confidence", ""),
+                "evidence": row.get("evidence", ""),
+                "keyword_hits": row.get("keyword_hits", ""),
+                "source_url": row.get("source_url", ""),
+            })
+
+    if not contractor_hits.empty:
+        for _, row in contractor_hits.iterrows():
+            hits = str(row.get("keyword_hits", "") or "").strip()
+            if not hits:
+                continue
+
+            combined_rows.append({
+                "project": "",
+                "developer": "",
+                "location": "",
+                "region": "",
+                "lead_type": "Contractor site keyword hit",
+                "company": row.get("source_name", ""),
+                "role": "contractor / engineering watchlist hit",
+                "package": "",
+                "confidence": 40,
+                "evidence": row.get("text_sample", ""),
+                "keyword_hits": hits,
+                "source_url": row.get("url", ""),
             })
 
     if not mase_files.empty:
@@ -93,6 +133,8 @@ def run():
     with pd.ExcelWriter(xlsx_path, engine="openpyxl") as writer:
         combined.to_excel(writer, sheet_name="Combined Leads", index=False)
         manual_leads.to_excel(writer, sheet_name="Manual Contractor Leads", index=False)
+        contractor_project_leads.to_excel(writer, sheet_name="Contractor Project Leads", index=False)
+        contractor_hits.to_excel(writer, sheet_name="Contractor Site Hits", index=False)
         generated_queries.to_excel(writer, sheet_name="Generated Queries", index=False)
         local_authority_queries.to_excel(writer, sheet_name="Local Authority Queries", index=False)
         source_watchlist.to_excel(writer, sheet_name="Source Watchlist", index=False)

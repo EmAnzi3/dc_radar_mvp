@@ -3,6 +3,8 @@ from app import mase_document_parser
 from app import terna_ingest
 from app import query_generator
 from app import local_authority_queries
+from app import contractor_site_crawler
+from app import project_extractor
 from app import manual_leads
 
 
@@ -14,6 +16,8 @@ def main():
     terna_ingest.run()
     query_generator.run()
     local_authority_queries.run()
+    contractor_site_crawler.run()
+    project_extractor.run()
     manual_leads.run()
 
     print("Pipeline completata")
