@@ -15,6 +15,7 @@ PROJECT_PATTERNS = [
     r"\bML8\b",
     r"\bML9\b",
     r"\bROM1\b",
+    r"\bRom1\b",
     r"\bMXP1\b",
     r"\bMXP2\b",
     r"\bVantage\b",
@@ -28,25 +29,26 @@ PROJECT_PATTERNS = [
 ]
 
 
-DEVELOPER_HINTS = {
-    "ROM1": "Digital Realty",
+EXPLICIT_DEVELOPER_TOKENS = {
     "Digital Realty": "Digital Realty",
     "Vantage": "Vantage Data Centers",
-    "MXP2": "Vantage Data Centers",
     "CyrusOne": "CyrusOne",
     "DATA4": "DATA4",
     "Microsoft": "Microsoft",
-    "Bornasco": "Microsoft",
 }
 
 
-LOCATION_HINTS = {
-    "ROM1": "Roma",
-    "Vantage": "Milano / area MXP",
-    "MXP2": "Settimo Milanese",
+EXPLICIT_LOCATION_TOKENS = {
     "Bornasco": "Bornasco",
     "Settimo Milanese": "Settimo Milanese",
     "Lacchiarella": "Lacchiarella",
+}
+
+
+PROJECT_LOCATION_HINTS = {
+    "ROM1": "Roma",
+    "Rom1": "Roma",
+    "MXP2": "Settimo Milanese / area Milano",
 }
 
 
@@ -54,50 +56,59 @@ def clean_text(value: str) -> str:
     return re.sub(r"\s+", " ", str(value or "")).strip()
 
 
+def normalize_token(token: str) -> str:
+    if token.lower() == "rom1":
+        return "ROM1"
+    return token
+
+
+def normalize_url(url: str) -> str:
+    return str(url or "").strip().rstrip("/")
+
+
 def find_patterns(text: str) -> list[str]:
     found = []
     for pattern in PROJECT_PATTERNS:
         for match in re.finditer(pattern, text, flags=re.IGNORECASE):
-            found.append(match.group(0))
+            found.append(normalize_token(match.group(0)))
     return sorted(set(found), key=lambda x: x.lower())
 
 
-def infer_developer(token: str, all_tokens: list[str]) -> str:
-    for key, value in DEVELOPER_HINTS.items():
+def infer_developer(token: str) -> str:
+    # Solo associazioni esplicite: niente ereditarieta' da altri token nella stessa pagina.
+    for key, value in EXPLICIT_DEVELOPER_TOKENS.items():
+        if key.lower() == token.lower():
+            return value
+    return ""
+
+
+def infer_location(token: str) -> str:
+    for key, value in EXPLICIT_LOCATION_TOKENS.items():
         if key.lower() == token.lower():
             return value
 
-    for token2 in all_tokens:
-        for key, value in DEVELOPER_HINTS.items():
-            if key.lower() == token2.lower():
-                return value
+    for key, value in PROJECT_LOCATION_HINTS.items():
+        if key.lower() == token.lower():
+            return value
 
     return ""
 
 
-def infer_location(token: str, all_tokens: list[str]) -> str:
-    for key, value in LOCATION_HINTS.items():
-        if key.lower() == token.lower():
-            return value
-
-    for token2 in all_tokens:
-        for key, value in LOCATION_HINTS.items():
-            if key.lower() == token2.lower():
-                return value
-
-    return ""
-
-
-def infer_confidence(url: str, title: str, token: str) -> int:
+def infer_confidence(url: str, title: str, token: str, evidence: str) -> int:
     blob = f"{url} {title}".lower()
 
     if "realizzazioni-data-center" in blob:
+        if token.upper() in ["ML7", "ML8", "ML9"]:
+            return 75
         return 90
 
     if token.lower() in blob:
-        return 85
+        return 80
 
-    return 60
+    if token.lower() in str(evidence or "").lower():
+        return 60
+
+    return 40
 
 
 def load_raw_html_for_source(source_name: str) -> str:
@@ -124,9 +135,11 @@ def run():
     hits = pd.read_csv(source_file)
     rows = []
 
+    seen = set()
+
     for _, row in hits.iterrows():
         source_name = row.get("source_name", "")
-        url = str(row.get("url", "") or "")
+        url = normalize_url(row.get("url", ""))
         title = str(row.get("title", "") or "")
         text_sample = str(row.get("text_sample", "") or "")
         keyword_hits = str(row.get("keyword_hits", "") or "")
@@ -140,9 +153,20 @@ def run():
             continue
 
         for token in tokens:
-            developer = infer_developer(token, tokens)
-            location = infer_location(token, tokens)
-            confidence = infer_confidence(url, title, token)
+            developer = infer_developer(token)
+            location = infer_location(token)
+            confidence = infer_confidence(url, title, token, text_sample)
+
+            key = (
+                source_name.lower(),
+                normalize_url(url).lower(),
+                token.lower(),
+            )
+
+            if key in seen:
+                continue
+
+            seen.add(key)
 
             rows.append({
                 "project_token": token,
@@ -161,7 +185,7 @@ def run():
             })
 
     out = OUTPUT_DIR / "contractor_project_leads.csv"
-    pd.DataFrame(rows).drop_duplicates().to_csv(out, index=False, encoding="utf-8-sig")
+    pd.DataFrame(rows).to_csv(out, index=False, encoding="utf-8-sig")
 
     print(f"Creato {out} ({len(rows)} righe)")
 
