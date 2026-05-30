@@ -26,6 +26,7 @@ def run():
     local_authority_queries = read_csv_safe(OUTPUT_DIR / "local_authority_queries.csv")
     contractor_hits = read_csv_safe(OUTPUT_DIR / "contractor_site_hits.csv")
     contractor_project_leads = read_csv_safe(OUTPUT_DIR / "contractor_project_leads.csv")
+    contractor_project_pages = read_csv_safe(OUTPUT_DIR / "contractor_project_pages.csv")
     source_watchlist = read_csv_safe(INPUT_DIR / "source_watchlist.csv")
     manual_leads = read_csv_safe(OUTPUT_DIR / "manual_contractor_leads.csv")
 
@@ -61,6 +62,23 @@ def run():
                 "package": row.get("package", ""),
                 "confidence": row.get("confidence", ""),
                 "evidence": row.get("evidence", ""),
+                "keyword_hits": row.get("keyword_hits", ""),
+                "source_url": row.get("source_url", ""),
+            })
+
+    if not contractor_project_pages.empty:
+        for _, row in contractor_project_pages.iterrows():
+            combined_rows.append({
+                "project": row.get("project", ""),
+                "developer": row.get("developer", ""),
+                "location": row.get("location", ""),
+                "region": "",
+                "lead_type": "Contractor project page",
+                "company": row.get("contractor", ""),
+                "role": row.get("role", ""),
+                "package": row.get("package", ""),
+                "confidence": row.get("confidence", ""),
+                "evidence": row.get("text_sample", ""),
                 "keyword_hits": row.get("keyword_hits", ""),
                 "source_url": row.get("source_url", ""),
             })
@@ -133,6 +151,7 @@ def run():
     with pd.ExcelWriter(xlsx_path, engine="openpyxl") as writer:
         combined.to_excel(writer, sheet_name="Combined Leads", index=False)
         manual_leads.to_excel(writer, sheet_name="Manual Contractor Leads", index=False)
+        contractor_project_pages.to_excel(writer, sheet_name="Contractor Project Pages", index=False)
         contractor_project_leads.to_excel(writer, sheet_name="Contractor Project Leads", index=False)
         contractor_hits.to_excel(writer, sheet_name="Contractor Site Hits", index=False)
         generated_queries.to_excel(writer, sheet_name="Generated Queries", index=False)
