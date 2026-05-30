@@ -15,6 +15,9 @@ KEYWORDS = [
     "datacenter",
     "data centre",
     "hyperscale",
+    "mission critical",
+    "case study",
+    "case studies",
     "general contractor",
     "epc",
     "design and build",
@@ -26,6 +29,7 @@ KEYWORDS = [
     "cyrusone",
     "microsoft",
     "data4",
+    "mercury",
     "ml7",
     "ml8",
     "ml9",
@@ -76,8 +80,16 @@ def looks_like_project_link(url: str, text: str) -> bool:
         "realizzazioni",
         "project",
         "projects",
+        "case-study",
+        "case-studies",
+        "case_study",
+        "case_studies",
+        "mission-critical",
+        "mission_critical",
         "data-center",
         "data_center",
+        "data-centre",
+        "data_centre",
         "datacenter",
         "rom1",
         "vantage",
@@ -101,6 +113,8 @@ def looks_like_project_link(url: str, text: str) -> bool:
         "cookie",
         "contatti",
         "lavora-con-noi",
+        "careers",
+        "contact",
     ]
 
     if any(term in blob for term in negative):
@@ -144,6 +158,9 @@ def infer_project_from_url_or_title(url: str, title: str, text: str) -> str:
         "vantage": "Vantage",
         "cyrusone": "CyrusOne",
         "digital-realty": "Digital Realty",
+        "mercury": "Mercury",
+        "mission critical": "Mission Critical",
+        "mission-critical": "Mission Critical",
     }
 
     for key, value in mapping.items():
@@ -166,11 +183,14 @@ def run():
     hits = pd.read_csv(source_file)
 
     candidate_pages = hits[
-        hits["url"].astype(str).str.contains("realizzazioni-data-center|data-center|datacenter|rom1|vantage|cyrusone", case=False, na=False)
+        hits["url"].astype(str).str.contains(
+            "realizzazioni-data-center|data-center|data-centre|datacenter|mission-critical|case-study|case-studies|rom1|vantage|cyrusone",
+            case=False,
+            na=False,
+        )
     ]
 
     rows = []
-
     checked = set()
 
     for _, row in candidate_pages.iterrows():
@@ -187,7 +207,6 @@ def run():
         try:
             status_code, html = fetch(source_url)
             links = extract_links_from_page(source_url, html)
-
             pages_to_visit = [{"link_text": "source_page", "url": source_url}] + links[:30]
 
             for item in pages_to_visit:

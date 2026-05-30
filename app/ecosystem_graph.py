@@ -6,6 +6,10 @@ import pandas as pd
 
 
 OUTPUT_DIR = Path("data/output")
+INPUT_DIR = Path("data/input")
+
+
+ITALY_COUNTRY_VALUES = {"", "italy", "italia"}
 
 
 def clean_text(value) -> str:
@@ -13,35 +17,79 @@ def clean_text(value) -> str:
     return re.sub(r"\s+", " ", value).strip()
 
 
+def read_csv_safe(path: Path) -> pd.DataFrame:
+    if not path.exists() or path.stat().st_size == 0:
+        return pd.DataFrame()
+    try:
+        return pd.read_csv(path)
+    except Exception:
+        return pd.DataFrame()
+
+
+def load_aliases() -> dict:
+    aliases_file = INPUT_DIR / "company_aliases.csv"
+    df = read_csv_safe(aliases_file)
+
+    aliases = {}
+
+    if df.empty:
+        return aliases
+
+    for _, row in df.iterrows():
+        alias = clean_text(row.get("alias", ""))
+        canonical = clean_text(row.get("canonical_name", ""))
+
+        if alias and canonical:
+            aliases[alias.lower()] = canonical
+
+    return aliases
+
+
+ALIASES = load_aliases()
+
+
 def normalize_company(value: str) -> str:
     value = clean_text(value)
 
-    replacements = {
-        "Vantage": "Vantage Data Centers",
-        "Digital Realty": "Digital Realty",
-        "Equinix": "Equinix",
-        "DATA4": "DATA4",
-        "Microsoft": "Microsoft",
-        "CyrusOne": "CyrusOne",
-        "Techbau": "Techbau",
-        "DBA": "DBA Group",
-        "DBA Group": "DBA Group",
-        "Schneider": "Schneider Electric",
-        "Schneider Electric": "Schneider Electric",
-        "Generale Prefabbricati": "Generale Prefabbricati",
-        "A2A": "A2A Calore",
-        "A2A Calore": "A2A Calore",
-    }
+    if not value:
+        return ""
 
-    for key, normalized in replacements.items():
-        if key.lower() == value.lower():
-            return normalized
+    low = value.lower()
 
-    for key, normalized in replacements.items():
-        if key.lower() in value.lower():
-            return normalized
+    if low in ALIASES:
+        return ALIASES[low]
+
+    for alias, canonical in ALIASES.items():
+        if alias in low:
+            return canonical
 
     return value
+
+
+def is_italian_row(row) -> bool:
+    country = clean_text(row.get("country", "")).lower()
+    province = clean_text(row.get("province", ""))
+    city = clean_text(row.get("city", ""))
+
+    if country in ITALY_COUNTRY_VALUES:
+        return True
+
+    if province:
+        return True
+
+    italian_city_hints = [
+        "Roma",
+        "Milano",
+        "Settimo Milanese",
+        "Cornaredo",
+        "Vittuone",
+        "Segrate",
+        "Bornasco",
+        "Lacchiarella",
+        "Pomezia",
+    ]
+
+    return city in italian_city_hints
 
 
 def add_edge(rows, source, relationship, target, project="", location="", package="", confidence=0, evidence="", source_url=""):
@@ -66,15 +114,6 @@ def add_edge(rows, source, relationship, target, project="", location="", packag
         "source_url": clean_text(source_url),
         "checked_at": datetime.now().isoformat(timespec="seconds"),
     })
-
-
-def read_csv_safe(path: Path) -> pd.DataFrame:
-    if not path.exists() or path.stat().st_size == 0:
-        return pd.DataFrame()
-    try:
-        return pd.read_csv(path)
-    except Exception:
-        return pd.DataFrame()
 
 
 def build_from_developer_master(rows):
@@ -126,7 +165,6 @@ def build_from_manual_leads(rows):
         source_url = clean_text(row.get("source_url", ""))
 
         relationship = "contractor_for"
-
         low = f"{company} {role} {package}".lower()
 
         if "generale prefabbricati" in low or "structural" in low or "prefab" in low:
@@ -185,6 +223,44 @@ def build_from_contractor_facts(rows):
             )
 
 
+def build_from_mercury_italy_only(rows):
+    # Mercury estero resta benchmark separato in mercury_projects.csv.
+    # Qui entra solo se country/province/city indicano chiaramente Italia.
+    df = read_csv_safe(OUTPUT_DIR / "mercury_projects.csv")
+
+    if df.empty:
+        return
+
+    for _, row in df.iterrows():
+        if not is_italian_row(row):
+            continue
+
+        developer = clean_text(row.get("developer", ""))
+        contractor = clean_text(row.get("contractor", ""))
+        project = clean_text(row.get("project", ""))
+        city = clean_text(row.get("city", ""))
+        country = clean_text(row.get("country", ""))
+        location = " ".join(x for x in [city, country] if x)
+        package = clean_text(row.get("work_scope", ""))
+        confidence = row.get("confidence", 0)
+        evidence = clean_text(row.get("evidence", ""))
+        source_url = clean_text(row.get("source_url", ""))
+
+        if developer and developer.lower() != "confidential":
+            add_edge(
+                rows,
+                source=contractor,
+                relationship="contractor_for",
+                target=developer,
+                project=project,
+                location=location,
+                package=package,
+                confidence=confidence,
+                evidence=evidence,
+                source_url=source_url,
+            )
+
+
 def build_from_ida_watchlist(rows):
     df = read_csv_safe(OUTPUT_DIR / "ida_ecosystem_watchlist.csv")
 
@@ -221,6 +297,7 @@ def run():
     build_from_developer_master(rows)
     build_from_manual_leads(rows)
     build_from_contractor_facts(rows)
+    build_from_mercury_italy_only(rows)
     build_from_ida_watchlist(rows)
 
     out = OUTPUT_DIR / "ecosystem_graph.csv"
@@ -261,4 +338,3 @@ def run():
 
 if __name__ == "__main__":
     run()
-

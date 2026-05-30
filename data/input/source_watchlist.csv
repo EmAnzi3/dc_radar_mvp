@@ -1,7 +1,7 @@
 ﻿source_name,source_type,priority,base_url,search_terms,notes
 Techbau,contractor,high,https://techbau.it,"data center;datacenter;Digital Realty;CyrusOne;Milano;Roma","GC già emerso su data center"
 GSE Italia,contractor,high,https://gsegroup.it,"data center;datacenter;Italy;Microsoft;Bornasco","Contractor data center da monitorare"
-Mercury Engineering,contractor,high,https://www.mercuryeng.com,"data centre;data center;Italy;Milan;hyperscale","EPC/MEP data center Europa"
+Mercury Engineering,contractor,high,https://www.mercuryeng.com,"data centre;data center;Italy;Milan;Milano;Europe;hyperscale;mission critical;projects;case studies","EPC/MEP data center Europa"
 Dornan,contractor,high,https://www.dornangroup.com,"data centre;data center;Italy;Milan;hyperscale","Contractor data center Europa"
 Winthrop Technologies,contractor,high,https://www.wintech-group.com,"data centre;data center;Italy;Milan;hyperscale","Contractor data center Europa"
 DBA Group,engineering,medium,https://www.dbagroup.it,"data center;datacenter;Avalon;Retelit;Milano","Engineering / design / energy"

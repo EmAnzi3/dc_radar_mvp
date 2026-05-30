@@ -8,9 +8,23 @@ import pandas as pd
 OUTPUT_DIR = Path("data/output")
 
 
+DEDICATED_PROJECT_URL_PATTERNS = [
+    "/realizzazioni/ml7",
+    "/realizzazioni/ml8",
+    "/realizzazioni/ml9",
+    "/realizzazioni/vantage",
+    "/realizzazioni/digital-realty-rom1",
+]
+
+
 def clean_text(value) -> str:
     value = "" if pd.isna(value) else str(value)
     return re.sub(r"\s+", " ", value).strip()
+
+
+def is_dedicated_project_page(url: str) -> bool:
+    url = clean_text(url).lower().rstrip("/")
+    return any(pattern in url for pattern in DEDICATED_PROJECT_URL_PATTERNS)
 
 
 def to_number(value: str):
@@ -19,12 +33,8 @@ def to_number(value: str):
 
     raw = str(value).strip()
 
-    # Caso italiano: 1.234,56
     if "," in raw:
         raw = raw.replace(".", "").replace(",", ".")
-    # Caso inglese: 19.2 oppure 3.2
-    else:
-        raw = raw
 
     try:
         num = float(raw)
@@ -35,22 +45,39 @@ def to_number(value: str):
         return ""
 
 
-def extract_city_province(text: str):
-    # Cattura solo il segmento vicino a Data Center <Project> ... <City> – MI | Italia
-    match = re.search(
-        r"Data Center\s+[A-Z0-9 ]+\s+([A-ZÀ-Úa-zà-ú' ]{2,60})\s*[–-]\s*([A-Z]{2})\s*\|\s*Italia",
-        text,
-        flags=re.IGNORECASE,
-    )
-    if match:
-        return clean_text(match.group(1)), match.group(2).strip()
+def normalize_project(value: str) -> str:
+    value = clean_text(value)
+    if value.lower() == "rom1":
+        return "ROM1"
+    return value
 
-    # Fallback semplice
-    match = re.search(r"\b([A-ZÀ-Úa-zà-ú' ]{2,60})\s*[–-]\s*([A-Z]{2})\s*\|\s*Italia", text)
+
+def extract_city_province(text: str, project: str):
+    project = normalize_project(project)
+
+    pattern = rf"Data Center\s+{re.escape(project)}\s+(.{{0,80}}?)\s*[–-]\s*([A-Z]{{2}})\s*\|\s*Italia"
+    match = re.search(pattern, text, flags=re.IGNORECASE)
+
     if match:
-        city = clean_text(match.group(1))
-        if len(city) <= 60 and "CHI SIAMO" not in city.upper():
-            return city, match.group(2).strip()
+        city_blob = clean_text(match.group(1))
+
+        for prefix in ["Equinix", "Vantage", "Digital Realty", "Microsoft", "DATA4", "CyrusOne"]:
+            if city_blob.lower().startswith(prefix.lower() + " "):
+                city_blob = clean_text(city_blob[len(prefix):])
+
+        if city_blob and len(city_blob) <= 60 and "CHI SIAMO" not in city_blob.upper():
+            return city_blob, match.group(2).strip()
+
+    fallback_locations = {
+        "ML7": ("Settimo Milanese", "MI"),
+        "ML8": ("Settimo Milanese", "MI"),
+        "ML9": ("Settimo Milanese", "MI"),
+        "Vantage": ("Settimo Milanese", "MI"),
+        "ROM1": ("Roma", "RM"),
+    }
+
+    if project in fallback_locations:
+        return fallback_locations[project]
 
     return "", ""
 
@@ -105,16 +132,9 @@ def extract_it_power_mw(text: str):
 
 
 def extract_data_halls(text: str):
-    patterns = [
-        r"(\d+)\s*data hall",
-        r"(\d+)\s*Data hall",
-    ]
-
-    for pattern in patterns:
-        match = re.search(pattern, text, flags=re.IGNORECASE)
-        if match:
-            return int(match.group(1))
-
+    match = re.search(r"(\d+)\s*data hall", text, flags=re.IGNORECASE)
+    if match:
+        return int(match.group(1))
     return ""
 
 
@@ -137,14 +157,6 @@ def extract_dates(text: str):
 def extract_work_scope(text: str):
     match = re.search(
         r"Scopo del lavoro:\s*(.+?)(?:Cliente:|Inizio:|Fine:|torna a progetti|CHI SIAMO|$)",
-        text,
-        flags=re.IGNORECASE,
-    )
-    if match:
-        return clean_text(match.group(1)).rstrip(".")
-
-    match = re.search(
-        r"Scope of work:\s*(.+?)(?:Client:|Start:|End:|back to projects|ABOUT US|$)",
         text,
         flags=re.IGNORECASE,
     )
@@ -182,7 +194,7 @@ def run():
     rows = []
 
     for _, row in pages.iterrows():
-        project = clean_text(row.get("project", ""))
+        project = normalize_project(row.get("project", ""))
         contractor = clean_text(row.get("contractor", ""))
         source_url = clean_text(row.get("source_url", ""))
         text = clean_text(row.get("text_sample", ""))
@@ -190,7 +202,10 @@ def run():
         if not project:
             continue
 
-        city, province = extract_city_province(text)
+        if not is_dedicated_project_page(source_url):
+            continue
+
+        city, province = extract_city_province(text, project)
         start_date, end_date = extract_dates(text)
 
         facts = {
@@ -208,7 +223,7 @@ def run():
         if not any(facts.values()):
             continue
 
-        output_row = {
+        rows.append({
             "contractor": contractor,
             "project": project,
             "developer": clean_text(row.get("developer", "")),
@@ -226,9 +241,7 @@ def run():
             "confidence": infer_confidence(row, facts),
             "evidence": text[:900],
             "checked_at": datetime.now().isoformat(timespec="seconds"),
-        }
-
-        rows.append(output_row)
+        })
 
     out = OUTPUT_DIR / "contractor_project_facts.csv"
 
