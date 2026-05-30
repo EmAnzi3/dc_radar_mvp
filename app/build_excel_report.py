@@ -23,6 +23,7 @@ def run():
     mase_leads = read_csv_safe(OUTPUT_DIR / "mase_contractor_leads.csv")
     terna = read_csv_safe(OUTPUT_DIR / "terna_connection_leads.csv")
     generated_queries = read_csv_safe(OUTPUT_DIR / "generated_queries.csv")
+    local_authority_queries = read_csv_safe(OUTPUT_DIR / "local_authority_queries.csv")
     source_watchlist = read_csv_safe(INPUT_DIR / "source_watchlist.csv")
     manual_leads = read_csv_safe(OUTPUT_DIR / "manual_contractor_leads.csv")
 
@@ -93,6 +94,7 @@ def run():
         combined.to_excel(writer, sheet_name="Combined Leads", index=False)
         manual_leads.to_excel(writer, sheet_name="Manual Contractor Leads", index=False)
         generated_queries.to_excel(writer, sheet_name="Generated Queries", index=False)
+        local_authority_queries.to_excel(writer, sheet_name="Local Authority Queries", index=False)
         source_watchlist.to_excel(writer, sheet_name="Source Watchlist", index=False)
         mase_docs.to_excel(writer, sheet_name="MASE Pages", index=False)
         mase_files.to_excel(writer, sheet_name="MASE Document Pages", index=False)
