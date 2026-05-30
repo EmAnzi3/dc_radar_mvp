@@ -24,6 +24,9 @@ def sort_if_possible(df: pd.DataFrame, by: list[str], ascending=True) -> pd.Data
     if not existing:
         return df
 
+    if isinstance(ascending, list):
+        ascending = ascending[:len(existing)]
+
     return df.sort_values(by=existing, ascending=ascending)
 
 
@@ -47,6 +50,15 @@ def run():
     ecosystem_graph = read_csv_safe(OUTPUT_DIR / "ecosystem_graph.csv")
 
     mercury_projects = read_csv_safe(OUTPUT_DIR / "mercury_projects.csv")
+    international_developer_watchlist = read_csv_safe(
+        OUTPUT_DIR / "international_developer_watchlist.csv"
+    )
+    international_developer_ranking = read_csv_safe(
+        OUTPUT_DIR / "international_developer_ranking.csv"
+    )
+    international_contractor_ranking = read_csv_safe(
+        OUTPUT_DIR / "international_contractor_ranking.csv"
+    )
 
     ida_queries = read_csv_safe(OUTPUT_DIR / "ida_generated_queries.csv")
     ida_watchlist = read_csv_safe(OUTPUT_DIR / "ida_ecosystem_watchlist.csv")
@@ -214,6 +226,24 @@ def run():
         ascending=[False, True],
     )
 
+    international_developer_watchlist = sort_if_possible(
+        international_developer_watchlist,
+        by=["contract_value_eur", "developer", "project"],
+        ascending=[False, True, True],
+    )
+
+    international_developer_ranking = sort_if_possible(
+        international_developer_ranking,
+        by=["ranking_score", "total_contract_value_eur"],
+        ascending=[False, False],
+    )
+
+    international_contractor_ranking = sort_if_possible(
+        international_contractor_ranking,
+        by=["ranking_score", "total_contract_value_eur"],
+        ascending=[False, False],
+    )
+
     with pd.ExcelWriter(xlsx_path, engine="openpyxl") as writer:
         combined.to_excel(writer, sheet_name="Combined Leads", index=False)
 
@@ -221,6 +251,21 @@ def run():
         ecosystem_graph.to_excel(writer, sheet_name="Ecosystem Graph", index=False)
         contractor_project_facts.to_excel(writer, sheet_name="Contractor Project Facts", index=False)
 
+        international_developer_ranking.to_excel(
+            writer,
+            sheet_name="International Dev Ranking",
+            index=False,
+        )
+        international_contractor_ranking.to_excel(
+            writer,
+            sheet_name="International Contr Ranking",
+            index=False,
+        )
+        international_developer_watchlist.to_excel(
+            writer,
+            sheet_name="International Dev Watch",
+            index=False,
+        )
         mercury_projects.to_excel(writer, sheet_name="Mercury Benchmark", index=False)
 
         manual_leads.to_excel(writer, sheet_name="Manual Contractor Leads", index=False)

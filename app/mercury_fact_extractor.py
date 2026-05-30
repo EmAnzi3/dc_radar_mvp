@@ -13,6 +13,12 @@ def clean_text(value) -> str:
     return re.sub(r"\s+", " ", value).strip()
 
 
+def normalize_url(value: str) -> str:
+    url = clean_text(value)
+    url = url.split("#")[0]
+    return url.rstrip("/")
+
+
 def to_number(value: str):
     if not value:
         return ""
@@ -72,6 +78,11 @@ def extract_client(text: str):
     match = re.search(r"Client\s+(.+?)\s+Value", text, flags=re.IGNORECASE)
     if match:
         return clean_text(match.group(1))
+
+    match = re.search(r"Client\s+(.+?)(?:\s+SERVICES|\s+Project Details|$)", text, flags=re.IGNORECASE)
+    if match:
+        return clean_text(match.group(1))
+
     return ""
 
 
@@ -82,6 +93,81 @@ def extract_value_eur(text: str):
     return ""
 
 
+def clean_services(value: str) -> str:
+    value = clean_text(value)
+
+    stop_markers = [
+        "News & Insights",
+        "Careers",
+        "Explore Jobs",
+        "Why Mercury",
+        "Learning & Development",
+        "Graduate Programme",
+        "Apprenticeships",
+        "Scholarship Programme",
+        "Leadership Programme",
+        "Diversity and Inclusion",
+        "Unsolicited Applications",
+        "Contact",
+        "Supply Chain",
+        "Search",
+        "English Deutsch",
+        "Project Details",
+    ]
+
+    for marker in stop_markers:
+        idx = value.lower().find(marker.lower())
+        if idx >= 0:
+            value = value[:idx].strip()
+
+    # Se il sito ha infilato il menu prima dei servizi, teniamo solo da General Contracting in poi.
+    start_markers = [
+        "General Contracting",
+        "Civil, Structural & Architectural",
+        "Mechanical",
+        "Electrical",
+        "ICT Services",
+        "Fire Protection",
+        "Offsite Assembly",
+    ]
+
+    starts = [
+        value.lower().find(marker.lower())
+        for marker in start_markers
+        if value.lower().find(marker.lower()) >= 0
+    ]
+
+    if starts:
+        value = value[min(starts):].strip()
+
+    service_tokens = [
+        "General Contracting",
+        "Civil, Structural & Architectural (CSA)",
+        "Civil, Structural & Architectural",
+        "Mechanical",
+        "Electrical",
+        "ICT Services",
+        "Fire Protection",
+        "Offsite Assembly (OSA)",
+        "Offsite Assembly",
+        "Design and Build",
+        "CSA",
+        "MEP",
+    ]
+
+    found = []
+    low = value.lower()
+
+    for token in service_tokens:
+        if token.lower() in low and token not in found:
+            found.append(token)
+
+    if found:
+        return "; ".join(found)
+
+    return value[:300]
+
+
 def extract_services(text: str):
     match = re.search(
         r"SERVICES\s+(.+?)(?:Project Details|Projects|About|Who We Are|Contact|$)",
@@ -89,7 +175,8 @@ def extract_services(text: str):
         flags=re.IGNORECASE,
     )
     if match:
-        return clean_text(match.group(1))[:300]
+        return clean_services(match.group(1))
+
     return ""
 
 
@@ -121,7 +208,7 @@ def run():
 
         title = clean_text(row.get("page_title", ""))
         text = clean_text(row.get("text_sample", ""))
-        source_url = clean_text(row.get("source_url", ""))
+        source_url = normalize_url(row.get("source_url", ""))
 
         project = extract_project(title, text)
         city, country = extract_location(text)
