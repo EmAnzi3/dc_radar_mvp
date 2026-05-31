@@ -23,8 +23,16 @@ python -m app.mase_project_matcher
 python -m app.local_authority_backlog
 python -m app.intelligence_backlog
 
+echo Estrazione facts strutturati da PDF MASE...
+python -m app.mase_project_facts_extractor
+if errorlevel 1 exit /b 1
+
+echo Consolidamento facts MASE...
+python -m app.mase_project_facts_summary
+if errorlevel 1 exit /b 1
+
+echo Generazione facts dashboard MASE...
+python -m app.mase_project_facts_dashboard
+if errorlevel 1 exit /b 1
 echo Stage 2 build completato
 pause
-
-
-

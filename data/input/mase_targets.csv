@@ -1,4 +1,5 @@
-﻿"project","developer","location","region","mase_object_id","source_url","notes"
-"Apto Lacchiarella","Apto","Lacchiarella","Lombardia","10198","https://va.mite.gov.it/it-IT/Oggetti/Info/10198","Target MASE da verificare"
-"Equinix ML9","Equinix Hyperscale 2 (ML9) Srl","Settimo Milanese","Lombardia","10745","https://va.mite.gov.it/it-IT/Oggetti/Info/10745","Data center ML9"
-"Microsoft Bornasco","Microsoft","Bornasco","Lombardia","8791","https://va.mite.gov.it/it-IT/Oggetti/Info/8791","Data center e gruppi elettrogeni"
+﻿project,developer_hint,location,region,mase_object_id,mase_url,notes
+Vantage MXP2,Vantage Data Centers Europe,Settimo Milanese,Lombardia,10198,https://va.mite.gov.it/it-IT/Oggetti/Info/10198,Data center Vantage MXP2
+Equinix ML9,Equinix Hyperscale 2 (ML9) Srl,Settimo Milanese,Lombardia,10745,https://va.mite.gov.it/it-IT/Oggetti/Info/10745,Data center ML9
+Microsoft Bornasco,Microsoft,Bornasco,Lombardia,8791,https://va.mite.gov.it/it-IT/Oggetti/Info/8791,Data center e gruppi elettrogeni
+Equinix ML7 ML8,Equinix,Settimo Milanese,Lombardia,11965,https://va.mite.gov.it/it-IT/Oggetti/Info/11965,Data center ML7 ML8
