@@ -5,6 +5,7 @@ import re
 
 
 OUTPUT_DIR = Path("data/output")
+INPUT_DIR = Path("data/input")
 
 
 def read_csv_safe(path: Path) -> pd.DataFrame:
@@ -49,6 +50,90 @@ def add_row(rows, project, city, province, developer, contractor, mw_it, status,
     })
 
 
+def load_city_province_overrides():
+    path = INPUT_DIR / "city_province_overrides.csv"
+    if not path.exists() or path.stat().st_size == 0:
+        return {}
+
+    df = pd.read_csv(path).fillna("")
+    overrides = {}
+
+    for _, r in df.iterrows():
+        city = clean(r.get("city", ""))
+        province = clean(r.get("province", ""))
+        if city and province:
+            overrides[city.lower()] = province
+
+    return overrides
+
+
+def apply_city_province_overrides(df):
+    overrides = load_city_province_overrides()
+
+    if df.empty or not overrides:
+        return df
+
+    for idx, row in df.iterrows():
+        city = clean(row.get("city", ""))
+        province = clean(row.get("province", ""))
+
+        if not province and city.lower() in overrides:
+            df.at[idx, "province"] = overrides[city.lower()]
+
+    return df
+
+
+def load_developer_overrides():
+    path = INPUT_DIR / "project_developer_overrides.csv"
+    if not path.exists() or path.stat().st_size == 0:
+        return {}
+
+    df = pd.read_csv(path).fillna("")
+    overrides = {}
+
+    for _, r in df.iterrows():
+        project = clean(r.get("project", ""))
+        developer = clean(r.get("developer", ""))
+        if project and developer:
+            overrides[project] = {
+                "developer": developer,
+                "reason": clean(r.get("reason", "")),
+                "source_url": clean(r.get("source_url", "")),
+                "confidence": r.get("confidence", ""),
+            }
+
+    return overrides
+
+
+def apply_developer_overrides(df):
+    overrides = load_developer_overrides()
+
+    if df.empty or not overrides:
+        return df
+
+    for idx, row in df.iterrows():
+        project = clean(row.get("project", ""))
+
+        if project not in overrides:
+            continue
+
+        override = overrides[project]
+
+        df.at[idx, "developer"] = override["developer"]
+
+        if override.get("source_url"):
+            df.at[idx, "source_url"] = override["source_url"]
+
+        if override.get("confidence"):
+            df.at[idx, "confidence"] = override["confidence"]
+
+        current_status = clean(row.get("status", ""))
+        if current_status == "Da verificare":
+            df.at[idx, "status"] = "Proponente verificato da MASE"
+
+    return df
+
+
 def run():
     rows = []
 
@@ -91,6 +176,9 @@ def run():
 
     if rows:
         df = pd.DataFrame(rows)
+        df = apply_developer_overrides(df)
+        df = apply_city_province_overrides(df)
+
         df["_has_province"] = df["province"].apply(lambda x: 1 if str(x).strip() else 0)
         df["_has_mw"] = df["it_power_mw"].apply(lambda x: 1 if str(x).strip() else 0)
         df["_confidence_num"] = pd.to_numeric(df["confidence"], errors="coerce").fillna(0)
@@ -120,5 +208,7 @@ def run():
 
 if __name__ == "__main__":
     run()
+
+
 
 

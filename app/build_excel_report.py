@@ -40,6 +40,7 @@ def run():
     terna = read_csv_safe(OUTPUT_DIR / "terna_connection_leads.csv")
 
     generated_queries = read_csv_safe(OUTPUT_DIR / "generated_queries.csv")
+    mase_discovery_queries = read_csv_safe(OUTPUT_DIR / "mase_discovery_queries.csv")
     local_authority_queries = read_csv_safe(OUTPUT_DIR / "local_authority_queries.csv")
 
     contractor_hits = read_csv_safe(OUTPUT_DIR / "contractor_site_hits.csv")
@@ -277,6 +278,7 @@ def run():
         ida_watchlist.to_excel(writer, sheet_name="IDA Watchlist", index=False)
         ida_queries.to_excel(writer, sheet_name="IDA Queries", index=False)
 
+        mase_discovery_queries.to_excel(writer, sheet_name="MASE Discovery Queries", index=False)
         generated_queries.to_excel(writer, sheet_name="Generated Queries", index=False)
         local_authority_queries.to_excel(writer, sheet_name="Local Authority Queries", index=False)
         source_watchlist.to_excel(writer, sheet_name="Source Watchlist", index=False)
@@ -293,4 +295,5 @@ def run():
 
 if __name__ == "__main__":
     run()
+
 

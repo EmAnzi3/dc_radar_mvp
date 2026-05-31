@@ -17,8 +17,10 @@ python -m app.italy_project_summary
 python -m app.italy_rankings
 python -m app.developer_enrichment_queries
 python -m app.local_authority_intelligence
+python -m app.mase_discovery_queries
 python -m app.local_authority_backlog
 python -m app.intelligence_backlog
 
 echo Stage 2 build completato
 pause
+
