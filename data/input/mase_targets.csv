@@ -1,5 +1,8 @@
-﻿project,developer_hint,location,region,mase_object_id,mase_url,notes
+﻿project,developer,location,region,mase_object_id,source_url,notes
 Vantage MXP2,Vantage Data Centers Europe,Settimo Milanese,Lombardia,10198,https://va.mite.gov.it/it-IT/Oggetti/Info/10198,Data center Vantage MXP2
 Equinix ML9,Equinix Hyperscale 2 (ML9) Srl,Settimo Milanese,Lombardia,10745,https://va.mite.gov.it/it-IT/Oggetti/Info/10745,Data center ML9
 Microsoft Bornasco,Microsoft,Bornasco,Lombardia,8791,https://va.mite.gov.it/it-IT/Oggetti/Info/8791,Data center e gruppi elettrogeni
 Equinix ML7 ML8,Equinix,Settimo Milanese,Lombardia,11965,https://va.mite.gov.it/it-IT/Oggetti/Info/11965,Data center ML7 ML8
+DATA4 Cornaredo,DATA 4 MILAN S.p.A.,Cornaredo / Settimo Milanese,Lombardia,11512,https://va.mite.gov.it/it-IT/Oggetti/Info/11512,Progetto D4 Data Center MIL1 - Masterplan campus
+DATA4 Cornaredo,DATA 4 MILAN S.p.A.,Cornaredo / Settimo Milanese,Lombardia,11998,https://va.mite.gov.it/it-IT/Oggetti/Info/11998,Campus Data Center DATA4 Cornaredo Settimo Milanese
+CyrusOne MIL1,CyrusOne Italy I S.r.l.,Segrate,Lombardia,10977,https://va.mite.gov.it/it-IT/Oggetti/Info/10977,Data center MIL1 area ex-CISE

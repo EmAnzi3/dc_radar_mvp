@@ -2,6 +2,7 @@
 from datetime import datetime
 import re
 import pandas as pd
+from pandas.errors import EmptyDataError
 
 
 OUTPUT_DIR = Path("data/output")
@@ -64,7 +65,19 @@ def run():
         print("Nessun mase_document_files.csv trovato")
         return
 
-    df = pd.read_csv(src).fillna("")
+    try:
+        df = pd.read_csv(src).fillna("")
+    except EmptyDataError:
+        out.parent.mkdir(parents=True, exist_ok=True)
+        pd.DataFrame(columns=[
+            "source",
+            "entity_type",
+            "entity",
+            "context",
+            "confidence"
+        ]).to_csv(out, index=False, encoding="utf-8-sig")
+        print(f"Creato {out} (0 righe - input vuoto)")
+        return
     rows = []
 
     for _, r in df.iterrows():
