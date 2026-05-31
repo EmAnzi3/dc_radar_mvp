@@ -3,6 +3,7 @@
 import csv
 import html
 import json
+import re
 from pathlib import Path
 from datetime import datetime
 
@@ -381,6 +382,176 @@ def render_html(rows: list[dict[str, str]]) -> str:
 """
 
 
+
+def render_dashboard_panel(rows: list[dict[str, str]]) -> str:
+    cards = []
+
+    for r in rows:
+        project = esc(r.get("display_project"))
+        mase_id = esc(r.get("mase_object_id"))
+        proponent = esc(r.get("primary_proponent"))
+        campus = esc(r.get("campus_codes"))
+        it_mw = esc(r.get("primary_it_power_mw"))
+        thermal = esc(r.get("primary_thermal_power_mwt"))
+        status = esc(r.get("quality_status"))
+
+        cards.append(f"""
+        <article class="mase-mini-card">
+          <div class="mase-mini-title">
+            <strong>{project}</strong>
+            <span>MASE {mase_id}</span>
+          </div>
+          <div class="mase-mini-grid">
+            <div><small>Proponente</small><b>{proponent}</b></div>
+            <div><small>Campus</small><b>{campus or "—"}</b></div>
+            <div><small>MW IT</small><b>{it_mw or "—"}</b></div>
+            <div><small>MWt</small><b>{thermal or "—"}</b></div>
+            <div><small>Stato</small><b>{status or "—"}</b></div>
+          </div>
+        </article>
+        """)
+
+    return f"""
+<!-- MASE_PANEL_START -->
+<style>
+  .mase-panel {{
+    margin: 28px auto;
+    max-width: 1240px;
+    padding: 0 18px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }}
+  .mase-panel-inner {{
+    background: #ffffff;
+    border: 1px solid #dfe4ee;
+    border-radius: 24px;
+    padding: 22px;
+    box-shadow: 0 8px 26px rgba(20, 34, 65, 0.06);
+  }}
+  .mase-panel-head {{
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 16px;
+  }}
+  .mase-panel-head h2 {{
+    margin: 0 0 4px;
+    font-size: 24px;
+    letter-spacing: -0.03em;
+    color: #172033;
+  }}
+  .mase-panel-head p {{
+    margin: 0;
+    color: #657186;
+    font-size: 14px;
+  }}
+  .mase-panel-head a {{
+    display: inline-block;
+    white-space: nowrap;
+    padding: 9px 13px;
+    border-radius: 999px;
+    background: #1f4fd8;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 13px;
+  }}
+  .mase-mini-grid-wrap {{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }}
+  .mase-mini-card {{
+    border: 1px solid #e5e9f2;
+    border-radius: 18px;
+    padding: 14px;
+    background: #f9fbff;
+  }}
+  .mase-mini-title {{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+  }}
+  .mase-mini-title strong {{
+    color: #172033;
+    font-size: 16px;
+  }}
+  .mase-mini-title span {{
+    color: #657186;
+    font-size: 12px;
+    white-space: nowrap;
+  }}
+  .mase-mini-grid {{
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+  }}
+  .mase-mini-grid small {{
+    display: block;
+    color: #657186;
+    font-size: 11px;
+    margin-bottom: 3px;
+  }}
+  .mase-mini-grid b {{
+    display: block;
+    color: #172033;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+  }}
+  @media (max-width: 900px) {{
+    .mase-mini-grid-wrap {{
+      grid-template-columns: 1fr;
+    }}
+    .mase-mini-grid {{
+      grid-template-columns: 1fr 1fr;
+    }}
+    .mase-panel-head {{
+      flex-direction: column;
+    }}
+  }}
+</style>
+<section class="mase-panel">
+  <div class="mase-panel-inner">
+    <div class="mase-panel-head">
+      <div>
+        <h2>MASE Facts</h2>
+        <p>Facts strutturati estratti dai fascicoli MASE: proponenti, campus, potenze e stato qualità.</p>
+      </div>
+      <a href="mase_facts.html">Apri dettaglio</a>
+    </div>
+    <div class="mase-mini-grid-wrap">
+      {''.join(cards)}
+    </div>
+  </div>
+</section>
+<!-- MASE_PANEL_END -->
+"""
+
+
+def inject_dashboard_panel(index_path: Path, rows: list[dict[str, str]]) -> None:
+    if not index_path.exists():
+        return
+
+    txt = index_path.read_text(encoding="utf-8", errors="ignore")
+
+    txt = re.sub(
+        r"<!-- MASE_PANEL_START -->.*?<!-- MASE_PANEL_END -->",
+        "",
+        txt,
+        flags=re.DOTALL,
+    )
+
+    panel = render_dashboard_panel(rows)
+
+    if "</body>" in txt:
+        txt = txt.replace("</body>", panel + "\n</body>")
+    else:
+        txt += panel
+
+    index_path.write_text(clean_trailing_whitespace(txt), encoding="utf-8")
+
+
 def inject_link(index_path: Path) -> None:
     if not index_path.exists():
         return
@@ -418,6 +589,7 @@ def main() -> None:
         json_path.write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
 
         inject_link(site_dir / "index.html")
+        inject_dashboard_panel(site_dir / "index.html", rows)
 
         print(f"[OK] Written {html_path}")
         print(f"[OK] Written {json_path}")

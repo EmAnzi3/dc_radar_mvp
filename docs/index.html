@@ -303,5 +303,180 @@ init();
   <a href="mase_facts.html" style="display:inline-block;padding:10px 14px;border-radius:999px;background:#1f4fd8;color:#fff;text-decoration:none;font-family:system-ui,sans-serif;font-weight:700;box-shadow:0 8px 22px rgba(0,0,0,.18)">MASE Facts</a>
 </div>
 
+
+
+
+
+<!-- MASE_PANEL_START -->
+<style>
+  .mase-panel {
+    margin: 28px auto;
+    max-width: 1240px;
+    padding: 0 18px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  .mase-panel-inner {
+    background: #ffffff;
+    border: 1px solid #dfe4ee;
+    border-radius: 24px;
+    padding: 22px;
+    box-shadow: 0 8px 26px rgba(20, 34, 65, 0.06);
+  }
+  .mase-panel-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 16px;
+  }
+  .mase-panel-head h2 {
+    margin: 0 0 4px;
+    font-size: 24px;
+    letter-spacing: -0.03em;
+    color: #172033;
+  }
+  .mase-panel-head p {
+    margin: 0;
+    color: #657186;
+    font-size: 14px;
+  }
+  .mase-panel-head a {
+    display: inline-block;
+    white-space: nowrap;
+    padding: 9px 13px;
+    border-radius: 999px;
+    background: #1f4fd8;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .mase-mini-grid-wrap {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .mase-mini-card {
+    border: 1px solid #e5e9f2;
+    border-radius: 18px;
+    padding: 14px;
+    background: #f9fbff;
+  }
+  .mase-mini-title {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .mase-mini-title strong {
+    color: #172033;
+    font-size: 16px;
+  }
+  .mase-mini-title span {
+    color: #657186;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .mase-mini-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .mase-mini-grid small {
+    display: block;
+    color: #657186;
+    font-size: 11px;
+    margin-bottom: 3px;
+  }
+  .mase-mini-grid b {
+    display: block;
+    color: #172033;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+  }
+  @media (max-width: 900px) {
+    .mase-mini-grid-wrap {
+      grid-template-columns: 1fr;
+    }
+    .mase-mini-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .mase-panel-head {
+      flex-direction: column;
+    }
+  }
+</style>
+<section class="mase-panel">
+  <div class="mase-panel-inner">
+    <div class="mase-panel-head">
+      <div>
+        <h2>MASE Facts</h2>
+        <p>Facts strutturati estratti dai fascicoli MASE: proponenti, campus, potenze e stato qualità.</p>
+      </div>
+      <a href="mase_facts.html">Apri dettaglio</a>
+    </div>
+    <div class="mase-mini-grid-wrap">
+
+        <article class="mase-mini-card">
+          <div class="mase-mini-title">
+            <strong>Vantage MXP2</strong>
+            <span>MASE 10198</span>
+          </div>
+          <div class="mase-mini-grid">
+            <div><small>Proponente</small><b>VDC MXP 21 S.r.l.</b></div>
+            <div><small>Campus</small><b>MXP2 | MXP21 | MXP22</b></div>
+            <div><small>MW IT</small><b>32</b></div>
+            <div><small>MWt</small><b>143</b></div>
+            <div><small>Stato</small><b>ready</b></div>
+          </div>
+        </article>
+
+        <article class="mase-mini-card">
+          <div class="mase-mini-title">
+            <strong>Equinix ML9</strong>
+            <span>MASE 10745</span>
+          </div>
+          <div class="mase-mini-grid">
+            <div><small>Proponente</small><b>EQUINIX HYPERSCALE 2 (ML9) S.r.l.</b></div>
+            <div><small>Campus</small><b>ML9</b></div>
+            <div><small>MW IT</small><b>24.0</b></div>
+            <div><small>MWt</small><b>108</b></div>
+            <div><small>Stato</small><b>ready</b></div>
+          </div>
+        </article>
+
+        <article class="mase-mini-card">
+          <div class="mase-mini-title">
+            <strong>Equinix ML7-ML8</strong>
+            <span>MASE 11965</span>
+          </div>
+          <div class="mase-mini-grid">
+            <div><small>Proponente</small><b>EQUINIX HYPERSCALE 2 (ML7) S.r.l.</b></div>
+            <div><small>Campus</small><b>ML7 | ML8</b></div>
+            <div><small>MW IT</small><b>—</b></div>
+            <div><small>MWt</small><b>133.6</b></div>
+            <div><small>Stato</small><b>ready</b></div>
+          </div>
+        </article>
+
+        <article class="mase-mini-card">
+          <div class="mase-mini-title">
+            <strong>Microsoft Bornasco</strong>
+            <span>MASE 8791</span>
+          </div>
+          <div class="mase-mini-grid">
+            <div><small>Proponente</small><b>MICROSOFT 4825 ITALY S.R.L.</b></div>
+            <div><small>Campus</small><b>MIL05 | MIL06</b></div>
+            <div><small>MW IT</small><b>—</b></div>
+            <div><small>MWt</small><b>163</b></div>
+            <div><small>Stato</small><b>ready</b></div>
+          </div>
+        </article>
+
+    </div>
+  </div>
+</section>
+<!-- MASE_PANEL_END -->
+
 </body>
 </html>

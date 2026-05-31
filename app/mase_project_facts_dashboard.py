@@ -6,6 +6,7 @@ from pathlib import Path
 
 
 INPUT = Path("data/output/mase_project_facts_summary.csv")
+PROJECT_SUMMARY = Path("data/output/italy_project_summary.csv")
 OUTPUT = Path("data/output/mase_project_facts_dashboard.csv")
 
 
@@ -55,6 +56,41 @@ CURATED = {
 }
 
 
+
+def load_it_power_fallbacks() -> dict[str, dict[str, str]]:
+    """Fallback controllato per MW IT da italy_project_summary.csv.
+
+    Nota: questo NON è un dato estratto dai PDF MASE.
+    Serve solo a evitare disallineamenti tra dashboard principale e pagina MASE facts.
+    """
+    if not PROJECT_SUMMARY.exists():
+        return {}
+
+    rows = read_rows(PROJECT_SUMMARY)
+    out = {}
+
+    for row in rows:
+        project = (row.get("project") or "").strip().upper()
+        developer = (row.get("developer") or "").strip()
+        it_power = (row.get("it_power_mw") or "").strip()
+        source_type = (row.get("source_type") or "").strip()
+        source_url = (row.get("source_url") or "").strip()
+
+        if not it_power:
+            continue
+
+        # Match sicuro: ML9 singolo, non ML7/ML8 aggregato.
+        if project == "ML9":
+            out["10745"] = {
+                "it_power_mw": it_power,
+                "source": source_type or "Italy Project Summary",
+                "source_url": source_url,
+                "note": f"MW IT da italy_project_summary.csv: {it_power} MW; non estratto dai PDF MASE.",
+            }
+
+    return out
+
+
 def read_rows(path: Path) -> list[dict[str, str]]:
     if not path.exists():
         raise FileNotFoundError(f"Missing input file: {path}")
@@ -65,6 +101,7 @@ def read_rows(path: Path) -> list[dict[str, str]]:
 
 def main() -> None:
     rows = read_rows(INPUT)
+    it_power_fallbacks = load_it_power_fallbacks()
     output_rows = []
 
     for row in rows:
@@ -74,6 +111,18 @@ def main() -> None:
         display_project = curated.get("display_project") or row.get("project", "")
         primary_proponent = curated.get("primary_proponent") or row.get("primary_proponent", "")
         primary_developer = curated.get("primary_developer") or row.get("developer_hint", "")
+
+        fallback = it_power_fallbacks.get(object_id, {})
+        curated_it_power = curated.get("primary_it_power_mw", "")
+        fallback_it_power = fallback.get("it_power_mw", "")
+        primary_it_power = curated_it_power or fallback_it_power
+
+        if curated_it_power:
+            it_power_source = "MASE PDF"
+        elif fallback_it_power:
+            it_power_source = fallback.get("source", "Italy Project Summary")
+        else:
+            it_power_source = ""
 
         out = {
             "display_project": display_project,
@@ -85,7 +134,9 @@ def main() -> None:
             "mase_object_id": object_id,
             "primary_proponent": primary_proponent,
             "campus_codes": row.get("campus_codes", ""),
-            "primary_it_power_mw": curated.get("primary_it_power_mw", ""),
+            "primary_it_power_mw": primary_it_power,
+            "primary_it_power_mw_source": it_power_source,
+            "primary_it_power_mw_source_url": fallback.get("source_url", ""),
             "it_power_mw_candidates": row.get("it_power_mw_candidates", ""),
             "primary_thermal_power_mwt": curated.get("primary_thermal_power_mwt", ""),
             "thermal_power_mwt_candidates": row.get("thermal_power_mwt_candidates", ""),
@@ -118,6 +169,8 @@ def main() -> None:
         "primary_proponent",
         "campus_codes",
         "primary_it_power_mw",
+        "primary_it_power_mw_source",
+        "primary_it_power_mw_source_url",
         "it_power_mw_candidates",
         "primary_thermal_power_mwt",
         "thermal_power_mwt_candidates",
