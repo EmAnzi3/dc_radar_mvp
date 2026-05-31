@@ -1,0 +1,7 @@
+﻿authority,authority_type,city,province,region,priority,base_url,search_terms,notes
+Comune di Settimo Milanese,comune,Settimo Milanese,MI,Lombardia,high,https://www.comune.settimomilanese.mi.it,"data center;datacenter;Techbau;ML8;ML9;Vantage;Equinix;permesso di costruire;conferenza dei servizi;SUAP;piano attuativo;variante urbanistica","Priorità ML8 ML9 Vantage ML7"
+Comune di Roma,comune,Roma,RM,Lazio,high,https://www.comune.roma.it,"ROM1;Digital Realty;data center;datacenter;Via delle Testuggini;Municipio IX;permesso di costruire;conferenza dei servizi;SUAP","ROM1 Digital Realty"
+Comune di Cornaredo,comune,Cornaredo,MI,Lombardia,high,https://www.comune.cornaredo.mi.it,"DATA4;data center;datacenter;campus;permesso di costruire;conferenza dei servizi;SUAP;piano attuativo","DATA4 Cornaredo"
+Comune di Segrate,comune,Segrate,MI,Lombardia,medium,https://www.comune.segrate.mi.it,"CyrusOne;Equinix;data center;datacenter;permesso di costruire;conferenza dei servizi;SUAP;piano attuativo","Area Milano Est"
+Comune di Bornasco,comune,Bornasco,PV,Lombardia,medium,https://www.comune.bornasco.pv.it,"Microsoft;data center;datacenter;gruppi elettrogeni;permesso di costruire;conferenza dei servizi;SUAP","Microsoft Bornasco"
+Comune di Lacchiarella,comune,Lacchiarella,MI,Lombardia,medium,https://www.comune.lacchiarella.mi.it,"data center;datacenter;Apto;Vantage;MXP2;permesso di costruire;conferenza dei servizi;SUAP","Apto Lacchiarella / MXP2 da verificare"

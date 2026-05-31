@@ -14,6 +14,10 @@ python -m app.manual_leads
 python -m app.ecosystem_graph
 python -m app.italy_project_summary
 python -m app.italy_rankings
+python -m app.developer_enrichment_queries
+python -m app.local_authority_intelligence
+python -m app.local_authority_backlog
+python -m app.intelligence_backlog
 
 echo Stage 2 build completato
 pause
