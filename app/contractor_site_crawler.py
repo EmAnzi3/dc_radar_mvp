@@ -1,6 +1,7 @@
 ﻿from pathlib import Path
 from datetime import datetime
 import re
+import os
 
 import pandas as pd
 import requests
@@ -104,7 +105,8 @@ def run():
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     RAW_DIR.mkdir(parents=True, exist_ok=True)
 
-    watchlist_file = INPUT_DIR / "source_watchlist.csv"
+    watchlist_name = os.getenv("SOURCE_WATCHLIST_FILE", "source_watchlist.csv")
+    watchlist_file = INPUT_DIR / watchlist_name
 
     if not watchlist_file.exists() or watchlist_file.stat().st_size == 0:
         print("Nessuna source_watchlist trovata")
@@ -200,3 +202,6 @@ def run():
 
 if __name__ == "__main__":
     run()
+
+
+
