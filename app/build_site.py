@@ -29,6 +29,8 @@ def run():
         "international_contractor_ranking": records(read_csv(OUTPUT_DIR / "international_contractor_ranking.csv")),
         "combined_leads": records(read_csv(OUTPUT_DIR / "combined_public_leads.csv")),
         "mase_entity_hits": records(read_csv(OUTPUT_DIR / "mase_entity_hits.csv")),
+        "intelligence_backlog": records(read_csv(OUTPUT_DIR / "intelligence_backlog.csv")),
+        "local_authority_backlog": records(read_csv(OUTPUT_DIR / "local_authority_backlog.csv")),
     }
 
     html = f"""<!doctype html>
@@ -92,6 +94,15 @@ def run():
     <p class="muted">Mappa delle relazioni: chi lavora per chi, su quale progetto e con quale ruolo.</p>
     <input id="filterGraph" placeholder="Filtra relazioni...">
     <table id="graphTable"></table>
+  </section>
+
+  <section>
+    <h2>Indagini aperte</h2>
+    <p class="muted">Questioni ancora aperte: developer mancanti, iter autorizzativi da ricostruire, verifiche su enti locali.</p>
+    <h3>Backlog intelligence</h3>
+    <table id="intelligenceBacklogTable"></table>
+    <h3>Backlog enti locali</h3>
+    <table id="localAuthorityBacklogTable"></table>
   </section>
 
   <section>
@@ -166,6 +177,8 @@ function init() {{
   const graph = DATA.ecosystem_graph;
   const intlDev = DATA.international_developer_ranking;
   const maseEvidence = DATA.mase_entity_hits;
+  const intelligenceBacklog = DATA.intelligence_backlog;
+  const localAuthorityBacklog = DATA.local_authority_backlog;
   const intlContr = DATA.international_contractor_ranking;
 
   document.getElementById("kpiItalyProjects").textContent = italy.length;
@@ -221,6 +234,28 @@ function init() {{
 
   renderTable("graphTable", graph, graphCols);
 
+  renderTable("intelligenceBacklogTable", intelligenceBacklog, [
+    {{key:"project", label:"Progetto"}},
+    {{key:"city", label:"Comune"}},
+    {{key:"province", label:"Prov."}},
+    {{key:"priority", label:"Priorità"}},
+    {{key:"open_question", label:"Domanda aperta"}},
+    {{key:"known_facts", label:"Fatti noti"}},
+    {{key:"next_action", label:"Prossima azione"}},
+    {{key:"status", label:"Stato"}}
+  ]);
+
+  renderTable("localAuthorityBacklogTable", localAuthorityBacklog, [
+    {{key:"authority", label:"Ente"}},
+    {{key:"project", label:"Progetto"}},
+    {{key:"city", label:"Comune"}},
+    {{key:"province", label:"Prov."}},
+    {{key:"priority", label:"Priorità"}},
+    {{key:"objective", label:"Obiettivo"}},
+    {{key:"current_status", label:"Stato"}},
+    {{key:"next_action", label:"Prossima azione"}}
+  ]);
+
   renderTable("maseEvidenceTable", maseEvidence, [
     {{key:"project", label:"Progetto"}},
     {{key:"developer", label:"Developer"}},
@@ -271,5 +306,6 @@ init();
 
 if __name__ == "__main__":
     run()
+
 
 
