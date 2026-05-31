@@ -34,6 +34,9 @@ if errorlevel 1 exit /b 1
 echo Generazione facts dashboard MASE...
 python -m app.mase_project_facts_dashboard
 if errorlevel 1 exit /b 1
+echo Curatela dashboard facts MASE...
+python -m app.mase_dashboard_curator
+if errorlevel 1 exit /b 1
 echo Generazione matrice copertura/enrichment DC...
 python -m app.dc_enrichment_matrix
 if errorlevel 1 exit /b 1
