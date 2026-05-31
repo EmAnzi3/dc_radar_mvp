@@ -30,6 +30,7 @@ def run():
         "combined_leads": records(read_csv(OUTPUT_DIR / "combined_public_leads.csv")),
         "mase_entity_hits": records(read_csv(OUTPUT_DIR / "mase_entity_hits.csv")),
         "mase_gaps": records(read_csv(OUTPUT_DIR / "mase_gaps.csv")),
+        "mase_project_matches": records(read_csv(OUTPUT_DIR / "mase_project_matches.csv")),
         "intelligence_backlog": records(read_csv(OUTPUT_DIR / "intelligence_backlog.csv")),
         "local_authority_backlog": records(read_csv(OUTPUT_DIR / "local_authority_backlog.csv")),
     }
@@ -104,6 +105,12 @@ def run():
     <table id="intelligenceBacklogTable"></table>
     <h3>Backlog enti locali</h3>
     <table id="localAuthorityBacklogTable"></table>
+  </section>
+
+  <section>
+    <h2>Match Progetti ↔ MASE</h2>
+    <p class="muted">Collegamento automatico tra progetti Italia e fascicoli autorizzativi MASE.</p>
+    <table id="maseProjectMatchesTable"></table>
   </section>
 
   <section>
@@ -185,6 +192,7 @@ function init() {{
   const intlDev = DATA.international_developer_ranking;
   const maseEvidence = DATA.mase_entity_hits;
   const maseGaps = DATA.mase_gaps;
+  const maseProjectMatches = DATA.mase_project_matches;
   const intelligenceBacklog = DATA.intelligence_backlog;
   const localAuthorityBacklog = DATA.local_authority_backlog;
   const intlContr = DATA.international_contractor_ranking;
@@ -264,6 +272,18 @@ function init() {{
     {{key:"next_action", label:"Prossima azione"}}
   ]);
 
+  renderTable("maseProjectMatchesTable", maseProjectMatches, [
+    {{key:"project", label:"Progetto"}},
+    {{key:"city", label:"Comune"}},
+    {{key:"province", label:"Prov."}},
+    {{key:"developer_current", label:"Developer radar"}},
+    {{key:"mase_object_id", label:"MASE ID"}},
+    {{key:"mase_proponent", label:"Proponente MASE"}},
+    {{key:"match_score", label:"Score", type:"number"}},
+    {{key:"match_evidence", label:"Evidenza"}},
+    {{key:"source_url", label:"Link"}}
+  ]);
+
   renderTable("maseGapsTable", maseGaps, [
     {{key:"project", label:"Progetto"}},
     {{key:"city", label:"Comune"}},
@@ -326,6 +346,7 @@ init();
 
 if __name__ == "__main__":
     run()
+
 
 
 

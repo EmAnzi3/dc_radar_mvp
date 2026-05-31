@@ -19,10 +19,12 @@ python -m app.developer_enrichment_queries
 python -m app.local_authority_intelligence
 python -m app.mase_discovery_queries
 python -m app.mase_gap_analysis
+python -m app.mase_project_matcher
 python -m app.local_authority_backlog
 python -m app.intelligence_backlog
 
 echo Stage 2 build completato
 pause
+
 
 
