@@ -91,7 +91,21 @@ def run():
 
     if rows:
         df = pd.DataFrame(rows)
-        df = df.drop_duplicates(subset=["project", "developer", "contractor", "source_url"])
+        df["_has_province"] = df["province"].apply(lambda x: 1 if str(x).strip() else 0)
+        df["_has_mw"] = df["it_power_mw"].apply(lambda x: 1 if str(x).strip() else 0)
+        df["_confidence_num"] = pd.to_numeric(df["confidence"], errors="coerce").fillna(0)
+
+        df = df.sort_values(
+            by=["project", "developer", "contractor", "_has_province", "_has_mw", "_confidence_num"],
+            ascending=[True, True, True, False, False, False],
+        )
+
+        df = df.drop_duplicates(
+            subset=["project", "developer", "contractor"],
+            keep="first",
+        )
+
+        df = df.drop(columns=["_has_province", "_has_mw", "_confidence_num"])
         df = df.sort_values(by=["province", "city", "project"], ascending=[True, True, True])
     else:
         df = pd.DataFrame(columns=[
@@ -106,4 +120,5 @@ def run():
 
 if __name__ == "__main__":
     run()
+
 

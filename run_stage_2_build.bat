@@ -5,6 +5,7 @@ echo === DC RADAR - STAGE 2 BUILD ===
 
 python -m app.project_extractor
 python -m app.project_fact_extractor
+python -m app.mase_entity_extractor
 python -m app.mercury_fact_extractor
 python -m app.international_developer_watchlist
 python -m app.international_rankings
