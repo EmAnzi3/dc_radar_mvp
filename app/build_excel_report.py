@@ -37,6 +37,7 @@ def run():
     mase_files = read_csv_safe(OUTPUT_DIR / "mase_document_files.csv")
     mase_leads = read_csv_safe(OUTPUT_DIR / "mase_contractor_leads.csv")
     mase_entity_hits = read_csv_safe(OUTPUT_DIR / "mase_entity_hits.csv")
+    mase_gaps = read_csv_safe(OUTPUT_DIR / "mase_gaps.csv")
     terna = read_csv_safe(OUTPUT_DIR / "terna_connection_leads.csv")
 
     generated_queries = read_csv_safe(OUTPUT_DIR / "generated_queries.csv")
@@ -287,6 +288,7 @@ def run():
         mase_files.to_excel(writer, sheet_name="MASE Document Pages", index=False)
         mase_leads.to_excel(writer, sheet_name="MASE Contractor Leads", index=False)
         mase_entity_hits.to_excel(writer, sheet_name="MASE Entity Hits", index=False)
+        mase_gaps.to_excel(writer, sheet_name="MASE Gaps", index=False)
         terna.to_excel(writer, sheet_name="Terna Seeds", index=False)
 
     print(f"Creato {combined_path} ({len(combined)} righe)")
@@ -295,5 +297,6 @@ def run():
 
 if __name__ == "__main__":
     run()
+
 
 

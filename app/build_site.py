@@ -29,6 +29,7 @@ def run():
         "international_contractor_ranking": records(read_csv(OUTPUT_DIR / "international_contractor_ranking.csv")),
         "combined_leads": records(read_csv(OUTPUT_DIR / "combined_public_leads.csv")),
         "mase_entity_hits": records(read_csv(OUTPUT_DIR / "mase_entity_hits.csv")),
+        "mase_gaps": records(read_csv(OUTPUT_DIR / "mase_gaps.csv")),
         "intelligence_backlog": records(read_csv(OUTPUT_DIR / "intelligence_backlog.csv")),
         "local_authority_backlog": records(read_csv(OUTPUT_DIR / "local_authority_backlog.csv")),
     }
@@ -106,6 +107,12 @@ def run():
   </section>
 
   <section>
+    <h2>Lacune MASE / Autorizzazioni</h2>
+    <p class="muted">Problemi da chiudere su fonti autorizzative: proponente mancante, MASE non collegato, MW non disponibili.</p>
+    <table id="maseGapsTable"></table>
+  </section>
+
+  <section>
     <h2>Evidenze MASE</h2>
     <p class="muted">Estratti utili dai fascicoli MASE: proponenti, riferimenti tecnici, parole chiave e link fonte.</p>
     <table id="maseEvidenceTable"></table>
@@ -177,6 +184,7 @@ function init() {{
   const graph = DATA.ecosystem_graph;
   const intlDev = DATA.international_developer_ranking;
   const maseEvidence = DATA.mase_entity_hits;
+  const maseGaps = DATA.mase_gaps;
   const intelligenceBacklog = DATA.intelligence_backlog;
   const localAuthorityBacklog = DATA.local_authority_backlog;
   const intlContr = DATA.international_contractor_ranking;
@@ -256,6 +264,18 @@ function init() {{
     {{key:"next_action", label:"Prossima azione"}}
   ]);
 
+  renderTable("maseGapsTable", maseGaps, [
+    {{key:"project", label:"Progetto"}},
+    {{key:"city", label:"Comune"}},
+    {{key:"province", label:"Prov."}},
+    {{key:"developer", label:"Developer"}},
+    {{key:"contractor", label:"Contractor"}},
+    {{key:"issue", label:"Lacuna"}},
+    {{key:"severity", label:"Priorità"}},
+    {{key:"suggested_action", label:"Azione suggerita"}},
+    {{key:"source_url", label:"Link"}}
+  ]);
+
   renderTable("maseEvidenceTable", maseEvidence, [
     {{key:"project", label:"Progetto"}},
     {{key:"developer", label:"Developer"}},
@@ -306,6 +326,7 @@ init();
 
 if __name__ == "__main__":
     run()
+
 
 
 
