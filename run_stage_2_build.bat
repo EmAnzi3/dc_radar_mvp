@@ -40,5 +40,8 @@ if errorlevel 1 exit /b 1
 echo Generazione sorgenti locali/commerciali mirate...
 python -m app.local_authority_project_sources
 if errorlevel 1 exit /b 1
+echo Aggiornamento registro risultati fonti locali...
+python -m app.local_authority_results_register
+if errorlevel 1 exit /b 1
 echo Stage 2 build completato
 pause
