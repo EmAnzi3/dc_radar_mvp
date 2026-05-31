@@ -46,6 +46,11 @@ def split_pipe(value: str) -> str:
     return "".join(f"<span class='chip'>{esc(p)}</span>" for p in parts)
 
 
+def clean_trailing_whitespace(text: str) -> str:
+    lines = [line.rstrip() for line in text.splitlines()]
+    return "\n".join(lines) + "\n"
+
+
 def render_html(rows: list[dict[str, str]]) -> str:
     generated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -401,7 +406,7 @@ def inject_link(index_path: Path) -> None:
 
 def main() -> None:
     rows = read_rows()
-    html_doc = render_html(rows)
+    html_doc = clean_trailing_whitespace(render_html(rows))
 
     for site_dir in SITE_DIRS:
         site_dir.mkdir(parents=True, exist_ok=True)
@@ -422,3 +427,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
