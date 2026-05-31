@@ -28,6 +28,7 @@ def run():
         "international_developer_ranking": records(read_csv(OUTPUT_DIR / "international_developer_ranking.csv")),
         "international_contractor_ranking": records(read_csv(OUTPUT_DIR / "international_contractor_ranking.csv")),
         "combined_leads": records(read_csv(OUTPUT_DIR / "combined_public_leads.csv")),
+        "mase_entity_hits": records(read_csv(OUTPUT_DIR / "mase_entity_hits.csv")),
     }
 
     html = f"""<!doctype html>
@@ -91,6 +92,12 @@ def run():
     <p class="muted">Mappa delle relazioni: chi lavora per chi, su quale progetto e con quale ruolo.</p>
     <input id="filterGraph" placeholder="Filtra relazioni...">
     <table id="graphTable"></table>
+  </section>
+
+  <section>
+    <h2>Evidenze MASE</h2>
+    <p class="muted">Estratti utili dai fascicoli MASE: proponenti, riferimenti tecnici, parole chiave e link fonte.</p>
+    <table id="maseEvidenceTable"></table>
   </section>
 
   <section>
@@ -158,6 +165,7 @@ function init() {{
   const italyContr = DATA.italy_contractor_ranking;
   const graph = DATA.ecosystem_graph;
   const intlDev = DATA.international_developer_ranking;
+  const maseEvidence = DATA.mase_entity_hits;
   const intlContr = DATA.international_contractor_ranking;
 
   document.getElementById("kpiItalyProjects").textContent = italy.length;
@@ -213,6 +221,16 @@ function init() {{
 
   renderTable("graphTable", graph, graphCols);
 
+  renderTable("maseEvidenceTable", maseEvidence, [
+    {{key:"project", label:"Progetto"}},
+    {{key:"developer", label:"Developer"}},
+    {{key:"location", label:"Località"}},
+    {{key:"entity_or_keyword", label:"Evidenza"}},
+    {{key:"snippet", label:"Snippet"}},
+    {{key:"confidence", label:"Conf."}},
+    {{key:"source_url", label:"Link"}}
+  ]);
+
   renderTable("intlDevTable", intlDev, [
     {{key:"developer", label:"Developer"}},
     {{key:"parent_company", label:"Parent"}},
@@ -253,3 +271,5 @@ init();
 
 if __name__ == "__main__":
     run()
+
+
