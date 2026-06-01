@@ -19,6 +19,10 @@ PROMOTABLE_READINESS = {
     "ready_missing_gc",
 }
 
+NEAR_READY_READINESS = {
+    "partial_public_confirmation",
+}
+
 
 def clean(value: object) -> str:
     return str(value or "").strip()
@@ -82,6 +86,9 @@ def extract_authorization_proponent(summary_facts: str) -> str:
         "VDC MXP 11 S.r.l.",
         "VDC MXP 11 Srl",
         "VDC MXP 11 S.R.L.",
+        "Retelit Datacenter S.r.l.",
+        "Retelit Datacenter Srl",
+        "Retelit Datacenter S.R.L.",
     ]
 
     upper_facts = facts.upper()
@@ -103,6 +110,18 @@ def extract_authorization_proponent(summary_facts: str) -> str:
 
     return ""
 
+def format_mw_value(value: str) -> str:
+    value = clean(value)
+
+    # Formato italiano solo per decimali: 13.6 -> 13,6
+    if "." in value and value.count(".") == 1:
+        left, right = value.split(".", 1)
+        if left.isdigit() and right.isdigit():
+            return f"{left},{right}"
+
+    return value
+
+
 def extract_it_power(summary_facts: str) -> str:
     # Preferisce il totale, se presente.
     patterns = [
@@ -117,6 +136,7 @@ def extract_it_power(summary_facts: str) -> str:
             value = clean(m.group(1)).replace(",", ".")
             if value.endswith(".0"):
                 value = value[:-2]
+            value = format_mw_value(value)
             return f"{value} MW"
 
     return ""
@@ -160,7 +180,7 @@ def build_rows() -> list[dict[str, str]]:
     for s in summary_rows:
         readiness = clean(s.get("readiness"))
 
-        if readiness not in PROMOTABLE_READINESS:
+        if readiness not in PROMOTABLE_READINESS and readiness not in NEAR_READY_READINESS:
             continue
 
         facility = clean(s.get("facility_name"))
@@ -197,6 +217,7 @@ def build_rows() -> list[dict[str, str]]:
             "source_links": source_links(tasks),
             "summary_facts": facts,
             "apply_to_master": "no",
+            "draft_bucket": "promotion_ready" if readiness in PROMOTABLE_READINESS else "near_ready",
             "review_decision": "",
             "notes": "Draft only. No automatic homepage/master promotion.",
             "created_at": now,
@@ -240,6 +261,7 @@ def render_html(rows: list[dict[str, str]]) -> str:
               <p class="muted">{e(r.get("operator_or_main_subject"))} · {e(r.get("city"))}</p>
             </div>
             <span class="badge">{e(r.get("readiness"))}</span>
+            <span class="badge secondary">{e(r.get("draft_bucket"))}</span>
           </div>
 
           <div class="grid">
@@ -411,6 +433,7 @@ def main() -> None:
         "source_links",
         "summary_facts",
         "apply_to_master",
+        "draft_bucket",
         "review_decision",
         "notes",
         "created_at",
