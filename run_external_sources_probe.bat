@@ -34,5 +34,8 @@ if errorlevel 1 exit /b 1
 "%PYTHON%" -m app.external_sources.datacentermap_validation_queue
 if errorlevel 1 exit /b 1
 
+"%PYTHON%" -m app.external_sources.datacentermap_validation_summary
+if errorlevel 1 exit /b 1
+
 echo External sources probe completato
 pause
