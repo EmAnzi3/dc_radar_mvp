@@ -1,0 +1,1090 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>External Candidates - Data Center Radar</title>
+<style>
+:root {
+  --bg:#f5f7fb;
+  --text:#172033;
+  --muted:#667085;
+  --line:#dfe4ea;
+  --panel:#ffffff;
+  --blue:#0f4c81;
+  --dark:#08111f;
+  --good-bg:#ecfdf3;
+  --good:#166534;
+  --warn-bg:#fff7ed;
+  --warn:#92400e;
+  --neutral-bg:#eff6ff;
+  --neutral:#0f4c81;
+  --low-bg:#f1f5f9;
+  --low:#475569;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+header {
+  background:linear-gradient(135deg,var(--dark),var(--blue));
+  color:white;
+  padding:26px 30px;
+}
+header h1 { margin:0; font-size:30px; }
+header p { margin:8px 0 0; color:#dbeafe; }
+main {
+  max-width:1500px;
+  margin:0 auto;
+  padding:20px;
+}
+.nav {
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+  margin-bottom:16px;
+}
+.nav a {
+  color:var(--blue);
+  font-weight:800;
+  text-decoration:none;
+}
+.notice {
+  background:#fff7ed;
+  border:1px solid #fed7aa;
+  color:#92400e;
+  border-radius:14px;
+  padding:12px 14px;
+  margin-bottom:16px;
+  font-weight:700;
+}
+.kpis {
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:12px;
+  margin-bottom:16px;
+}
+.kpi {
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:16px;
+  box-shadow:0 8px 22px rgba(15,23,42,.07);
+  padding:14px;
+}
+.kpi-label {
+  color:var(--muted);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+}
+.kpi-value {
+  margin-top:4px;
+  font-size:28px;
+  font-weight:900;
+}
+.filters {
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:14px;
+  margin-bottom:16px;
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  gap:10px;
+  box-shadow:0 8px 22px rgba(15,23,42,.07);
+}
+input, select {
+  width:100%;
+  padding:10px 12px;
+  border:1px solid #cbd5e1;
+  border-radius:10px;
+  font-size:14px;
+}
+.card {
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:18px;
+  box-shadow:0 8px 22px rgba(15,23,42,.07);
+  padding:18px;
+  margin-bottom:16px;
+}
+.card-top {
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  align-items:flex-start;
+  margin-bottom:16px;
+}
+h2 { margin:0; font-size:22px; }
+.subtitle { margin:5px 0 0; color:var(--muted); }
+.badges {
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  justify-content:flex-end;
+}
+.badge {
+  display:inline-block;
+  padding:5px 10px;
+  border-radius:999px;
+  font-weight:800;
+  font-size:11px;
+  white-space:nowrap;
+}
+.badge.good { background:var(--good-bg); color:var(--good); }
+.badge.warn { background:var(--warn-bg); color:var(--warn); }
+.badge.neutral { background:var(--neutral-bg); color:var(--neutral); }
+.badge.low { background:var(--low-bg); color:var(--low); }
+.grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin-bottom:14px;
+}
+.details-grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin-top:12px;
+}
+.wide { grid-column:1 / -1; }
+.label {
+  color:var(--muted);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  margin-bottom:4px;
+}
+.value {
+  font-weight:800;
+}
+.weak { color:var(--warn); }
+.link-pill, .source-pill {
+  display:inline-block;
+  padding:4px 9px;
+  border-radius:999px;
+  background:var(--neutral-bg);
+  color:var(--neutral);
+  text-decoration:none;
+  font-weight:800;
+  margin:6px 4px 0 0;
+  font-size:12px;
+}
+.muted { color:var(--muted); }
+details {
+  border-top:1px solid #e5e7eb;
+  padding-top:12px;
+}
+summary {
+  cursor:pointer;
+  color:var(--blue);
+  font-weight:900;
+}
+footer {
+  color:var(--muted);
+  padding:20px 0;
+  font-size:12px;
+}
+.hidden { display:none; }
+@media (max-width:900px) {
+  .kpis { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .filters { grid-template-columns:1fr; }
+  .grid, .details-grid { grid-template-columns:1fr; }
+  .card-top { flex-direction:column; }
+  .badges { justify-content:flex-start; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>External Candidates</h1>
+  <p>Vista review candidati DataCenterMap · nessun dato applicato automaticamente al master · generato il 2026-06-01T23:57:17</p>
+</header>
+<main>
+  <div class="nav">
+    <a href="index.html">← Torna alla dashboard principale</a>
+    <span class="muted">Fonte: DataCenterMap + validazioni manuali/operatori/fonti pubbliche</span>
+  </div>
+
+  <div class="notice">
+    Review only: la pagina mostra anche i candidati non promuovibili per evidenziare fino a che livello sono stati validati.
+  </div>
+
+
+    <section class="kpis">
+      <div class="kpi">
+        <div class="kpi-label">Candidati totali</div>
+        <div class="kpi-value">11</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Promotion ready</div>
+        <div class="kpi-value">3</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Near-ready</div>
+        <div class="kpi-value">1</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Operator only</div>
+        <div class="kpi-value">4</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Child / enrichment</div>
+        <div class="kpi-value">2</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Asset esistenti</div>
+        <div class="kpi-value">1</div>
+      </div>
+    </section>
+
+
+  <section class="filters">
+    <input id="searchBox" type="search" placeholder="Cerca candidato, operatore, comune, proponente...">
+    <select id="bucketFilter">
+      <option value="">Tutti i bucket</option>
+      <option value="promotion_ready">Promotion ready</option>
+      <option value="near_ready">Near-ready</option>
+      <option value="tracked_review">Tracked review</option>
+    </select>
+    <select id="readinessFilter">
+      <option value="">Tutte le readiness</option>
+      <option value="ready_missing_gc">Pronto, GC da identificare</option>
+      <option value="partial_public_confirmation">Conferma pubblica parziale</option>
+      <option value="operator_confirmed_only">Solo operatore confermato</option>
+      <option value="existing_project_child_or_enrichment">Child/enrichment</option>
+      <option value="existing_operational_reference">Asset esistente</option>
+      <option value="pending_validation">Validazione pendente</option>
+    </select>
+  </section>
+
+  <section id="cards">
+
+        <article class="card" data-bucket="promotion_ready" data-readiness="ready_missing_gc" data-search="cloudhq mxp campus cloudhq namira s.g.r.p.a. magenta promotion_ready ready_missing_gc">
+          <div class="card-top">
+            <div>
+              <h2>CloudHQ MXP Campus</h2>
+              <p class="subtitle">CloudHQ · Magenta</p>
+            </div>
+            <div class="badges">
+              <span class="badge good">Pronti per review master</span>
+              <span class="badge good">Pronto, GC da identificare</span>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div>
+              <div class="label">Operatore</div>
+              <div class="value">CloudHQ</div>
+            </div>
+            <div>
+              <div class="label">Proponente autorizzativo</div>
+              <div class="value">NAMIRA S.G.R.P.A.</div>
+            </div>
+            <div>
+              <div class="label">GC / contractor</div>
+              <div class="value weak">Da identificare</div>
+            </div>
+            <div>
+              <div class="label">Stato DCM</div>
+              <div class="value">Under Construction</div>
+            </div>
+            <div>
+              <div class="label">MW IT</div>
+              <div class="value">240 MW</div>
+            </div>
+            <div>
+              <div class="label">Superficie</div>
+              <div class="value">204.387 m²</div>
+            </div>
+            <div class="wide">
+              <div class="label">Indirizzo</div>
+              <div class="value">V.le Piemonte, 20013, Magenta, Italy</div>
+              <div><a class="link-pill" href="https://www.google.com/maps/search/?api=1&amp;query=V.le+Piemonte%2C+20013%2C+Magenta%2C+Italy" target="_blank" rel="noopener">Maps</a> <a class="link-pill" href="https://www.datacentermap.com/italy/milan/cloudhq-mxp-campus/" target="_blank" rel="noopener">DataCenterMap</a></div>
+            </div>
+          </div>
+
+          <details>
+            <summary>Dettaglio validazione</summary>
+            <div class="details-grid">
+              <div>
+                <div class="label">Layer confermati</div>
+                <p>operator_site | municipality_suap_albo | mase</p>
+              </div>
+              <div>
+                <div class="label">Layer aperti</div>
+                <p>contractor_gc</p>
+              </div>
+              <div>
+                <div class="label">Raccomandazione</div>
+                <p>Promuovibile in draft: progetto confermato; GC/contractor ancora da identificare.</p>
+              </div>
+              <div>
+                <div class="label">Fonti</div>
+                <p><a class="source-pill" href="https://cloudhq.com/campus/mxp-campus/" target="_blank" rel="noopener">CloudHQ MXP Campus</a> <a class="source-pill" href="https://magenta.trasparenza-valutazione-merito.it/web/trasparenza/papca-g?_jcitygovalbopubblicazioni_WAR_jcitygovalbiportlet_action=mostraDettaglio&amp;_jcitygovalbopubblicazioni_WAR_jcitygovalbiportlet_downloadSigned=false&amp;_jcitygovalbopubblicazioni_WAR_jcitygovalbiportlet_fromAction=recuperaDettaglio&amp;_jcitygovalbopubblicazioni_WAR_jcitygovalbiportlet_id=8156410&amp;p_p_cacheability=cacheLevelPage&amp;p_p_id=jcitygovalbopubblicazioni_WAR_jcitygovalbiportlet&amp;p_p_lifecycle=2&amp;p_p_mode=view&amp;p_p_resource_id=downloadAllegato&amp;p_p_state=pop_up" target="_blank" rel="noopener">MXP MAGENTA - Piano attuativo conforme al PGT - Polo alta tecnologia area ex Novaceta</a> <a class="source-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/11951" target="_blank" rel="noopener">MXP MAGENTA - Campus ad uso Data Center sito nel comune di Magenta (MI)</a></p>
+              </div>
+              <div class="wide">
+                <div class="label">Facts sintetici</div>
+                <p>operator_site: Official CloudHQ page confirms MXP Campus west of Milan; coordinates 45.46866, 8.87342; 204,387 m² / 2,200,000 SF; 240 MW total critical IT load; RFS within 2026; four 48 MW IT Load buildings; permitting in progress; 240 MW secured from Italian transmission grid operator. || regional_via_vas: No separate Regione Lombardia VIA/VAS source identified in this pass. The project is traceable through the national MASE VIA object MXP MAGENTA, proponent NAMIRA S.G.R.P.A. || municipality_suap_albo: Comune di Magenta / trasparenza source found for MXP MAGENTA. Documents refer to Namira SGRPA, piano attuativo conforme al PGT, Polo Alta Tecnologia area ex Novaceta, and campus data center documentation. || mase: MASE project object found: MXP MAGENTA - Campus ad uso Data Center sito nel comune di Magenta (MI); proponent NAMIRA S.G.R.P.A. This confirms public-authority traceability for the Magenta campus.</p>
+              </div>
+            </div>
+          </details>
+        </article>
+
+
+        <article class="card" data-bucket="promotion_ready" data-readiness="ready_missing_gc" data-search="stack infrastructure mil04 campus stack infrastructure infrastructure italia land 4 s.r.l. vellezzo bellini promotion_ready ready_missing_gc">
+          <div class="card-top">
+            <div>
+              <h2>STACK Infrastructure MIL04 Campus</h2>
+              <p class="subtitle">STACK INFRASTRUCTURE · Vellezzo Bellini</p>
+            </div>
+            <div class="badges">
+              <span class="badge good">Pronti per review master</span>
+              <span class="badge good">Pronto, GC da identificare</span>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div>
+              <div class="label">Operatore</div>
+              <div class="value">STACK INFRASTRUCTURE</div>
+            </div>
+            <div>
+              <div class="label">Proponente autorizzativo</div>
+              <div class="value">Infrastructure Italia Land 4 S.r.l.</div>
+            </div>
+            <div>
+              <div class="label">GC / contractor</div>
+              <div class="value weak">Da identificare</div>
+            </div>
+            <div>
+              <div class="label">Stato DCM</div>
+              <div class="value">Under Construction</div>
+            </div>
+            <div>
+              <div class="label">MW IT</div>
+              <div class="value">64 MW</div>
+            </div>
+            <div>
+              <div class="label">Superficie</div>
+              <div class="value">109.265 m²</div>
+            </div>
+            <div class="wide">
+              <div class="label">Indirizzo</div>
+              <div class="value">1 Strada Alzaia-fr.giovenzano, 27010, Vellezzo Bellini, Italy</div>
+              <div><a class="link-pill" href="https://www.google.com/maps/search/?api=1&amp;query=1+Strada+Alzaia-fr.giovenzano%2C+27010%2C+Vellezzo+Bellini%2C+Italy" target="_blank" rel="noopener">Maps</a> <a class="link-pill" href="https://www.datacentermap.com/italy/milan/stack-infrastructure-mil04-campus/" target="_blank" rel="noopener">DataCenterMap</a></div>
+            </div>
+          </div>
+
+          <details>
+            <summary>Dettaglio validazione</summary>
+            <div class="details-grid">
+              <div>
+                <div class="label">Layer confermati</div>
+                <p>operator_site | regional_via_vas | municipality_suap_albo | mase</p>
+              </div>
+              <div>
+                <div class="label">Layer aperti</div>
+                <p>—</p>
+              </div>
+              <div>
+                <div class="label">Raccomandazione</div>
+                <p>Promuovibile in draft: progetto confermato; GC/contractor ancora da identificare.</p>
+              </div>
+              <div>
+                <div class="label">Fonti</div>
+                <p><span class="source-pill">MIL04 – Milan</span> <a class="source-pill" href="https://www.stackinfra.com/locations/emea/milan/mil04/" target="_blank" rel="noopener">STACK Infrastructure</a> <a class="source-pill" href="https://www.pim.mi.it/normativa/DGR_3738_del_30_dicembre_2024_burl_1_03-01-2025.pdf" target="_blank" rel="noopener">Regione Lombardia - DGR 3740 - Progettazione nuovo Data Center Vellezzo Bellini</a> <a class="source-pill" href="https://va.mite.gov.it/File/Documento/1016560" target="_blank" rel="noopener">SCIA - Data Center nel Comune di Vellezzo Bellini, via Alzaia Naviglio Pavese snc</a> <a class="source-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/10766" target="_blank" rel="noopener">Progettazione nuovo Data Center Vellezzo Bellini</a></p>
+              </div>
+              <div class="wide">
+                <div class="label">Facts sintetici</div>
+                <p>operator_site: Official STACK page confirms MIL04 Campus in the Province of Pavia; 64 MW; 27 acres; 4 buildings; MIL04A listed as 10 MW and 71,364 sq ft. Campus located near Milan with access to major highways. || regional_via_vas: Regione Lombardia issued opinion to MASE for VIA application related to &#x27;Progettazione nuovo Data Center Vellezzo Bellini (PV)&#x27;, proponent Infrastructure Italia Land 4 S.r.l.; regional instruction VIA0225-MA / MASE procedure ID 11238. || municipality_suap_albo: MASE document set includes SCIA concerning Data Center in Comune di Vellezzo Bellini, via Alzaia Naviglio Pavese snc. Document indicates project prepared by Lombardini22 SpA. || mase: MASE project object found: Progettazione nuovo Data Center Vellezzo Bellini. Proponent: INFRASTRUCTURE ITALIA LAND 4 S.r.l. || contractor_gc: SCI Value reference cites Infrastructure Italia Land 4 development of new data center site in Alzaia Naviglio Pavese snc, Vellezzo Bellini, with construction cost estimate and tender budget definition. Related English page lists Bouygues E&amp;S Italia S.p.A. as commissioning body. MASE SCIA document indicates project prepared by Lombardini22 SpA. This is technical/design/cost-estimate evidence, not a reliable named GC attribution.</p>
+              </div>
+            </div>
+          </details>
+        </article>
+
+
+        <article class="card" data-bucket="promotion_ready" data-readiness="ready_missing_gc" data-search="vantage mxp1 - milan vantage data centers vdc mxp 11 s.r.l. melegnano promotion_ready ready_missing_gc">
+          <div class="card-top">
+            <div>
+              <h2>Vantage MXP1 - Milan</h2>
+              <p class="subtitle">Vantage Data Centers · Melegnano</p>
+            </div>
+            <div class="badges">
+              <span class="badge good">Pronti per review master</span>
+              <span class="badge good">Pronto, GC da identificare</span>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div>
+              <div class="label">Operatore</div>
+              <div class="value">Vantage Data Centers</div>
+            </div>
+            <div>
+              <div class="label">Proponente autorizzativo</div>
+              <div class="value">VDC MXP 11 S.r.l.</div>
+            </div>
+            <div>
+              <div class="label">GC / contractor</div>
+              <div class="value weak">Da identificare</div>
+            </div>
+            <div>
+              <div class="label">Stato DCM</div>
+              <div class="value">Under Construction</div>
+            </div>
+            <div>
+              <div class="label">MW IT</div>
+              <div class="value">64 MW</div>
+            </div>
+            <div>
+              <div class="label">Superficie</div>
+              <div class="value">48.000 m²</div>
+            </div>
+            <div class="wide">
+              <div class="label">Indirizzo</div>
+              <div class="value">Via per Carpiano 30, 20077, Melegnano, Italy</div>
+              <div><a class="link-pill" href="https://www.google.com/maps/search/?api=1&amp;query=Via+per+Carpiano+30%2C+20077%2C+Melegnano%2C+Italy" target="_blank" rel="noopener">Maps</a> <a class="link-pill" href="https://www.datacentermap.com/italy/milan/vantage-mxp1-milan/" target="_blank" rel="noopener">DataCenterMap</a></div>
+            </div>
+          </div>
+
+          <details>
+            <summary>Dettaglio validazione</summary>
+            <div class="details-grid">
+              <div>
+                <div class="label">Layer confermati</div>
+                <p>operator_site | municipality_suap_albo | mase</p>
+              </div>
+              <div>
+                <div class="label">Layer aperti</div>
+                <p>—</p>
+              </div>
+              <div>
+                <div class="label">Raccomandazione</div>
+                <p>Promuovibile in draft: progetto confermato; GC/contractor ancora da identificare.</p>
+              </div>
+              <div>
+                <div class="label">Fonti</div>
+                <p><a class="source-pill" href="https://vantage-dc.com/data-center-locations/emea/milan-italy/" target="_blank" rel="noopener">Milan I (MXP1) Data Center Campus</a> <a class="source-pill" href="https://va.mite.gov.it/File/Documento/1330606" target="_blank" rel="noopener">Città di Melegnano - documento relativo a VDC MXP 11</a> <a class="source-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/10753" target="_blank" rel="noopener">Completamento del data center MXP1 e del sistema di alimentazione elettrica di emergenza - Melegnano (MI)</a></p>
+              </div>
+              <div class="wide">
+                <div class="label">Facts sintetici</div>
+                <p>operator_site: Official Vantage page confirms Milan I / MXP1 campus in Melegnano; 30 acre / 12 hectare campus; 4 data centers; 64 MW critical IT load; 517,000 square feet / 48,000 square meters; power provided by Enel and Terna. || regional_via_vas: No separate Regione Lombardia VIA/VAS source identified in this pass. The project is traceable through MASE object 10753. || municipality_suap_albo: Municipality document found in MASE documentation set. It refers to Comune/Città di Melegnano, VDC MXP 11 S.r.l., related instance and local administrative documentation. || mase: MASE project object found for completion of data center MXP1 and emergency electrical power system in Melegnano (MI); proponent VDC MXP 11 S.r.l. || contractor_gc: Vantage post confirms construction milestone for MXP1/MXP11 and thanks its general contractor and construction partners, but does not name the GC. A comment mentions Bouygues Energies &amp; Services Italia, but this is not enough for official attribution.</p>
+              </div>
+            </div>
+          </details>
+        </article>
+
+
+        <article class="card" data-bucket="near_ready" data-readiness="partial_public_confirmation" data-search="retelit corsico retelit spa retelit datacenter s.r.l. corsico near_ready partial_public_confirmation">
+          <div class="card-top">
+            <div>
+              <h2>Retelit Corsico</h2>
+              <p class="subtitle">Retelit SPA · Corsico</p>
+            </div>
+            <div class="badges">
+              <span class="badge warn">Quasi pronti</span>
+              <span class="badge warn">Conferma pubblica parziale</span>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div>
+              <div class="label">Operatore</div>
+              <div class="value">Retelit SPA</div>
+            </div>
+            <div>
+              <div class="label">Proponente autorizzativo</div>
+              <div class="value">Retelit Datacenter S.r.l.</div>
+            </div>
+            <div>
+              <div class="label">GC / contractor</div>
+              <div class="value weak">Da identificare</div>
+            </div>
+            <div>
+              <div class="label">Stato DCM</div>
+              <div class="value">Under Construction</div>
+            </div>
+            <div>
+              <div class="label">MW IT</div>
+              <div class="value">13,6 MW</div>
+            </div>
+            <div>
+              <div class="label">Superficie</div>
+              <div class="value">18.000 m²</div>
+            </div>
+            <div class="wide">
+              <div class="label">Indirizzo</div>
+              <div class="value">Via Antonio Canova, 7/9, 20094, Corsico, Italy</div>
+              <div><a class="link-pill" href="https://www.google.com/maps/search/?api=1&amp;query=Via+Antonio+Canova%2C+7%2F9%2C+20094%2C+Corsico%2C+Italy" target="_blank" rel="noopener">Maps</a> <a class="link-pill" href="https://www.datacentermap.com/italy/milan/retelit-corsico-dc/" target="_blank" rel="noopener">DataCenterMap</a></div>
+            </div>
+          </div>
+
+          <details>
+            <summary>Dettaglio validazione</summary>
+            <div class="details-grid">
+              <div>
+                <div class="label">Layer confermati</div>
+                <p>operator_site | mase</p>
+              </div>
+              <div>
+                <div class="label">Layer aperti</div>
+                <p>—</p>
+              </div>
+              <div>
+                <div class="label">Raccomandazione</div>
+                <p>Buona conferma, ma serve completare layer pubblico o locale.</p>
+              </div>
+              <div>
+                <div class="label">Fonti</div>
+                <p><a class="source-pill" href="https://www.retelit.it/it/stampa/comunicati-stampa/2026/retelit-al-via-la-costruzione-di-un-nuovo-data-center-ai-ready-e-sostenibile-a-milano-corsico" target="_blank" rel="noopener">Retelit, al via la costruzione di un nuovo data center AI ready e sostenibile a Milano Corsico</a> <a class="source-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/12068" target="_blank" rel="noopener">Realizzazione Data Center in via Canova, Corsico (MI)</a></p>
+              </div>
+              <div class="wide">
+                <div class="label">Facts sintetici</div>
+                <p>operator_site: Retelit official press release confirms start of construction of a new AI-ready data center in Corsico; 13.6 MW capacity; first capacity release targeted by 2027; total area 18,000 m²; two identical data center buildings; former Marcegaglia industrial site; part of Avalon Campus ecosystem; closed-loop water cooling, liquid cooling and waste heat recovery potential. || regional_via_vas: No separate Regione Lombardia VIA/VAS source identified in this pass. The project is traceable through MASE object 12068. || municipality_suap_albo: Local news reports municipal administration clarifications: Retelit acquired former Marcegaglia site in via Canova in May 2025; SCIA for remediation submitted on 2026-02-16; remediation completed with removal of almost 10,000 m² of asbestos roofing; SCIA for demolition submitted on 2026-04-30; demolition started on 2026-05-06; future building permit application expected. || mase: MASE project object found: Realizzazione Data Center in via Canova, Corsico (MI); project/work Data Center Corsico (MI); proponent Retelit Datacenter S.r.l. || contractor_gc: No reliable named GC/contractor found in operator page, MASE summary, DataCenterMap or targeted web search. Do not attribute a contractor.</p>
+              </div>
+            </div>
+          </details>
+        </article>
+
+
+        <article class="card" data-bucket="tracked_review" data-readiness="operator_confirmed_only" data-search="cyrusone mil2 - milan cyrusone data centers da verificare segrate tracked_review operator_confirmed_only">
+          <div class="card-top">
+            <div>
+              <h2>CyrusOne MIL2 - Milan</h2>
+              <p class="subtitle">CyrusOne Data Centers · Segrate</p>
+            </div>
+            <div class="badges">
+              <span class="badge neutral">Tracciati / da completare</span>
+              <span class="badge neutral">Solo operatore confermato</span>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div>
+              <div class="label">Operatore</div>
+              <div class="value">CyrusOne Data Centers</div>
+            </div>
+            <div>
+              <div class="label">Proponente autorizzativo</div>
+              <div class="value">Da verificare</div>
+            </div>
+            <div>
+              <div class="label">GC / contractor</div>
+              <div class="value weak">Da identificare</div>
+            </div>
+            <div>
+              <div class="label">Stato DCM</div>
+              <div class="value">Planned</div>
+            </div>
+            <div>
+              <div class="label">MW IT</div>
+              <div class="value">54 MW</div>
+            </div>
+            <div>
+              <div class="label">Superficie</div>
+              <div class="value">79.639 m²</div>
+            </div>
+            <div class="wide">
+              <div class="label">Indirizzo</div>
+              <div class="value">Via Raffaele Rubattino, 90, 20134, Segrate, Italy</div>
+              <div><a class="link-pill" href="https://www.google.com/maps/search/?api=1&amp;query=Via+Raffaele+Rubattino%2C+90%2C+20134%2C+Segrate%2C+Italy" target="_blank" rel="noopener">Maps</a> <a class="link-pill" href="https://www.datacentermap.com/italy/milan/cyrusone-mil2/" target="_blank" rel="noopener">DataCenterMap</a></div>
+            </div>
+          </div>
+
+          <details>
+            <summary>Dettaglio validazione</summary>
+            <div class="details-grid">
+              <div>
+                <div class="label">Layer confermati</div>
+                <p>operator_site</p>
+              </div>
+              <div>
+                <div class="label">Layer aperti</div>
+                <p>—</p>
+              </div>
+              <div>
+                <div class="label">Raccomandazione</div>
+                <p>Confermato dall&#x27;operatore; servono fonti pubbliche.</p>
+              </div>
+              <div>
+                <div class="label">Fonti</div>
+                <p><a class="source-pill" href="https://www.cyrusone.com/data-centers/emea/milan-italy-mil2" target="_blank" rel="noopener">Milan, Italy: MIL2 - CyrusOne</a></p>
+              </div>
+              <div class="wide">
+                <div class="label">Facts sintetici</div>
+                <p>operator_site: Official CyrusOne page confirms MIL2 as a second Milan data center; 79,639 m² site spanning Milan and Segrate; 54 MW IT capacity; 18,000 m² technical space; single three-floor building; six 9 MW data halls; located near Linate Airport. || regional_via_vas: No direct Regione Lombardia VIA/VAS source identified in this pass. Operator press release confirms MIL2 plan and local/community elements, but this is not a regional-authority validation. || municipality_suap_albo: Operator Italian press release confirms MIL2 and reports collaboration/local benefit elements, including 8,300 m² land transfer to TERNA for Lambrate substation expansion, but no official municipality/SUAP/albo source was identified in this pass. || mase: No direct MASE object found for CyrusOne MIL2 in this pass. Do not merge with CyrusOne MIL1 MASE/authority evidence unless a source explicitly links MIL2 to the same procedure. || contractor_gc: Techbau is confirmed as general contractor/design-build contractor for CyrusOne MIL1 only. No reliable named GC/contractor found for MIL2. Do not transfer MIL1 contractor attribution to MIL2.</p>
+              </div>
+            </div>
+          </details>
+        </article>
+
+
+        <article class="card" data-bucket="tracked_review" data-readiness="operator_confirmed_only" data-search="gdc - milan 1 data center ntt data, inc. da verificare melegnano tracked_review operator_confirmed_only">
+          <div class="card-top">
+            <div>
+              <h2>GDC - Milan 1 Data Center</h2>
+              <p class="subtitle">NTT DATA, Inc. · Melegnano</p>
+            </div>
+            <div class="badges">
+              <span class="badge neutral">Tracciati / da completare</span>
+              <span class="badge neutral">Solo operatore confermato</span>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div>
+              <div class="label">Operatore</div>
+              <div class="value">NTT DATA, Inc.</div>
+            </div>
+            <div>
+              <div class="label">Proponente autorizzativo</div>
+              <div class="value">Da verificare</div>
+            </div>
+            <div>
+              <div class="label">GC / contractor</div>
+              <div class="value weak">Da identificare</div>
+            </div>
+            <div>
+              <div class="label">Stato DCM</div>
+              <div class="value">Land Banked</div>
+            </div>
+            <div>
+              <div class="label">MW IT</div>
+              <div class="value">128 MW</div>
+            </div>
+            <div>
+              <div class="label">Superficie</div>
+              <div class="value">214.483 m²</div>
+            </div>
+            <div class="wide">
+              <div class="label">Indirizzo</div>
+              <div class="value">Via per Carpiano, 20077, Melegnano, Italy</div>
+              <div><a class="link-pill" href="https://www.google.com/maps/search/?api=1&amp;query=Via+per+Carpiano%2C+20077%2C+Melegnano%2C+Italy" target="_blank" rel="noopener">Maps</a> <a class="link-pill" href="https://www.datacentermap.com/italy/milan/ntt-milan/" target="_blank" rel="noopener">DataCenterMap</a></div>
+            </div>
+          </div>
+
+          <details>
+            <summary>Dettaglio validazione</summary>
+            <div class="details-grid">
+              <div>
+                <div class="label">Layer confermati</div>
+                <p>operator_site</p>
+              </div>
+              <div>
+                <div class="label">Layer aperti</div>
+                <p>—</p>
+              </div>
+              <div>
+                <div class="label">Raccomandazione</div>
+                <p>Confermato dall&#x27;operatore; servono fonti pubbliche.</p>
+              </div>
+              <div>
+                <div class="label">Fonti</div>
+                <p><a class="source-pill" href="https://services.global.ntt/en-us/newsroom/ntt-data-expands-global-data-center-footprint-with-land-acquisitions-across-seven-strategic-markets" target="_blank" rel="noopener">NTT DATA Expands Global Data Center Footprint with Land Acquisitions Across Seven Strategic Markets</a></p>
+              </div>
+              <div class="wide">
+                <div class="label">Facts sintetici</div>
+                <p>operator_site: Official NTT DATA press release confirms entry into Milan market; NTT DATA acquired a 53-acre site in Milan, Italy; planned facility with 128 MW capacity. DataCenterMap identifies the commercial record as GDC - Milan 1 Data Center, NTT DATA, Inc., Via per Carpiano, 20077 Melegnano, Italy. || regional_via_vas: No direct Regione Lombardia VIA/VAS source identified in this pass. Operator source confirms land acquisition and 128 MW planned facility, but this is not regional-authority validation. || municipality_suap_albo: DataCenterMap places the candidate at Via per Carpiano, 20077 Melegnano, Italy. No direct Comune di Melegnano / SUAP / albo pretorio source identified in this pass. || mase: No direct MASE object found for GDC - Milan 1 Data Center / NTT DATA Milan 1 in this pass. Do not merge with nearby Vantage MXP1 evidence unless a source explicitly links the two projects. || contractor_gc: No reliable named GC/contractor found in operator press release, DataCenterMap or targeted web search. Do not attribute a contractor.</p>
+              </div>
+            </div>
+          </details>
+        </article>
+
+
+        <article class="card" data-bucket="tracked_review" data-readiness="operator_confirmed_only" data-search="hscale mxp1 hscale da verificare arluno tracked_review operator_confirmed_only">
+          <div class="card-top">
+            <div>
+              <h2>hscale MXP1</h2>
+              <p class="subtitle">hscale · Arluno</p>
+            </div>
+            <div class="badges">
+              <span class="badge neutral">Tracciati / da completare</span>
+              <span class="badge neutral">Solo operatore confermato</span>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div>
+              <div class="label">Operatore</div>
+              <div class="value">hscale</div>
+            </div>
+            <div>
+              <div class="label">Proponente autorizzativo</div>
+              <div class="value">Da verificare</div>
+            </div>
+            <div>
+              <div class="label">GC / contractor</div>
+              <div class="value weak">Da identificare</div>
+            </div>
+            <div>
+              <div class="label">Stato DCM</div>
+              <div class="value">Planned</div>
+            </div>
+            <div>
+              <div class="label">MW IT</div>
+              <div class="value">48 MW</div>
+            </div>
+            <div>
+              <div class="label">Superficie</div>
+              <div class="value">74.866 m²</div>
+            </div>
+            <div class="wide">
+              <div class="label">Indirizzo</div>
+              <div class="value">Via Padre Massimiliano Kolbe, 20004, Arluno, Italy</div>
+              <div><a class="link-pill" href="https://www.google.com/maps/search/?api=1&amp;query=Via+Padre+Massimiliano+Kolbe%2C+20004%2C+Arluno%2C+Italy" target="_blank" rel="noopener">Maps</a> <a class="link-pill" href="https://www.datacentermap.com/italy/milan/hscale-mxp1-campus/" target="_blank" rel="noopener">DataCenterMap</a></div>
+            </div>
+          </div>
+
+          <details>
+            <summary>Dettaglio validazione</summary>
+            <div class="details-grid">
+              <div>
+                <div class="label">Layer confermati</div>
+                <p>operator_site</p>
+              </div>
+              <div>
+                <div class="label">Layer aperti</div>
+                <p>—</p>
+              </div>
+              <div>
+                <div class="label">Raccomandazione</div>
+                <p>Confermato dall&#x27;operatore; servono fonti pubbliche.</p>
+              </div>
+              <div>
+                <div class="label">Fonti</div>
+                <p><span class="source-pill">Italy, Milan</span> <a class="source-pill" href="https://www.hscaledc.com/data-centres/italy-milan/" target="_blank" rel="noopener">hscale data centres - MXP1</a></p>
+              </div>
+              <div class="wide">
+                <div class="label">Facts sintetici</div>
+                <p>operator_site: Official hscale page confirms MXP1 in West Milan; 48 MW campus; 1 building delivered in phases; 16 MW modules with 8 MW IT per data hall; phasing delivery every 3-6 months; N+1 electrical topology; N+2 cooling infrastructure, liquid ready; target annual PUE 1.2; STMD power application submitted and 70 MVA STMG secured. DataCenterMap commercial source places hscale MXP1 at Via Padre Massimiliano Kolbe, Arluno, and reports a 74,866 sqm site. || regional_via_vas: No direct Regione Lombardia VIA/VAS source identified in this pass. Operator source confirms MXP1, but this is not regional-authority validation. || municipality_suap_albo: No direct Comune di Arluno / SUAP / albo pretorio source identified in this pass. DataCenterMap places the project in Arluno, but no local administrative source was confirmed. || mase: No direct MASE object found for hscale MXP1 in this pass. Do not confuse with other MXP1 records from Vantage or other operators. || contractor_gc: No reliable named GC/contractor found in operator page, DataCenterMap or targeted web search. Do not attribute a contractor.</p>
+              </div>
+            </div>
+          </details>
+        </article>
+
+
+        <article class="card" data-bucket="tracked_review" data-readiness="operator_confirmed_only" data-search="virtus milan1 virtus data centres da verificare cornaredo tracked_review operator_confirmed_only">
+          <div class="card-top">
+            <div>
+              <h2>VIRTUS MILAN1</h2>
+              <p class="subtitle">VIRTUS Data Centres · Cornaredo</p>
+            </div>
+            <div class="badges">
+              <span class="badge neutral">Tracciati / da completare</span>
+              <span class="badge neutral">Solo operatore confermato</span>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div>
+              <div class="label">Operatore</div>
+              <div class="value">VIRTUS Data Centres</div>
+            </div>
+            <div>
+              <div class="label">Proponente autorizzativo</div>
+              <div class="value">Da verificare</div>
+            </div>
+            <div>
+              <div class="label">GC / contractor</div>
+              <div class="value weak">Da identificare</div>
+            </div>
+            <div>
+              <div class="label">Stato DCM</div>
+              <div class="value">Planned</div>
+            </div>
+            <div>
+              <div class="label">MW IT</div>
+              <div class="value">42 MW</div>
+            </div>
+            <div>
+              <div class="label">Superficie</div>
+              <div class="value">71.000 m²</div>
+            </div>
+            <div class="wide">
+              <div class="label">Indirizzo</div>
+              <div class="value">Via Brennero, 20007, Cornaredo, Italy</div>
+              <div><a class="link-pill" href="https://www.google.com/maps/search/?api=1&amp;query=Via+Brennero%2C+20007%2C+Cornaredo%2C+Italy" target="_blank" rel="noopener">Maps</a> <a class="link-pill" href="https://www.datacentermap.com/italy/milan/virtus-milan1/" target="_blank" rel="noopener">DataCenterMap</a></div>
+            </div>
+          </div>
+
+          <details>
+            <summary>Dettaglio validazione</summary>
+            <div class="details-grid">
+              <div>
+                <div class="label">Layer confermati</div>
+                <p>operator_site</p>
+              </div>
+              <div>
+                <div class="label">Layer aperti</div>
+                <p>—</p>
+              </div>
+              <div>
+                <div class="label">Raccomandazione</div>
+                <p>Confermato dall&#x27;operatore; servono fonti pubbliche.</p>
+              </div>
+              <div>
+                <div class="label">Fonti</div>
+                <p><span class="source-pill">Milan Data Centre</span> <a class="source-pill" href="https://virtusdatacentres.com/locations/eu/italy-data-centres-milan-1" target="_blank" rel="noopener">MILAN1</a></p>
+              </div>
+              <div class="wide">
+                <div class="label">Facts sintetici</div>
+                <p>operator_site: Official VIRTUS page confirms MILAN1 in Cornaredo, within the Milan West data centre cluster; 42 MW IT load; 71,000 m² brownfield site; zoning in place for a 44,000 m² facility; 70 MVA grid power; RFS currently indicated as 2028. The earlier VIRTUS press release announced the first Italian VIRTUS facility and development start in Q2 2025. || regional_via_vas: No direct Regione Lombardia VIA/VAS source identified in this pass. Operator sources confirm the Cornaredo project, but this is not regional-authority validation. || municipality_suap_albo: Operator page states that the site has zoning in place for a 44,000 m² facility, but no direct Comune di Cornaredo / SUAP / albo pretorio source was identified in this pass. || mase: No direct MASE object found for VIRTUS MILAN1 in this pass. Do not confuse with DATA4 Cornaredo / Settimo Milanese MASE records. || contractor_gc: No reliable named GC/contractor found in operator page, press release, DataCenterMap or targeted web search. Do not attribute a contractor.</p>
+              </div>
+            </div>
+          </details>
+        </article>
+
+
+        <article class="card" data-bucket="tracked_review" data-readiness="existing_project_child_or_enrichment" data-search="stack infrastructure mil04a stack infrastructure infrastructure italia land 4 s.r.l. vellezzo bellini tracked_review existing_project_child_or_enrichment">
+          <div class="card-top">
+            <div>
+              <h2>STACK Infrastructure MIL04A</h2>
+              <p class="subtitle">STACK INFRASTRUCTURE · Vellezzo Bellini</p>
+            </div>
+            <div class="badges">
+              <span class="badge neutral">Tracciati / da completare</span>
+              <span class="badge neutral">Child/enrichment progetto esistente</span>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div>
+              <div class="label">Operatore</div>
+              <div class="value">STACK INFRASTRUCTURE</div>
+            </div>
+            <div>
+              <div class="label">Proponente autorizzativo</div>
+              <div class="value">Infrastructure Italia Land 4 S.r.l.</div>
+            </div>
+            <div>
+              <div class="label">GC / contractor</div>
+              <div class="value weak">Da identificare</div>
+            </div>
+            <div>
+              <div class="label">Stato DCM</div>
+              <div class="value">Under Construction</div>
+            </div>
+            <div>
+              <div class="label">MW IT</div>
+              <div class="value">10 MW</div>
+            </div>
+            <div>
+              <div class="label">Superficie</div>
+              <div class="value">6.630 m²</div>
+            </div>
+            <div class="wide">
+              <div class="label">Indirizzo</div>
+              <div class="value">1 Strada Alzaia-fr.giovenzano, 27010, Vellezzo Bellini, Italy</div>
+              <div><a class="link-pill" href="https://www.google.com/maps/search/?api=1&amp;query=1+Strada+Alzaia-fr.giovenzano%2C+27010%2C+Vellezzo+Bellini%2C+Italy" target="_blank" rel="noopener">Maps</a> <a class="link-pill" href="https://www.datacentermap.com/italy/milan/stack-infrastructure-mil04a/" target="_blank" rel="noopener">DataCenterMap</a></div>
+            </div>
+          </div>
+
+          <details>
+            <summary>Dettaglio validazione</summary>
+            <div class="details-grid">
+              <div>
+                <div class="label">Layer confermati</div>
+                <p>—</p>
+              </div>
+              <div>
+                <div class="label">Layer aperti</div>
+                <p>—</p>
+              </div>
+              <div>
+                <div class="label">Raccomandazione</div>
+                <p>Non promuovere come nuovo master: usare come child facility, espansione o enrichment di progetto esistente.</p>
+              </div>
+              <div>
+                <div class="label">Fonti</div>
+                <p><span class="muted">—</span></p>
+              </div>
+              <div class="wide">
+                <div class="label">Facts sintetici</div>
+                <p>operator_site: STACK official page lists MIL04A as one of the data centers/buildings within MIL04 Campus; MIL04A has 10 MW and 71,364 sq ft. Treat as child facility, not separate master project. || regional_via_vas: Regional VIA evidence relates to the parent project &#x27;Progettazione nuovo Data Center Vellezzo Bellini&#x27;, not specifically a standalone MIL04A project. || municipality_suap_albo: Municipality/SCIA evidence refers to the data center project in Vellezzo Bellini, not specifically a standalone MIL04A project. || mase: MASE object relates to parent project &#x27;Progettazione nuovo Data Center Vellezzo Bellini&#x27;, proponent Infrastructure Italia Land 4 S.r.l.; MIL04A should not be promoted separately. || contractor_gc: No separate GC attribution for MIL04A. Contractor/technical evidence, if any, belongs to parent MIL04 Campus.</p>
+              </div>
+            </div>
+          </details>
+        </article>
+
+
+        <article class="card" data-bucket="tracked_review" data-readiness="existing_project_child_or_enrichment" data-search="stack infrastructure mil08b stack infrastructure / project perimeter belongs to infrastructure italia land 2 s.r.l siziano tracked_review existing_project_child_or_enrichment">
+          <div class="card-top">
+            <div>
+              <h2>STACK Infrastructure MIL08B</h2>
+              <p class="subtitle">STACK INFRASTRUCTURE · Siziano</p>
+            </div>
+            <div class="badges">
+              <span class="badge neutral">Tracciati / da completare</span>
+              <span class="badge neutral">Child/enrichment progetto esistente</span>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div>
+              <div class="label">Operatore</div>
+              <div class="value">STACK INFRASTRUCTURE</div>
+            </div>
+            <div>
+              <div class="label">Proponente autorizzativo</div>
+              <div class="value">/ project perimeter belongs to Infrastructure Italia Land 2 S.r.l</div>
+            </div>
+            <div>
+              <div class="label">GC / contractor</div>
+              <div class="value weak">Da identificare</div>
+            </div>
+            <div>
+              <div class="label">Stato DCM</div>
+              <div class="value">Planned</div>
+            </div>
+            <div>
+              <div class="label">MW IT</div>
+              <div class="value">5 MW</div>
+            </div>
+            <div>
+              <div class="label">Superficie</div>
+              <div class="value">6.200 m²</div>
+            </div>
+            <div class="wide">
+              <div class="label">Indirizzo</div>
+              <div class="value">Strada Provinciale Binasco Melegnano, 27010, Siziano, Italy</div>
+              <div><a class="link-pill" href="https://www.google.com/maps/search/?api=1&amp;query=Strada+Provinciale+Binasco+Melegnano%2C+27010%2C+Siziano%2C+Italy" target="_blank" rel="noopener">Maps</a> <a class="link-pill" href="https://www.datacentermap.com/italy/milan/stack-infrastructure-mil08b/" target="_blank" rel="noopener">DataCenterMap</a></div>
+            </div>
+          </div>
+
+          <details>
+            <summary>Dettaglio validazione</summary>
+            <div class="details-grid">
+              <div>
+                <div class="label">Layer confermati</div>
+                <p>—</p>
+              </div>
+              <div>
+                <div class="label">Layer aperti</div>
+                <p>—</p>
+              </div>
+              <div>
+                <div class="label">Raccomandazione</div>
+                <p>Non promuovere come nuovo master: usare come child facility, espansione o enrichment di progetto esistente.</p>
+              </div>
+              <div>
+                <div class="label">Fonti</div>
+                <p><span class="muted">—</span></p>
+              </div>
+              <div class="wide">
+                <div class="label">Facts sintetici</div>
+                <p>operator_site: DataCenterMap describes STACK Infrastructure MIL08 Campus in Siziano as comprising two facilities: MIL08A and MIL08B. MIL08B is described as providing 5 MW capacity across 153,820 square feet. Treat MIL08B as child facility / expansion of the existing Stack Campus Siziano record, not as standalone master project. || regional_via_vas: MASE/environmental documentation refers to the development/expansion of existing STACK settlements including MIL08B. This supports classification as part of the wider Stack Campus Siziano / Infrastructure Italia Land 2 perimeter. || municipality_suap_albo: MASE public notice refers to Data Center Stack Campus Siziano, Via Marche 8, Siziano (PV), and mentions unit denominated MIL08B. Proponent / project perimeter belongs to Infrastructure Italia Land 2 S.r.l. || mase: MASE object found: Data Center Stack Campus Siziano (PV). Proponent: Infrastructure Italia Land 2 S.r.l. MIL08B should be treated as an enrichment/child facility of this existing project perimeter. || contractor_gc: SCL LinkedIn post cites STACK MIL08B Data Center in Siziano, project area 6,200 sqm, year 2025 ongoing. It lists architectural design by IRR Engineering, general site supervision by Lombardini22, and structural construction supervision by SCL. These are technical/design/supervision roles, not a reliable named GC attribution.</p>
+              </div>
+            </div>
+          </details>
+        </article>
+
+
+        <article class="card" data-bucket="tracked_review" data-readiness="existing_operational_reference" data-search="mix data center mix srl da verificare milano tracked_review existing_operational_reference">
+          <div class="card-top">
+            <div>
+              <h2>MIX Data Center</h2>
+              <p class="subtitle">MIX SRL · Milano</p>
+            </div>
+            <div class="badges">
+              <span class="badge neutral">Tracciati / da completare</span>
+              <span class="badge neutral">Asset esistente / reference</span>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div>
+              <div class="label">Operatore</div>
+              <div class="value">MIX SRL</div>
+            </div>
+            <div>
+              <div class="label">Proponente autorizzativo</div>
+              <div class="value">Da verificare</div>
+            </div>
+            <div>
+              <div class="label">GC / contractor</div>
+              <div class="value weak">Da identificare</div>
+            </div>
+            <div>
+              <div class="label">Stato DCM</div>
+              <div class="value">Planned</div>
+            </div>
+            <div>
+              <div class="label">MW IT</div>
+              <div class="value">—</div>
+            </div>
+            <div>
+              <div class="label">Superficie</div>
+              <div class="value">—</div>
+            </div>
+            <div class="wide">
+              <div class="label">Indirizzo</div>
+              <div class="value">Via Caldera 21, Building D, 20153, Milano, Italy</div>
+              <div><a class="link-pill" href="https://www.google.com/maps/search/?api=1&amp;query=Via+Caldera+21%2C+Building+D%2C+20153%2C+Milano%2C+Italy" target="_blank" rel="noopener">Maps</a> <a class="link-pill" href="https://www.datacentermap.com/italy/milan/mix/" target="_blank" rel="noopener">DataCenterMap</a></div>
+            </div>
+          </div>
+
+          <details>
+            <summary>Dettaglio validazione</summary>
+            <div class="details-grid">
+              <div>
+                <div class="label">Layer confermati</div>
+                <p>—</p>
+              </div>
+              <div>
+                <div class="label">Layer aperti</div>
+                <p>—</p>
+              </div>
+              <div>
+                <div class="label">Raccomandazione</div>
+                <p>Asset esistente/reference: utile da mostrare in tabella generale, ma non promuovere come nuova pipeline.</p>
+              </div>
+              <div>
+                <div class="label">Fonti</div>
+                <p><span class="muted">—</span></p>
+              </div>
+              <div class="wide">
+                <div class="label">Facts sintetici</div>
+                <p>operator_site: MIX official site describes MIX as one of the few IXPs in Europe equipped with its own data center. MIX S.r.l. is located at Via Caldera 21, Building Orange/3, 20153 Milan. DataCenterMap lists MIX Data Center by MIX SRL at Via Caldera 21, Building D, Milano. This appears to be an existing operational asset/reference, not a new development pipeline candidate. || regional_via_vas: MIX Report 2016 refers to the new MIX Data Center as an investment already completed. No current Regione Lombardia VIA/VAS project evidence identified for a new MIX Data Center development. || municipality_suap_albo: MIX official site confirms operating address in Via Caldera 21. No direct Comune di Milano / SUAP / albo source identified for a new MIX Data Center project in this pass. || mase: No MASE object found for a new MIX Data Center project. Existing MIX/Caldera data center presence should not be treated as new pipeline. || contractor_gc: No GC/contractor search applicable for a currently identified new development. MIX appears as existing operational/reference infrastructure.</p>
+              </div>
+            </div>
+          </details>
+        </article>
+
+  </section>
+
+  <footer>
+    Nota: questa pagina è una vista di review. La promozione nel master ufficiale resta manuale.
+  </footer>
+</main>
+
+<script>
+const searchBox = document.getElementById("searchBox");
+const bucketFilter = document.getElementById("bucketFilter");
+const readinessFilter = document.getElementById("readinessFilter");
+const cards = Array.from(document.querySelectorAll(".card"));
+
+function applyFilters() {
+  const q = (searchBox.value || "").toLowerCase().trim();
+  const bucket = bucketFilter.value;
+  const readiness = readinessFilter.value;
+
+  cards.forEach(card => {
+    const matchesSearch = !q || (card.dataset.search || "").includes(q);
+    const matchesBucket = !bucket || card.dataset.bucket === bucket;
+    const matchesReadiness = !readiness || card.dataset.readiness === readiness;
+
+    card.classList.toggle("hidden", !(matchesSearch && matchesBucket && matchesReadiness));
+  });
+}
+
+searchBox.addEventListener("input", applyFilters);
+bucketFilter.addEventListener("change", applyFilters);
+readinessFilter.addEventListener("change", applyFilters);
+</script>
+</body>
+</html>
