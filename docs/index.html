@@ -580,7 +580,71 @@
       header { padding:20px 16px; }
       .kpis { grid-template-columns:1fr; }
     }
-  </style>
+
+.external-candidate-row {
+  background:#f8fbff;
+}
+.external-candidate-row td {
+  border-top:2px solid #bfdbfe;
+}
+.map-icon {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:24px;
+  height:24px;
+  border-radius:999px;
+  background:#ecfdf3;
+  color:#166534;
+  text-decoration:none;
+  font-size:15px;
+  font-weight:900;
+  margin:0 4px;
+  vertical-align:middle;
+}
+.map-icon:hover {
+  filter:brightness(.96);
+}
+.external-draft-banner {
+  margin:16px 0;
+  padding:12px 14px;
+  border-radius:14px;
+  background:#eff6ff;
+  border:1px solid #bfdbfe;
+  color:#0f4c81;
+  font-weight:800;
+}
+
+
+.map-icon {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:22px;
+  height:22px;
+  border-radius:999px;
+  background:#ecfdf3;
+  color:#166534;
+  text-decoration:none;
+  font-size:14px;
+  font-weight:900;
+  margin-left:4px;
+  vertical-align:middle;
+}
+.map-icon:hover {
+  filter:brightness(.96);
+}
+tbody tr:nth-child(odd) td {
+  background:#ffffff;
+}
+tbody tr:nth-child(even) td {
+  background:#f8fafc;
+}
+tbody tr:hover td {
+  background:#eff6ff;
+}
+
+</style>
 
 </head>
 <body>
@@ -594,17 +658,17 @@
 
         <div class="kpi">
           <div class="kpi-label">Progetti censiti</div>
-          <div class="kpi-value">16</div>
+          <div class="kpi-value">27</div>
         </div>
 
         <div class="kpi">
           <div class="kpi-label">Consolidati</div>
-          <div class="kpi-value">5</div>
+          <div class="kpi-value">8</div>
         </div>
 
         <div class="kpi">
           <div class="kpi-label">Parziali / da verificare</div>
-          <div class="kpi-value">8</div>
+          <div class="kpi-value">11</div>
         </div>
 
         <div class="kpi">
@@ -619,17 +683,17 @@
 
         <div class="kpi">
           <div class="kpi-label">MW IT noto</div>
-          <div class="kpi-value">4</div>
+          <div class="kpi-value">1.943,8</div>
         </div>
 
         <div class="kpi">
           <div class="kpi-label">MWt noto</div>
-          <div class="kpi-value">8</div>
+          <div class="kpi-value">733,1</div>
         </div>
 
         <div class="kpi">
           <div class="kpi-label">Superficie nota</div>
-          <div class="kpi-value">6</div>
+          <div class="kpi-value">13</div>
         </div>
 
   </section>
@@ -661,7 +725,7 @@
           <tr>
             <th>Progetto</th>
             <th>Operatore</th>
-            <th>Proponente MASE</th>
+            <th>PROPONENTE</th>
             <th>Realizzatore / partner tecnico</th>
             <th>Comune</th>
             <th>MW IT</th>
@@ -675,7 +739,7 @@
 
         <tr data-search="Noovle Data Center Noovle Noovle SpA Da identificare Da identificare Da identificare Parziale Alta 11218" data-status="Parziale">
           <td class="project-cell">
-            <a class="project-link" href="projects/noovle-data-center.html"><strong>Noovle Data Center</strong></a>
+            <a class="project-link" href="projects/noovle-data-center.html"><strong>Noovle Data Center</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=Viale+Toscana%2C+3%2C+20089%2C+Rozzano%2C+Italy" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">📍</a>
             <br><span class="muted">ID 11218</span>
           </td>
           <td>Noovle</td>
@@ -686,12 +750,12 @@
           <td class="num">—</td>
           <td class="num">—</td>
           <td><span class="badge grade-c" title="Progetto valido, ma mancano dati importanti.">Parziale</span></td>
-          <td class="sources-cell"><a class="link-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/11218" target="_blank" rel="noopener">MASE</a></td>
+          <td class="sources-cell"><a class="link-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/11218" target="_blank" rel="noopener">MASE</a> <a class="link-pill" href="https://www.datacentermap.com/italy/milan/noovle-rozzano/" target="_blank" rel="noopener">DataCenterMap</a></td>
         </tr>
 
         <tr data-search="ROM1 Digital Realty  Techbau Roma Lazio Fonti esterne necessarie Alta" data-status="Fonti esterne necessarie">
           <td class="project-cell">
-            <a class="project-link" href="projects/rom1.html"><strong>ROM1</strong></a>
+            <a class="project-link" href="projects/rom1.html"><strong>ROM1</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=ROM1+Roma+data+center+Italia" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">📍</a>
             <br><span class="muted">ID —</span>
           </td>
           <td>Digital Realty</td>
@@ -707,7 +771,7 @@
 
         <tr data-search="DATA4 Cornaredo DATA4 DATA 4 MILAN S.p.A. Generale Prefabbricati Cornaredo / Settimo Milanese Lombardia Fonti esterne necessarie Alta 11512 | 11998" data-status="Fonti esterne necessarie">
           <td class="project-cell">
-            <a class="project-link" href="projects/data4-cornaredo.html"><strong>DATA4 Cornaredo</strong></a>
+            <a class="project-link" href="projects/data4-cornaredo.html"><strong>DATA4 Cornaredo</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=Via+Monzoro%2C+101-105%2C+20007%2C+Cornaredo%2C+Italy" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">📍</a>
             <br><span class="muted">ID 11512 | 11998</span>
           </td>
           <td>DATA4</td>
@@ -718,12 +782,12 @@
           <td class="num">—</td>
           <td class="num">—</td>
           <td><span class="badge grade-d" title="MASE assente o insufficiente: servono fonti aziendali, GC, enti locali o altre fonti.">Fonti ext.</span></td>
-          <td class="sources-cell"><a class="link-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/11512" target="_blank" rel="noopener">MASE</a> <a class="link-pill" href="https://gp70.generaleprefabbricatispa.com/storie/campus-data-center-data4/" target="_blank" rel="noopener">Gen. Prefabbricati</a></td>
+          <td class="sources-cell"><a class="link-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/11512" target="_blank" rel="noopener">MASE</a> <a class="link-pill" href="https://gp70.generaleprefabbricatispa.com/storie/campus-data-center-data4/" target="_blank" rel="noopener">Gen. Prefabbricati</a> <a class="link-pill" href="https://www.datacentermap.com/italy/milan/data4-milan-italy/" target="_blank" rel="noopener">DataCenterMap</a></td>
         </tr>
 
         <tr data-search="Apto Lacchiarella APTO APTO ITALIA S.R.L. Da identificare Lacchiarella Lombardia Parziale Alta 11503" data-status="Parziale">
           <td class="project-cell">
-            <a class="project-link" href="projects/apto-lacchiarella.html"><strong>Apto Lacchiarella</strong></a>
+            <a class="project-link" href="projects/apto-lacchiarella.html"><strong>Apto Lacchiarella</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=Apto+Lacchiarella+Lacchiarella+data+center+Italia" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">📍</a>
             <br><span class="muted">ID 11503</span>
           </td>
           <td>APTO</td>
@@ -739,7 +803,7 @@
 
         <tr data-search="Retelit Avalon 3 Retelit  DBA Group | A2A Calore Milano Lombardia Fonti esterne necessarie Alta 12068" data-status="Fonti esterne necessarie">
           <td class="project-cell">
-            <a class="project-link" href="projects/retelit-avalon-3.html"><strong>Retelit Avalon 3</strong></a>
+            <a class="project-link" href="projects/retelit-avalon-3.html"><strong>Retelit Avalon 3</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=Via+Bisceglie+95%2C+20152%2C+Milan%2C+Italy" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">📍</a>
             <br><span class="muted">ID 12068</span>
           </td>
           <td>Retelit</td>
@@ -750,12 +814,12 @@
           <td class="num">2,5 MWt</td>
           <td class="num">13.000 (3.500 sup. costruita)</td>
           <td><span class="badge grade-d" title="MASE assente o insufficiente: servono fonti aziendali, GC, enti locali o altre fonti.">Fonti ext.</span></td>
-          <td class="sources-cell"><a class="link-pill" href="https://www.dbagroup.it/" target="_blank" rel="noopener">DBA Group</a> <a class="link-pill" href="https://www.a2acaloreservizi.eu/" target="_blank" rel="noopener">A2A Calore</a></td>
+          <td class="sources-cell"><a class="link-pill" href="https://www.dbagroup.it/" target="_blank" rel="noopener">DBA Group</a> <a class="link-pill" href="https://www.a2acaloreservizi.eu/" target="_blank" rel="noopener">A2A Calore</a> <a class="link-pill" href="https://www.datacentermap.com/italy/milan/enter/" target="_blank" rel="noopener">DataCenterMap</a></td>
         </tr>
 
         <tr data-search="Equinix ML10-ML11 Equinix Equinix Hyperscale 2 (ML10) Srl Da identificare Settimo Milanese Lombardia Parziale Alta 11899" data-status="Parziale">
           <td class="project-cell">
-            <a class="project-link" href="projects/equinix-ml10-ml11.html"><strong>Equinix ML10-ML11</strong></a>
+            <a class="project-link" href="projects/equinix-ml10-ml11.html"><strong>Equinix ML10-ML11</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=Equinix+ML10-ML11+Settimo+Milanese+data+center+Italia" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">📍</a>
             <br><span class="muted">ID 11899</span>
           </td>
           <td>Equinix</td>
@@ -771,7 +835,7 @@
 
         <tr data-search="Equinix ML5-ML6 Equinix Equinix Italia S.r.l. Da identificare Settimo Milanese Lombardia Parziale Alta 11794" data-status="Parziale">
           <td class="project-cell">
-            <a class="project-link" href="projects/equinix-ml5-ml6.html"><strong>Equinix ML5-ML6</strong></a>
+            <a class="project-link" href="projects/equinix-ml5-ml6.html"><strong>Equinix ML5-ML6</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=Via+Reiss+Romoli+40%2C+20019%2C+Settimo+Milanese%2C+Italy" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">📍</a>
             <br><span class="muted">ID 11794</span>
           </td>
           <td>Equinix</td>
@@ -782,12 +846,12 @@
           <td class="num">—</td>
           <td class="num">—</td>
           <td><span class="badge grade-c" title="Progetto valido, ma mancano dati importanti.">Parziale</span></td>
-          <td class="sources-cell"><a class="link-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/11794" target="_blank" rel="noopener">MASE</a></td>
+          <td class="sources-cell"><a class="link-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/11794" target="_blank" rel="noopener">MASE</a> <a class="link-pill" href="https://www.datacentermap.com/italy/milan/equinix-ml5/" target="_blank" rel="noopener">DataCenterMap</a></td>
         </tr>
 
         <tr data-search="Stack Campus Siziano STACK Infrastructure Infrastructure Italia Land 2 S.r.l. Mercury Engineering Siziano Lombardia Parziale Alta 11703" data-status="Parziale">
           <td class="project-cell">
-            <a class="project-link" href="projects/stack-campus-siziano.html"><strong>Stack Campus Siziano</strong></a>
+            <a class="project-link" href="projects/stack-campus-siziano.html"><strong>Stack Campus Siziano</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=Via+Marche+8-10%2C+27010%2C+Siziano%2C+Italy" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">📍</a>
             <br><span class="muted">ID 11703</span>
           </td>
           <td>STACK Infrastructure</td>
@@ -798,12 +862,12 @@
           <td class="num">—</td>
           <td class="num">—</td>
           <td><span class="badge grade-c" title="Progetto valido, ma mancano dati importanti.">Parziale</span></td>
-          <td class="sources-cell"><a class="link-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/11703" target="_blank" rel="noopener">MASE</a> <a class="link-pill" href="https://www.mercuryeng.com/project/odn-2-1-hyper-scale-data-centre" target="_blank" rel="noopener">Mercury</a></td>
+          <td class="sources-cell"><a class="link-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/11703" target="_blank" rel="noopener">MASE</a> <a class="link-pill" href="https://www.mercuryeng.com/project/odn-2-1-hyper-scale-data-centre" target="_blank" rel="noopener">Mercury</a> <a class="link-pill" href="https://www.datacentermap.com/italy/milan/stack-infrastructure-mil01b/" target="_blank" rel="noopener">DataCenterMap</a></td>
         </tr>
 
         <tr data-search="AWS Zibido San Giacomo AWS AMAZON DATA SERVICES ITALY S.R.L. Da identificare Zibido San Giacomo Lombardia Parziale Alta 11970" data-status="Parziale">
           <td class="project-cell">
-            <a class="project-link" href="projects/aws-zibido-san-giacomo.html"><strong>AWS Zibido San Giacomo</strong></a>
+            <a class="project-link" href="projects/aws-zibido-san-giacomo.html"><strong>AWS Zibido San Giacomo</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=AWS+Zibido+San+Giacomo+Zibido+San+Giacomo+data+center+Italia" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">📍</a>
             <br><span class="muted">ID 11970</span>
           </td>
           <td>AWS</td>
@@ -819,7 +883,7 @@
 
         <tr data-search="Aruba Roma Tecnopolo Tiburtino Aruba Aruba S.p.A. Da identificare Roma Lazio Da verificare Media 11308" data-status="Da verificare">
           <td class="project-cell">
-            <a class="project-link" href="projects/aruba-roma-tecnopolo-tiburtino.html"><strong>Aruba Roma Tecnopolo Tiburtino</strong></a>
+            <a class="project-link" href="projects/aruba-roma-tecnopolo-tiburtino.html"><strong>Aruba Roma Tecnopolo Tiburtino</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=Aruba+Roma+Tecnopolo+Tiburtino+Roma+data+center+Italia" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">📍</a>
             <br><span class="muted">ID 11308</span>
           </td>
           <td>Aruba</td>
@@ -835,7 +899,7 @@
 
         <tr data-search="Data Center Campus 133 Generatori KRYALOS SGR S.p.A. KRYALOS SGR S.P.A. Da identificare Vimercate Lombardia Da verificare Media 11813" data-status="Da verificare">
           <td class="project-cell">
-            <a class="project-link" href="projects/data-center-campus-133-generatori.html"><strong>Data Center Campus 133 Generatori</strong></a>
+            <a class="project-link" href="projects/data-center-campus-133-generatori.html"><strong>Data Center Campus 133 Generatori</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=Data+Center+Campus+133+Generatori+Vimercate+data+center+Italia" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">📍</a>
             <br><span class="muted">ID 11813</span>
           </td>
           <td>KRYALOS SGR S.p.A.</td>
@@ -851,7 +915,7 @@
 
         <tr data-search="Microsoft Bornasco Microsoft MICROSOFT 4825 ITALY S.R.L. Da identificare Bornasco Lombardia Consolidato Monitoraggio 8791" data-status="Consolidato">
           <td class="project-cell">
-            <a class="project-link" href="projects/microsoft-bornasco.html"><strong>Microsoft Bornasco</strong></a>
+            <a class="project-link" href="projects/microsoft-bornasco.html"><strong>Microsoft Bornasco</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=Via+dei+Pioppi+%26+Via+Rimembranze%2C+27010%2C+Bornasco%2C+Italy" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">📍</a>
             <br><span class="muted">ID 8791</span>
           </td>
           <td>Microsoft</td>
@@ -862,12 +926,12 @@
           <td class="num">163</td>
           <td class="num">165.351</td>
           <td><span class="badge grade-a" title="Dati principali coerenti e già  usabili.">OK</span></td>
-          <td class="sources-cell"><a class="link-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/8791" target="_blank" rel="noopener">MASE</a></td>
+          <td class="sources-cell"><a class="link-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/8791" target="_blank" rel="noopener">MASE</a> <a class="link-pill" href="https://www.datacentermap.com/italy/milan/microsoft-bornasco/" target="_blank" rel="noopener">DataCenterMap</a></td>
         </tr>
 
         <tr data-search="CyrusOne MIL1 CyrusOne CyrusOne Italy I S.r.l. Techbau Segrate Lombardia Consolidato Monitoraggio 10977" data-status="Consolidato">
           <td class="project-cell">
-            <a class="project-link" href="projects/cyrusone-mil1.html"><strong>CyrusOne MIL1</strong></a>
+            <a class="project-link" href="projects/cyrusone-mil1.html"><strong>CyrusOne MIL1</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=Via+Raffaele+Rubattino%2C+90%2C+20134%2C+Segrate%2C+Italy" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">📍</a>
             <br><span class="muted">ID 10977</span>
           </td>
           <td>CyrusOne</td>
@@ -878,12 +942,12 @@
           <td class="num">132</td>
           <td class="num">—</td>
           <td><span class="badge grade-a" title="Dati principali coerenti e già  usabili.">OK</span></td>
-          <td class="sources-cell"><a class="link-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/10977" target="_blank" rel="noopener">MASE</a> <a class="link-pill" href="https://techbau.it/en/2026/03/26/cyrusone-mil1/" target="_blank" rel="noopener">Techbau</a></td>
+          <td class="sources-cell"><a class="link-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/10977" target="_blank" rel="noopener">MASE</a> <a class="link-pill" href="https://techbau.it/en/2026/03/26/cyrusone-mil1/" target="_blank" rel="noopener">Techbau</a> <a class="link-pill" href="https://www.datacentermap.com/italy/milan/cyrusone-mil2/" target="_blank" rel="noopener">DataCenterMap</a></td>
         </tr>
 
         <tr data-search="Equinix ML7-ML8 Equinix EQUINIX HYPERSCALE 2 (ML7) S.r.l. Techbau Settimo Milanese Lombardia Consolidato Monitoraggio 11965" data-status="Consolidato">
           <td class="project-cell">
-            <a class="project-link" href="projects/equinix-ml7-ml8.html"><strong>Equinix ML7-ML8</strong></a>
+            <a class="project-link" href="projects/equinix-ml7-ml8.html"><strong>Equinix ML7-ML8</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=Via+Marisa+Bellisario%2C+5%2C+20019%2C+Milan%2C+Italy" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">📍</a>
             <br><span class="muted">ID 11965</span>
           </td>
           <td>Equinix</td>
@@ -894,12 +958,12 @@
           <td class="num">133,6</td>
           <td class="num">14.000 | 10.875 (5.760 sup. costruita)</td>
           <td><span class="badge grade-a" title="Dati principali coerenti e già  usabili.">OK</span></td>
-          <td class="sources-cell"><a class="link-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/11965" target="_blank" rel="noopener">MASE</a> <a class="link-pill" href="https://techbau.it/realizzazioni/ml8" target="_blank" rel="noopener">Techbau</a> <a class="link-pill" href="https://techbau.it/realizzazioni/ml7" target="_blank" rel="noopener">Techbau</a></td>
+          <td class="sources-cell"><a class="link-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/11965" target="_blank" rel="noopener">MASE</a> <a class="link-pill" href="https://techbau.it/realizzazioni/ml8" target="_blank" rel="noopener">Techbau</a> <a class="link-pill" href="https://techbau.it/realizzazioni/ml7" target="_blank" rel="noopener">Techbau</a> <a class="link-pill" href="https://www.datacentermap.com/italy/milan/equinix-ml7x/" target="_blank" rel="noopener">DataCenterMap</a></td>
         </tr>
 
         <tr data-search="Equinix ML9 Equinix EQUINIX HYPERSCALE 2 (ML9) S.r.l. Techbau Settimo Milanese Lombardia Consolidato Monitoraggio 10745" data-status="Consolidato">
           <td class="project-cell">
-            <a class="project-link" href="projects/equinix-ml9.html"><strong>Equinix ML9</strong></a>
+            <a class="project-link" href="projects/equinix-ml9.html"><strong>Equinix ML9</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=Equinix+ML9+Settimo+Milanese+data+center+Italia" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">📍</a>
             <br><span class="muted">ID 10745</span>
           </td>
           <td>Equinix</td>
@@ -915,7 +979,7 @@
 
         <tr data-search="Vantage MXP2 Vantage Data Centers VDC MXP 21 S.r.l. Techbau Settimo Milanese Lombardia Consolidato Monitoraggio 10198" data-status="Consolidato">
           <td class="project-cell">
-            <a class="project-link" href="projects/vantage-mxp2.html"><strong>Vantage MXP2</strong></a>
+            <a class="project-link" href="projects/vantage-mxp2.html"><strong>Vantage MXP2</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=Via+Aganippo+Brocchi%2C+20019%2C+Castelletto%2C+Italy" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">📍</a>
             <br><span class="muted">ID 10198</span>
           </td>
           <td>Vantage Data Centers</td>
@@ -926,10 +990,210 @@
           <td class="num">143</td>
           <td class="num">26.000</td>
           <td><span class="badge grade-a" title="Dati principali coerenti e già  usabili.">OK</span></td>
-          <td class="sources-cell"><a class="link-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/10198" target="_blank" rel="noopener">MASE</a> <a class="link-pill" href="https://techbau.it/realizzazioni/vantage" target="_blank" rel="noopener">Techbau</a> <a class="link-pill" href="https://techbau.it/realizzazioni-data-center" target="_blank" rel="noopener">Techbau</a></td>
+          <td class="sources-cell"><a class="link-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/10198" target="_blank" rel="noopener">MASE</a> <a class="link-pill" href="https://techbau.it/realizzazioni/vantage" target="_blank" rel="noopener">Techbau</a> <a class="link-pill" href="https://techbau.it/realizzazioni-data-center" target="_blank" rel="noopener">Techbau</a> <a class="link-pill" href="https://www.datacentermap.com/italy/milan/vantage-mxp2-milan/" target="_blank" rel="noopener">DataCenterMap</a></td>
         </tr>
 
-        </tbody>
+        <!-- EXTERNAL_CANDIDATES_START -->
+
+        <tr data-search="CloudHQ MXP Campus CloudHQ Magenta Consolidato ready_missing_gc promotion_ready Under Construction DataCenterMap" data-status="Consolidato">
+
+          <td class="project-cell">
+            <a class="project-link" href="projects/cloudhq-mxp-campus.html"><strong>CloudHQ MXP Campus</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=V.le+Piemonte%2C+20013%2C+Magenta%2C+Italy" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">&#128205;</a>
+            <br><span class="muted">Fonte DataCenterMap</span>
+            <br><span class="muted">Pronto, GC da identificare</span>
+          </td>
+<td>CloudHQ</td>
+<td>NAMIRA S.G.R.P.A.</td>
+<td>Da identificare</td>
+<td>Magenta</td>
+<td class="num">240</td>
+<td class="num">—</td>
+<td class="num">204.387</td>
+<td><span class="badge grade-a" title="Candidato DataCenterMap validato: pronto per review master.">OK</span></td>
+<td class="sources-cell"><a class="link-pill" href="https://www.datacentermap.com/italy/milan/cloudhq-mxp-campus/" target="_blank" rel="noopener">DataCenterMap</a></td>
+        </tr>
+
+        <tr data-search="STACK Infrastructure MIL04 Campus STACK INFRASTRUCTURE Vellezzo Bellini Consolidato ready_missing_gc promotion_ready Under Construction DataCenterMap" data-status="Consolidato">
+
+          <td class="project-cell">
+            <a class="project-link" href="projects/stack-infrastructure-mil04-campus.html"><strong>STACK Infrastructure MIL04 Campus</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=1+Strada+Alzaia-fr.giovenzano%2C+27010%2C+Vellezzo+Bellini%2C+Italy" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">&#128205;</a>
+            <br><span class="muted">Fonte DataCenterMap</span>
+            <br><span class="muted">Pronto, GC da identificare</span>
+          </td>
+<td>STACK INFRASTRUCTURE</td>
+<td>Infrastructure Italia Land 4 S.r.l.</td>
+<td>Da identificare</td>
+<td>Vellezzo Bellini</td>
+<td class="num">64</td>
+<td class="num">—</td>
+<td class="num">109.265</td>
+<td><span class="badge grade-a" title="Candidato DataCenterMap validato: pronto per review master.">OK</span></td>
+<td class="sources-cell"><a class="link-pill" href="https://www.datacentermap.com/italy/milan/stack-infrastructure-mil04-campus/" target="_blank" rel="noopener">DataCenterMap</a></td>
+        </tr>
+
+        <tr data-search="Vantage MXP1 - Milan Vantage Data Centers Melegnano Consolidato ready_missing_gc promotion_ready Under Construction DataCenterMap" data-status="Consolidato">
+
+          <td class="project-cell">
+            <a class="project-link" href="projects/vantage-mxp1-milan.html"><strong>Vantage MXP1 - Milan</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=Via+per+Carpiano+30%2C+20077%2C+Melegnano%2C+Italy" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">&#128205;</a>
+            <br><span class="muted">Fonte DataCenterMap</span>
+            <br><span class="muted">Pronto, GC da identificare</span>
+          </td>
+<td>Vantage Data Centers</td>
+<td>VDC MXP 11 S.r.l.</td>
+<td>Da identificare</td>
+<td>Melegnano</td>
+<td class="num">64</td>
+<td class="num">—</td>
+<td class="num">48.000</td>
+<td><span class="badge grade-a" title="Candidato DataCenterMap validato: pronto per review master.">OK</span></td>
+<td class="sources-cell"><a class="link-pill" href="https://www.datacentermap.com/italy/milan/vantage-mxp1-milan/" target="_blank" rel="noopener">DataCenterMap</a></td>
+        </tr>
+
+        <tr data-search="Retelit Corsico Retelit SPA Corsico Parziale partial_public_confirmation near_ready Under Construction DataCenterMap" data-status="Parziale">
+
+          <td class="project-cell">
+            <a class="project-link" href="projects/retelit-corsico.html"><strong>Retelit Corsico</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=Via+Antonio+Canova%2C+7%2F9%2C+20094%2C+Corsico%2C+Italy" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">&#128205;</a>
+            <br><span class="muted">Fonte DataCenterMap</span>
+            <br><span class="muted">Conferma pubblica parziale</span>
+          </td>
+<td>Retelit SPA</td>
+<td>Retelit Datacenter S.r.l.</td>
+<td>Da identificare</td>
+<td>Corsico</td>
+<td class="num">13,6</td>
+<td class="num">—</td>
+<td class="num">18.000</td>
+<td><span class="badge grade-c" title="Candidato DataCenterMap confermato ma con validazione pubblica incompleta.">Parziale</span></td>
+<td class="sources-cell"><a class="link-pill" href="https://www.datacentermap.com/italy/milan/retelit-corsico-dc/" target="_blank" rel="noopener">DataCenterMap</a></td>
+        </tr>
+
+        <tr data-search="CyrusOne MIL2 - Milan CyrusOne Data Centers Segrate Parziale operator_confirmed_only tracked_review Planned DataCenterMap" data-status="Parziale">
+
+          <td class="project-cell">
+            <a class="project-link" href="projects/cyrusone-mil2-milan.html"><strong>CyrusOne MIL2 - Milan</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=Via+Raffaele+Rubattino%2C+90%2C+20134%2C+Segrate%2C+Italy" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">&#128205;</a>
+            <br><span class="muted">Fonte DataCenterMap</span>
+            <br><span class="muted">Solo operatore confermato</span>
+          </td>
+<td>CyrusOne Data Centers</td>
+<td>Da verificare</td>
+<td>Da identificare</td>
+<td>Segrate</td>
+<td class="num">54</td>
+<td class="num">—</td>
+<td class="num">79.639</td>
+<td><span class="badge grade-c" title="Candidato DataCenterMap confermato ma con validazione pubblica incompleta.">Parziale</span></td>
+<td class="sources-cell"><a class="link-pill" href="https://www.datacentermap.com/italy/milan/cyrusone-mil2/" target="_blank" rel="noopener">DataCenterMap</a></td>
+        </tr>
+
+        <tr data-search="GDC - Milan 1 Data Center NTT DATA, Inc. Melegnano Parziale operator_confirmed_only tracked_review Land Banked DataCenterMap" data-status="Parziale">
+
+          <td class="project-cell">
+            <a class="project-link" href="projects/gdc-milan-1-data-center.html"><strong>GDC - Milan 1 Data Center</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=Via+per+Carpiano%2C+20077%2C+Melegnano%2C+Italy" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">&#128205;</a>
+            <br><span class="muted">Fonte DataCenterMap</span>
+            <br><span class="muted">Solo operatore confermato</span>
+          </td>
+<td>NTT DATA, Inc.</td>
+<td>Da verificare</td>
+<td>Da identificare</td>
+<td>Melegnano</td>
+<td class="num">128</td>
+<td class="num">—</td>
+<td class="num">214.483</td>
+<td><span class="badge grade-c" title="Candidato DataCenterMap confermato ma con validazione pubblica incompleta.">Parziale</span></td>
+<td class="sources-cell"><a class="link-pill" href="https://www.datacentermap.com/italy/milan/ntt-milan/" target="_blank" rel="noopener">DataCenterMap</a></td>
+        </tr>
+
+        <tr data-search="hscale MXP1 hscale Arluno Parziale operator_confirmed_only tracked_review Planned DataCenterMap" data-status="Parziale">
+
+          <td class="project-cell">
+            <a class="project-link" href="projects/hscale-mxp1.html"><strong>hscale MXP1</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=Via+Padre+Massimiliano+Kolbe%2C+20004%2C+Arluno%2C+Italy" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">&#128205;</a>
+            <br><span class="muted">Fonte DataCenterMap</span>
+            <br><span class="muted">Solo operatore confermato</span>
+          </td>
+<td>hscale</td>
+<td>Da verificare</td>
+<td>Da identificare</td>
+<td>Arluno</td>
+<td class="num">48</td>
+<td class="num">—</td>
+<td class="num">74.866</td>
+<td><span class="badge grade-c" title="Candidato DataCenterMap confermato ma con validazione pubblica incompleta.">Parziale</span></td>
+<td class="sources-cell"><a class="link-pill" href="https://www.datacentermap.com/italy/milan/hscale-mxp1-campus/" target="_blank" rel="noopener">DataCenterMap</a></td>
+        </tr>
+
+        <tr data-search="MIX Data Center MIX SRL Milano Fonti esterne necessarie existing_operational_reference tracked_review Planned DataCenterMap" data-status="Fonti esterne necessarie">
+
+          <td class="project-cell">
+            <a class="project-link" href="projects/mix-data-center.html"><strong>MIX Data Center</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=Via+Caldera+21%2C+Building+D%2C+20153%2C+Milano%2C+Italy" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">&#128205;</a>
+            <br><span class="muted">Fonte DataCenterMap</span>
+            <br><span class="muted">Asset esistente</span>
+          </td>
+<td>MIX SRL</td>
+<td>Da verificare</td>
+<td>Da identificare</td>
+<td>Milano</td>
+<td class="num">—</td>
+<td class="num">—</td>
+<td class="num">—</td>
+<td><span class="badge grade-d" title="Candidato da fonte esterna: utile per review, non promuovere automaticamente.">Fonti ext.</span></td>
+<td class="sources-cell"><a class="link-pill" href="https://www.datacentermap.com/italy/milan/mix/" target="_blank" rel="noopener">DataCenterMap</a></td>
+        </tr>
+
+        <tr data-search="STACK Infrastructure MIL04A STACK INFRASTRUCTURE Vellezzo Bellini Fonti esterne necessarie existing_project_child_or_enrichment tracked_review Under Construction DataCenterMap" data-status="Fonti esterne necessarie">
+
+          <td class="project-cell">
+            <a class="project-link" href="projects/stack-infrastructure-mil04a.html"><strong>STACK Infrastructure MIL04A</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=1+Strada+Alzaia-fr.giovenzano%2C+27010%2C+Vellezzo+Bellini%2C+Italy" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">&#128205;</a>
+            <br><span class="muted">Fonte DataCenterMap</span>
+            <br><span class="muted">Child/enrichment</span>
+          </td>
+<td>STACK INFRASTRUCTURE</td>
+<td>Infrastructure Italia Land 4 S.r.l.</td>
+<td>Da identificare</td>
+<td>Vellezzo Bellini</td>
+<td class="num">10</td>
+<td class="num">—</td>
+<td class="num">6.630</td>
+<td><span class="badge grade-d" title="Candidato da fonte esterna: utile per review, non promuovere automaticamente.">Fonti ext.</span></td>
+<td class="sources-cell"><a class="link-pill" href="https://www.datacentermap.com/italy/milan/stack-infrastructure-mil04a/" target="_blank" rel="noopener">DataCenterMap</a></td>
+        </tr>
+
+        <tr data-search="STACK Infrastructure MIL08B STACK INFRASTRUCTURE Siziano Fonti esterne necessarie existing_project_child_or_enrichment tracked_review Planned DataCenterMap" data-status="Fonti esterne necessarie">
+
+          <td class="project-cell">
+            <a class="project-link" href="projects/stack-infrastructure-mil08b.html"><strong>STACK Infrastructure MIL08B</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=Strada+Provinciale+Binasco+Melegnano%2C+27010%2C+Siziano%2C+Italy" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">&#128205;</a>
+            <br><span class="muted">Fonte DataCenterMap</span>
+            <br><span class="muted">Child/enrichment</span>
+          </td>
+<td>STACK INFRASTRUCTURE</td>
+<td>Infrastructure Italia Land 2 S.r.l.</td>
+<td>Da identificare</td>
+<td>Siziano</td>
+<td class="num">5</td>
+<td class="num">—</td>
+<td class="num">6.200</td>
+<td><span class="badge grade-d" title="Candidato da fonte esterna: utile per review, non promuovere automaticamente.">Fonti ext.</span></td>
+<td class="sources-cell"><a class="link-pill" href="https://www.datacentermap.com/italy/milan/stack-infrastructure-mil08b/" target="_blank" rel="noopener">DataCenterMap</a></td>
+        </tr>
+
+        <tr data-search="VIRTUS MILAN1 VIRTUS Data Centres Cornaredo Parziale operator_confirmed_only tracked_review Planned DataCenterMap" data-status="Parziale">
+
+          <td class="project-cell">
+            <a class="project-link" href="projects/virtus-milan1.html"><strong>VIRTUS MILAN1</strong></a> <a class="map-icon" href="https://www.google.com/maps/search/?api=1&amp;query=Via+Brennero%2C+20007%2C+Cornaredo%2C+Italy" target="_blank" rel="noopener" title="Apri in Google Maps" aria-label="Apri in Google Maps">&#128205;</a>
+            <br><span class="muted">Fonte DataCenterMap</span>
+            <br><span class="muted">Solo operatore confermato</span>
+          </td>
+<td>VIRTUS Data Centres</td>
+<td>Da verificare</td>
+<td>Da identificare</td>
+<td>Cornaredo</td>
+<td class="num">42</td>
+<td class="num">—</td>
+<td class="num">71.000</td>
+<td><span class="badge grade-c" title="Candidato DataCenterMap confermato ma con validazione pubblica incompleta.">Parziale</span></td>
+<td class="sources-cell"><a class="link-pill" href="https://www.datacentermap.com/italy/milan/virtus-milan1/" target="_blank" rel="noopener">DataCenterMap</a></td>
+        </tr>
+        <!-- EXTERNAL_CANDIDATES_END -->
+</tbody>
       </table>
     </div>
 

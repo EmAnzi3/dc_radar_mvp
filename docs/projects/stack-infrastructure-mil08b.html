@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>STACK Infrastructure MIL08B - Data Center Radar</title>
+<style>
+:root {
+  --bg:#f5f7fb;
+  --text:#172033;
+  --muted:#667085;
+  --line:#dfe4ea;
+  --panel:#ffffff;
+  --blue:#0f4c81;
+  --dark:#08111f;
+  --good-bg:#ecfdf3;
+  --good:#166534;
+  --warn-bg:#fff7ed;
+  --warn:#92400e;
+  --neutral-bg:#eff6ff;
+  --neutral:#0f4c81;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+header {
+  background:linear-gradient(135deg,var(--dark),var(--blue));
+  color:white;
+  padding:26px 30px;
+}
+header h1 { margin:0; font-size:30px; }
+header p { margin:8px 0 0; color:#dbeafe; }
+main {
+  max-width:1300px;
+  margin:0 auto;
+  padding:20px;
+}
+.panel {
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:18px;
+  box-shadow:0 8px 22px rgba(15,23,42,.07);
+  padding:18px;
+  margin-bottom:16px;
+}
+.nav a {
+  color:var(--blue);
+  font-weight:800;
+  text-decoration:none;
+}
+.badge {
+  display:inline-block;
+  padding:5px 10px;
+  border-radius:999px;
+  font-weight:800;
+  font-size:12px;
+}
+.badge.good { background:var(--good-bg); color:var(--good); }
+.badge.warn { background:var(--warn-bg); color:var(--warn); }
+.badge.neutral { background:var(--neutral-bg); color:var(--neutral); }
+.actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:14px;
+}
+.btn, .source-pill {
+  display:inline-block;
+  padding:7px 11px;
+  border-radius:999px;
+  background:var(--neutral-bg);
+  color:var(--neutral);
+  text-decoration:none;
+  font-weight:800;
+  font-size:13px;
+}
+.btn.maps {
+  background:var(--good-bg);
+  color:var(--good);
+}
+dl {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin:0;
+}
+.field {
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:12px;
+  background:#fbfdff;
+}
+dt {
+  color:var(--muted);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  margin-bottom:5px;
+}
+dd {
+  margin:0;
+  font-weight:800;
+}
+h2 {
+  margin:0 0 12px;
+  font-size:20px;
+}
+.facts p {
+  margin:0 0 10px;
+  line-height:1.45;
+}
+.muted {
+  color:var(--muted);
+}
+@media (max-width:900px) {
+  dl { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>STACK Infrastructure MIL08B</h1>
+  <p>Scheda progetto da DataCenterMap review · generata il 2026-06-02T01:08:32</p>
+</header>
+<main>
+  <div class="nav panel">
+    <a href="../index.html">← Torna alla dashboard principale</a>
+  </div>
+
+  <section class="panel">
+    <span class="badge neutral" title="Child/enrichment progetto esistente">Fonti ext.</span>
+    <div class="actions">
+      <a class="btn maps" href="https://www.google.com/maps/search/?api=1&amp;query=Strada+Provinciale+Binasco+Melegnano%2C+27010%2C+Siziano%2C+Italy" target="_blank" rel="noopener">Google Maps</a>
+      <a class="btn " href="https://www.datacentermap.com/italy/milan/stack-infrastructure-mil08b/" target="_blank" rel="noopener">DataCenterMap</a>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Dati principali</h2>
+    <dl>
+
+      <div class="field">
+        <dt>Operatore</dt>
+        <dd>STACK INFRASTRUCTURE</dd>
+      </div>
+
+
+      <div class="field">
+        <dt>Proponente</dt>
+        <dd>Infrastructure Italia Land 2 S.r.l.</dd>
+      </div>
+
+
+      <div class="field">
+        <dt>GC / contractor</dt>
+        <dd>Da identificare</dd>
+      </div>
+
+
+      <div class="field">
+        <dt>Stato DCM raw</dt>
+        <dd>Planned</dd>
+      </div>
+
+
+      <div class="field">
+        <dt>Comune</dt>
+        <dd>Siziano</dd>
+      </div>
+
+
+      <div class="field">
+        <dt>MW IT</dt>
+        <dd>5 MW</dd>
+      </div>
+
+
+      <div class="field">
+        <dt>Superficie</dt>
+        <dd>6.200 m²</dd>
+      </div>
+
+
+      <div class="field">
+        <dt>Readiness</dt>
+        <dd>Child/enrichment progetto esistente</dd>
+      </div>
+
+
+      <div class="field">
+        <dt>Bucket</dt>
+        <dd>tracked_review</dd>
+      </div>
+
+    </dl>
+  </section>
+
+  <section class="panel">
+    <h2>Ubicazione</h2>
+    <p><strong>Strada Provinciale Binasco Melegnano, 27010, Siziano, Italy</strong></p>
+  </section>
+
+  <section class="panel">
+    <h2>Validazione</h2>
+    <dl>
+
+      <div class="field">
+        <dt>Layer confermati</dt>
+        <dd>—</dd>
+      </div>
+
+
+      <div class="field">
+        <dt>Layer aperti</dt>
+        <dd>—</dd>
+      </div>
+
+
+      <div class="field">
+        <dt>Raccomandazione</dt>
+        <dd>Non promuovere come nuovo master: usare come child facility, espansione o enrichment di progetto esistente.</dd>
+      </div>
+
+    </dl>
+  </section>
+
+  <section class="panel facts">
+    <h2>Facts sintetici</h2>
+    <p>operator_site: DataCenterMap describes STACK Infrastructure MIL08 Campus in Siziano as comprising two facilities: MIL08A and MIL08B. MIL08B is described as providing 5 MW capacity across 153,820 square feet. Treat MIL08B as child facility / expansion of the existing Stack Campus Siziano record, not as standalone master project.</p>
+<p>regional_via_vas: MASE/environmental documentation refers to the development/expansion of existing STACK settlements including MIL08B. This supports classification as part of the wider Stack Campus Siziano / Infrastructure Italia Land 2 perimeter.</p>
+<p>municipality_suap_albo: MASE public notice refers to Data Center Stack Campus Siziano, Via Marche 8, Siziano (PV), and mentions unit denominated MIL08B. Proponent/project perimeter: Infrastructure Italia Land 2 S.r.l.</p>
+<p>mase: MASE object found: Data Center Stack Campus Siziano (PV). Proponent: Infrastructure Italia Land 2 S.r.l. MIL08B should be treated as an enrichment/child facility of this existing project perimeter.</p>
+<p>contractor_gc: SCL LinkedIn post cites STACK MIL08B Data Center in Siziano, project area 6,200 sqm, year 2025 ongoing. It lists architectural design by IRR Engineering, general site supervision by Lombardini22, and structural construction supervision by SCL. These are technical/design/supervision roles, not a reliable named GC attribution.</p>
+  </section>
+
+  <section class="panel">
+    <h2>Fonti</h2>
+    <p><span class="muted">—</span></p>
+  </section>
+</main>
+</body>
+</html>
