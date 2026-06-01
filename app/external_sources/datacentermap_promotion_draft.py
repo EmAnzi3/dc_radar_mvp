@@ -79,6 +79,9 @@ def extract_authorization_proponent(summary_facts: str) -> str:
     known_proponents = [
         "NAMIRA S.G.R.P.A.",
         "NAMIRA SGRPA",
+        "VDC MXP 11 S.r.l.",
+        "VDC MXP 11 Srl",
+        "VDC MXP 11 S.R.L.",
     ]
 
     upper_facts = facts.upper()
@@ -119,20 +122,33 @@ def extract_it_power(summary_facts: str) -> str:
     return ""
 
 
-def extract_area_m2(summary_facts: str) -> str:
-    m = re.search(r"(\d[\d,.]*)\s*m²", summary_facts, re.I)
+def normalize_area_number(raw: str) -> str:
+    raw = clean(raw)
 
-    if not m:
-        return ""
-
-    raw = clean(m.group(1))
-
-    # Caso anglosassone 204,387 -> 204.387
+    # 204,387 -> 204.387
+    # 48,000  -> 48.000
     if "," in raw and "." not in raw:
         raw = raw.replace(",", ".")
 
-    return f"{raw} m²"
+    return raw
 
+
+def extract_area_m2(summary_facts: str) -> str:
+    facts = clean(summary_facts)
+
+    patterns = [
+        r"(\d[\d,.]*)\s*m²",
+        r"(\d[\d,.]*)\s*square\s+meters",
+        r"(\d[\d,.]*)\s*sq\s*m",
+        r"(\d[\d,.]*)\s*sqm",
+    ]
+
+    for pattern in patterns:
+        m = re.search(pattern, facts, re.I)
+        if m:
+            return f"{normalize_area_number(m.group(1))} m²"
+
+    return ""
 
 def build_rows() -> list[dict[str, str]]:
     summary_rows = read_csv(SUMMARY)
