@@ -26,6 +26,7 @@ NEAR_READY_READINESS = {
 TRACKED_READINESS = {
     "operator_confirmed_only",
     "existing_project_child_or_enrichment",
+    "existing_operational_reference",
     "pending_validation",
     "weak_or_no_public_evidence",
     "not_validated",

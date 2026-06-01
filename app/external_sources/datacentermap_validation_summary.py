@@ -41,6 +41,17 @@ def readiness_for_candidate(tasks: list[dict[str, str]]) -> tuple[str, str]:
         if clean(t.get("result_status"))
     }
 
+    existing_asset_statuses = {
+        "existing_operational_reference",
+        "not_applicable_existing_asset",
+    }
+
+    if result_statuses and result_statuses.intersection(existing_asset_statuses):
+        return (
+            "existing_operational_reference",
+            "Asset esistente/reference: utile da mostrare in tabella generale, ma non promuovere come nuova pipeline."
+        )
+
     child_or_enrichment_statuses = {
         "child_facility_of_existing_project",
         "covered_by_existing_stack_campus",
@@ -165,6 +176,7 @@ def build_rows() -> list[dict[str, str]]:
         "pending_validation": 5,
         "weak_or_no_public_evidence": 6,
         "existing_project_child_or_enrichment": 5,
+        "existing_operational_reference": 6,
         "not_validated": 7,
     }
 
