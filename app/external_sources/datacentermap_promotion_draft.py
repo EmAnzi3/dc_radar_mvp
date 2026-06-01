@@ -102,6 +102,10 @@ def extract_authorization_proponent(summary_facts: str) -> str:
         "INFRASTRUCTURE ITALIA LAND 4 S.r.l.",
         "Infrastructure Italia Land 4 Srl",
         "INFRASTRUCTURE ITALIA LAND 4 S.R.L.",
+        "Infrastructure Italia Land 2 S.r.l.",
+        "INFRASTRUCTURE ITALIA LAND 2 S.r.l.",
+        "Infrastructure Italia Land 2 Srl",
+        "INFRASTRUCTURE ITALIA LAND 2 S.R.L.",
     ]
 
     upper_facts = facts.upper()

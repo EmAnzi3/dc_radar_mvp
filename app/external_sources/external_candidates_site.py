@@ -2,6 +2,7 @@
 
 import csv
 import html
+import re
 from collections import Counter
 from datetime import datetime
 from pathlib import Path
@@ -97,22 +98,31 @@ def readiness_class(value: str) -> str:
 
 
 def source_links_html(value: str) -> str:
+    raw = clean(value)
+
+    if not raw:
+        return '<span class="muted">—</span>'
+
     items = []
+    pos = 0
 
-    for source in clean(value).split(" | "):
-        source = clean(source)
-        if not source:
-            continue
+    for match in re.finditer(r"<([^<>]+)>", raw):
+        label = raw[pos:match.start()].strip()
+        label = label.strip("|").strip()
+        url = match.group(1).strip()
 
-        if "<" in source and source.endswith(">"):
-            label = source.split("<", 1)[0].strip()
-            url = source.split("<", 1)[1].rstrip(">").strip()
-            items.append(f'<a class="source-pill" href="{esc(url)}" target="_blank" rel="noopener">{esc(label)}</a>')
-        else:
-            items.append(f'<span class="source-pill">{esc(source)}</span>')
+        if label and url:
+            items.append(
+                f'<a class="source-pill" href="{esc(url)}" target="_blank" rel="noopener">{esc(label)}</a>'
+            )
+
+        pos = match.end()
+
+    tail = raw[pos:].strip().strip("|").strip()
+    if tail:
+        items.append(f'<span class="source-pill">{esc(tail)}</span>')
 
     return " ".join(items) if items else '<span class="muted">—</span>'
-
 
 def render_kpis(rows: list[dict[str, str]]) -> str:
     buckets = Counter(clean(r.get("draft_bucket")) for r in rows)
@@ -197,7 +207,7 @@ def render_cards(rows: list[dict[str, str]]) -> str:
               <div class="value weak">{esc(r.get("contractor_or_partner")) or "Da identificare"}</div>
             </div>
             <div>
-              <div class="label">Stato DCM</div>
+              <div class="label">Stato DCM raw</div>
               <div class="value">{esc(r.get("dcm_status")) or "—"}</div>
             </div>
             <div>
