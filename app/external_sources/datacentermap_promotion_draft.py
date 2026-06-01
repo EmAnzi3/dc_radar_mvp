@@ -197,8 +197,8 @@ def extract_area_m2(summary_facts: str) -> str:
 
     # 2) Acres -> solo m².
     acre_patterns = [
-        r"(\d[\d,.]*)\s*acres?",
-        r"(\d[\d,.]*)\s*acre\b",
+        r"(\d[\d,.]*)\s*[-–—]?\s*acres?",
+        r"(\d[\d,.]*)\s*[-–—]?\s*acre\b",
     ]
 
     for pattern in acre_patterns:
