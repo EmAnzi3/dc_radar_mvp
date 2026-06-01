@@ -73,18 +73,32 @@ def source_links(tasks: list[dict[str, str]]) -> str:
 
 
 def extract_authorization_proponent(summary_facts: str) -> str:
+    facts = clean(summary_facts)
+
+    # Casi noti: evita che gli acronimi societari con punti vengano troncati.
+    known_proponents = [
+        "NAMIRA S.G.R.P.A.",
+        "NAMIRA SGRPA",
+    ]
+
+    upper_facts = facts.upper()
+    for proponent in known_proponents:
+        if proponent.upper() in upper_facts:
+            return proponent
+
     patterns = [
-        r"\bproponent\s+([^.;|]+)",
-        r"\bproponente\s+([^.;|]+)",
+        r"\bproponent\s+(.+?)(?:\s+This confirms|\s*\|\||$)",
+        r"\bproponente\s+(.+?)(?:\s+This confirms|\s*\|\||$)",
     ]
 
     for pattern in patterns:
-        m = re.search(pattern, summary_facts, re.I)
+        m = re.search(pattern, facts, re.I)
         if m:
-            return clean(m.group(1))
+            value = clean(m.group(1))
+            value = re.sub(r"\s+", " ", value)
+            return value.rstrip(" .;,")
 
     return ""
-
 
 def extract_it_power(summary_facts: str) -> str:
     # Preferisce il totale, se presente.
