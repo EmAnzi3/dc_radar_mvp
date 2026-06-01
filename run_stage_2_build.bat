@@ -40,6 +40,9 @@ if errorlevel 1 exit /b 1
 echo Generazione report affidabilita facts MASE...
 python -m app.mase_facts_confidence_report
 if errorlevel 1 exit /b 1
+echo Generazione action queue MASE facts...
+python -m app.mase_facts_action_queue
+if errorlevel 1 exit /b 1
 echo Generazione matrice copertura/enrichment DC...
 python -m app.dc_enrichment_matrix
 if errorlevel 1 exit /b 1
