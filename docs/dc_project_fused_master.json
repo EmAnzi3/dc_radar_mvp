@@ -28,7 +28,11 @@
     "confidence_grade": "C",
     "missing_fields": "MW IT | MWt | superficie",
     "next_action": "Mancano MW IT e MWt primario: cercare nei PDF principali e poi in fonti developer/commerciali.",
-    "technical_notes": "Facts MASE poveri; identità progetto/proponente normalizzata da target MASE. Da completare con fonti locali/commerciali. Curated by app.mase_dashboard_curator."
+    "technical_notes": "Facts MASE poveri; identità progetto/proponente normalizzata da target MASE. Da completare con fonti locali/commerciali. Curated by app.mase_dashboard_curator.",
+    "external_promoted_fields": "",
+    "external_promoted_sources": "",
+    "external_promoted_updated_at": "",
+    "thermal_power_mwt": ""
   },
   {
     "project": "ROM1",
@@ -59,7 +63,11 @@
     "confidence_grade": "",
     "missing_fields": "",
     "next_action": "Local authorities / commercial sources",
-    "technical_notes": ""
+    "technical_notes": "",
+    "external_promoted_fields": "",
+    "external_promoted_sources": "",
+    "external_promoted_updated_at": "",
+    "thermal_power_mwt": ""
   },
   {
     "project": "DATA4 Cornaredo",
@@ -90,7 +98,11 @@
     "confidence_grade": "D",
     "missing_fields": "MW IT | MWt | superficie",
     "next_action": "MASE insufficiente: usare Comune/SUAP/Regione/Città Metropolitana e fonti developer-commerciali. || Local authorities / commercial sources",
-    "technical_notes": "MASE 11512 agganciato ma facts strutturali insufficienti. Usare fonti locali/commerciali per MW IT, contractor, iter e dettagli campus. || MASE 11998 agganciato ma facts strutturali insufficienti. Possibile fascicolo complementare del campus DATA4 Cornaredo/Settimo Milanese."
+    "technical_notes": "MASE 11512 agganciato ma facts strutturali insufficienti. Usare fonti locali/commerciali per MW IT, contractor, iter e dettagli campus. || MASE 11998 agganciato ma facts strutturali insufficienti. Possibile fascicolo complementare del campus DATA4 Cornaredo/Settimo Milanese.",
+    "external_promoted_fields": "",
+    "external_promoted_sources": "",
+    "external_promoted_updated_at": "",
+    "thermal_power_mwt": ""
   },
   {
     "project": "Apto Lacchiarella",
@@ -121,7 +133,11 @@
     "confidence_grade": "C",
     "missing_fields": "MW IT | MWt | superficie",
     "next_action": "Mancano MW IT e MWt primario: cercare nei PDF principali e poi in fonti developer/commerciali.",
-    "technical_notes": "Molti candidati MWt e superfici estratti; non selezionato un valore primario per evitare dato fuorviante. Richiede verifica PDF. Curated by app.mase_dashboard_curator."
+    "technical_notes": "Molti candidati MWt e superfici estratti; non selezionato un valore primario per evitare dato fuorviante. Richiede verifica PDF. Curated by app.mase_dashboard_curator.",
+    "external_promoted_fields": "",
+    "external_promoted_sources": "",
+    "external_promoted_updated_at": "",
+    "thermal_power_mwt": ""
   },
   {
     "project": "Retelit Avalon 3",
@@ -140,10 +156,10 @@
     "mw_it": "",
     "mw_it_sources": "",
     "mw_it_source_urls": "",
-    "thermal_mwt": "",
+    "thermal_mwt": "2,5 MWt",
     "thermal_mwt_sources": "",
     "thermal_mwt_source_urls": "",
-    "site_area_m2": "",
+    "site_area_m2": "13.000 (3.500 sup. costruita)",
     "site_area_sources": "",
     "site_area_source_urls": "",
     "campus_codes": "",
@@ -152,7 +168,11 @@
     "confidence_grade": "",
     "missing_fields": "",
     "next_action": "MASE PDF extraction",
-    "technical_notes": ""
+    "technical_notes": "",
+    "external_promoted_fields": "thermal_mwt | site_area_m2",
+    "external_promoted_sources": "Retelit | A2A Calore e Servizi | DBA Group | Avalon Campus | Retelit | A2A Calore e Servizi | Retelit | A2A Calore e Servizi | DBA Group",
+    "external_promoted_updated_at": "2026-06-01T19:44:37",
+    "thermal_power_mwt": "2,5 MWt"
   },
   {
     "project": "Equinix ML10-ML11",
@@ -183,7 +203,11 @@
     "confidence_grade": "C",
     "missing_fields": "MW IT | MWt | superficie",
     "next_action": "Mancano MW IT e MWt primario: cercare nei PDF principali e poi in fonti developer/commerciali.",
-    "technical_notes": "Campus e proponente corretti da target MASE; scartati riferimenti contaminanti a Vantage/ML7/ML8/ML9/MXP2. Curated by app.mase_dashboard_curator."
+    "technical_notes": "Campus e proponente corretti da target MASE; scartati riferimenti contaminanti a Vantage/ML7/ML8/ML9/MXP2. Curated by app.mase_dashboard_curator.",
+    "external_promoted_fields": "",
+    "external_promoted_sources": "",
+    "external_promoted_updated_at": "",
+    "thermal_power_mwt": ""
   },
   {
     "project": "Equinix ML5-ML6",
@@ -214,7 +238,11 @@
     "confidence_grade": "C",
     "missing_fields": "MW IT | MWt | superficie",
     "next_action": "Mancano MW IT e MWt primario: cercare nei PDF principali e poi in fonti developer/commerciali.",
-    "technical_notes": "Campus corretto da titolo MASE; scartato riferimento spurio a ML9. Candidati MWt presenti ma da verificare. Curated by app.mase_dashboard_curator."
+    "technical_notes": "Campus corretto da titolo MASE; scartato riferimento spurio a ML9. Candidati MWt presenti ma da verificare. Curated by app.mase_dashboard_curator.",
+    "external_promoted_fields": "",
+    "external_promoted_sources": "",
+    "external_promoted_updated_at": "",
+    "thermal_power_mwt": ""
   },
   {
     "project": "Stack Campus Siziano",
@@ -245,7 +273,11 @@
     "confidence_grade": "C",
     "missing_fields": "MW IT | MWt | superficie",
     "next_action": "Mancano MW IT e MWt primario: cercare nei PDF principali e poi in fonti developer/commerciali.",
-    "technical_notes": "Molti candidati MWt e superfici estratti; non selezionato un valore primario per evitare dato fuorviante. Richiede verifica PDF. Curated by app.mase_dashboard_curator."
+    "technical_notes": "Molti candidati MWt e superfici estratti; non selezionato un valore primario per evitare dato fuorviante. Richiede verifica PDF. Curated by app.mase_dashboard_curator.",
+    "external_promoted_fields": "",
+    "external_promoted_sources": "",
+    "external_promoted_updated_at": "",
+    "thermal_power_mwt": ""
   },
   {
     "project": "AWS Zibido San Giacomo",
@@ -276,7 +308,11 @@
     "confidence_grade": "C",
     "missing_fields": "MW IT | MWt | superficie",
     "next_action": "Mancano MW IT e MWt primario: cercare nei PDF principali e poi in fonti developer/commerciali.",
-    "technical_notes": "Identità progetto/proponente normalizzata da target MASE. Candidati MWt presenti ma da verificare. Curated by app.mase_dashboard_curator."
+    "technical_notes": "Identità progetto/proponente normalizzata da target MASE. Candidati MWt presenti ma da verificare. Curated by app.mase_dashboard_curator.",
+    "external_promoted_fields": "",
+    "external_promoted_sources": "",
+    "external_promoted_updated_at": "",
+    "thermal_power_mwt": ""
   },
   {
     "project": "Aruba Roma Tecnopolo Tiburtino",
@@ -307,7 +343,11 @@
     "confidence_grade": "B",
     "missing_fields": "MW IT | superficie",
     "next_action": "Verificare su PDF il dato tecnico primario già individuato.",
-    "technical_notes": "Proponente pulito da target MASE; potenza termica 50 MWt dai candidati estratti. Da verificare su documento PDF. Curated by app.mase_dashboard_curator."
+    "technical_notes": "Proponente pulito da target MASE; potenza termica 50 MWt dai candidati estratti. Da verificare su documento PDF. Curated by app.mase_dashboard_curator.",
+    "external_promoted_fields": "",
+    "external_promoted_sources": "",
+    "external_promoted_updated_at": "",
+    "thermal_power_mwt": ""
   },
   {
     "project": "Data Center Campus 133 Generatori",
@@ -338,7 +378,11 @@
     "confidence_grade": "B",
     "missing_fields": "MW IT | superficie",
     "next_action": "Verificare su PDF il dato tecnico primario già individuato.",
-    "technical_notes": "Titolo MASE indica 133 generatori e circa 1.000 MWt. Valore da verificare su elaborato tecnico. Curated by app.mase_dashboard_curator."
+    "technical_notes": "Titolo MASE indica 133 generatori e circa 1.000 MWt. Valore da verificare su elaborato tecnico. Curated by app.mase_dashboard_curator.",
+    "external_promoted_fields": "",
+    "external_promoted_sources": "",
+    "external_promoted_updated_at": "",
+    "thermal_power_mwt": ""
   },
   {
     "project": "Microsoft Bornasco",
@@ -369,7 +413,11 @@
     "confidence_grade": "A",
     "missing_fields": "MW IT",
     "next_action": "Scheda pronta: mantenere in monitoraggio e aggiornare se emergono nuovi documenti.",
-    "technical_notes": "Campus MIL05+MIL06; superficie e catasto coerenti con i candidati estratti."
+    "technical_notes": "Campus MIL05+MIL06; superficie e catasto coerenti con i candidati estratti.",
+    "external_promoted_fields": "",
+    "external_promoted_sources": "",
+    "external_promoted_updated_at": "",
+    "thermal_power_mwt": ""
   },
   {
     "project": "CyrusOne MIL1",
@@ -400,7 +448,11 @@
     "confidence_grade": "A",
     "missing_fields": "MW IT | superficie",
     "next_action": "Scheda pronta: mantenere in monitoraggio e aggiornare se emergono nuovi documenti. || Local authorities / commercial sources",
-    "technical_notes": "MASE 10977: proponente CyrusOne Italy I S.r.l.; potenza termica gruppi elettrogeni 132 MWt; utilities Enel/Terna; consulente Ramboll Italy."
+    "technical_notes": "MASE 10977: proponente CyrusOne Italy I S.r.l.; potenza termica gruppi elettrogeni 132 MWt; utilities Enel/Terna; consulente Ramboll Italy.",
+    "external_promoted_fields": "",
+    "external_promoted_sources": "",
+    "external_promoted_updated_at": "",
+    "thermal_power_mwt": ""
   },
   {
     "project": "Equinix ML7-ML8",
@@ -431,7 +483,11 @@
     "confidence_grade": "A",
     "missing_fields": "MW IT | superficie",
     "next_action": "Scheda pronta: mantenere in monitoraggio e aggiornare se emergono nuovi documenti. || Monitoring",
-    "technical_notes": "Potenza aggiornata Proposta 2025: 133.6 MWt. Il valore 124.6 MWt si riferisce alla Proposta 2022; 150/50 MWt sono soglie normative."
+    "technical_notes": "Potenza aggiornata Proposta 2025: 133.6 MWt. Il valore 124.6 MWt si riferisce alla Proposta 2022; 150/50 MWt sono soglie normative.",
+    "external_promoted_fields": "",
+    "external_promoted_sources": "",
+    "external_promoted_updated_at": "",
+    "thermal_power_mwt": ""
   },
   {
     "project": "Equinix ML9",
@@ -462,7 +518,11 @@
     "confidence_grade": "A",
     "missing_fields": "superficie",
     "next_action": "Scheda pronta: mantenere in monitoraggio e aggiornare se emergono nuovi documenti. || Monitoring",
-    "technical_notes": "ML9 isolato; ML7/ML8 e MXP2 sono riferimenti di contesto/cumulativi."
+    "technical_notes": "ML9 isolato; ML7/ML8 e MXP2 sono riferimenti di contesto/cumulativi.",
+    "external_promoted_fields": "",
+    "external_promoted_sources": "",
+    "external_promoted_updated_at": "",
+    "thermal_power_mwt": ""
   },
   {
     "project": "Vantage MXP2",
@@ -493,6 +553,10 @@
     "confidence_grade": "A",
     "missing_fields": "superficie",
     "next_action": "Scheda pronta: mantenere in monitoraggio e aggiornare se emergono nuovi documenti. || Monitoring",
-    "technical_notes": "MASE 10198 ricondotto a Vantage MXP2; scartati riferimenti di contesto a Equinix/Microsoft."
+    "technical_notes": "MASE 10198 ricondotto a Vantage MXP2; scartati riferimenti di contesto a Equinix/Microsoft.",
+    "external_promoted_fields": "",
+    "external_promoted_sources": "",
+    "external_promoted_updated_at": "",
+    "thermal_power_mwt": ""
   }
 ]

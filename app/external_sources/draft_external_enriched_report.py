@@ -32,7 +32,7 @@ FIELD_CANDIDATES = {
 HOMEPAGE_FACT_MAP = {
     "contractor_or_partner": "contractor_or_partner",
     "it_power_mw": "mw_it",
-    "thermal_power_mwt": "thermal_power_mwt",
+    "thermal_power_mwt": "thermal_mwt",
 }
 
 
