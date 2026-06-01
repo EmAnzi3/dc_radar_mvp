@@ -23,6 +23,14 @@ NEAR_READY_READINESS = {
     "partial_public_confirmation",
 }
 
+TRACKED_READINESS = {
+    "operator_confirmed_only",
+    "existing_project_child_or_enrichment",
+    "pending_validation",
+    "weak_or_no_public_evidence",
+    "not_validated",
+}
+
 
 def clean(value: object) -> str:
     return str(value or "").strip()
@@ -226,7 +234,11 @@ def build_rows() -> list[dict[str, str]]:
     for s in summary_rows:
         readiness = clean(s.get("readiness"))
 
-        if readiness not in PROMOTABLE_READINESS and readiness not in NEAR_READY_READINESS:
+        if (
+            readiness not in PROMOTABLE_READINESS
+            and readiness not in NEAR_READY_READINESS
+            and readiness not in TRACKED_READINESS
+        ):
             continue
 
         facility = clean(s.get("facility_name"))
@@ -263,7 +275,11 @@ def build_rows() -> list[dict[str, str]]:
             "source_links": source_links(tasks),
             "summary_facts": facts,
             "apply_to_master": "no",
-            "draft_bucket": "promotion_ready" if readiness in PROMOTABLE_READINESS else "near_ready",
+            "draft_bucket": (
+                "promotion_ready" if readiness in PROMOTABLE_READINESS
+                else "near_ready" if readiness in NEAR_READY_READINESS
+                else "tracked_review"
+            ),
             "review_decision": "",
             "notes": "Draft only. No automatic homepage/master promotion.",
             "created_at": now,
@@ -351,7 +367,7 @@ def render_html(rows: list[dict[str, str]]) -> str:
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<title>DataCenterMap Promotion Draft</title>
+<title>DataCenterMap Candidate Review</title>
 <style>
 body {{
   margin:0;
@@ -444,11 +460,11 @@ a {{ color:#0f4c81; font-weight:800; text-decoration:none; }}
 </head>
 <body>
 <header>
-<h1>DataCenterMap Promotion Draft</h1>
-<p>Bozza di promozione candidati confermati. Nessun dato applicato al master. Generato il {e(datetime.now().isoformat(timespec="seconds"))}</p>
+<h1>DataCenterMap Candidate Review</h1>
+<p>Vista generale candidati DataCenterMap: promuovibili, near-ready, operator-only, child/enrichment. Nessun dato applicato al master. Generato il {e(datetime.now().isoformat(timespec="seconds"))}</p>
 </header>
 <main>
-<div class="notice">Draft only: usare questa vista per decidere cosa promuovere nel master ufficiale.</div>
+<div class="notice">Review only: questa vista mostra anche fin dove siamo arrivati nella validazione, non solo cosa è promuovibile.</div>
 {''.join(cards) if cards else '<div class="notice">Nessun candidato promuovibile in draft.</div>'}
 </main>
 </body>

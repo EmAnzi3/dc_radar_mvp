@@ -35,6 +35,37 @@ def write_csv(path: Path, rows: list[dict[str, str]], fieldnames: list[str]) -> 
 
 
 def readiness_for_candidate(tasks: list[dict[str, str]]) -> tuple[str, str]:
+    result_statuses = {
+        clean(t.get("result_status"))
+        for t in tasks
+        if clean(t.get("result_status"))
+    }
+
+    child_or_enrichment_statuses = {
+        "child_facility_of_existing_project",
+        "covered_by_existing_stack_campus",
+        "existing_project_enrichment",
+        "not_applicable_child_facility",
+        "covered_by_parent_campus",
+        "child_facility_of_confirmed_campus",
+    }
+
+    if result_statuses and result_statuses.intersection(child_or_enrichment_statuses):
+        blocking_new_master_statuses = {
+            "child_facility_of_existing_project",
+            "covered_by_existing_stack_campus",
+            "existing_project_enrichment",
+            "not_applicable_child_facility",
+            "covered_by_parent_campus",
+            "child_facility_of_confirmed_campus",
+        }
+
+        if result_statuses.intersection(blocking_new_master_statuses):
+            return (
+                "existing_project_child_or_enrichment",
+                "Non promuovere come nuovo master: usare come child facility, espansione o enrichment di progetto esistente."
+            )
+
     confirmed_layers = {
         clean(t.get("validation_layer"))
         for t in tasks
@@ -44,7 +75,7 @@ def readiness_for_candidate(tasks: list[dict[str, str]]) -> tuple[str, str]:
     no_direct_layers = {
         clean(t.get("validation_layer"))
         for t in tasks
-        if clean(t.get("result_status")) in {"no_direct_regional_result", "no_result"}
+        if clean(t.get("result_status")) in {"no_direct_regional_result", "no_result", "no_direct_municipality_result"}
     }
 
     pending_layers = {
@@ -133,6 +164,7 @@ def build_rows() -> list[dict[str, str]]:
         "operator_confirmed_only": 4,
         "pending_validation": 5,
         "weak_or_no_public_evidence": 6,
+        "existing_project_child_or_enrichment": 5,
         "not_validated": 7,
     }
 
