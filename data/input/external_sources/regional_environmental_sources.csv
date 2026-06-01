@@ -1,0 +1,8 @@
+﻿source_id,region,source_system,source_type,start_url,notes
+lombardia_silvia,Lombardia,SILVIA,via_vas,https://www.silvia.servizirl.it/silviaweb/,Sistema regionale valutazioni ambientali.
+lombardia_data_center_page,Lombardia,Regione Lombardia,policy_data_center,https://www.regione.lombardia.it/ambiente-e-territorio/red-procedimenti-autorizzatori-progetti-data-center,Pagina regionale procedimenti autorizzatori data center.
+lombardia_silvia_info,Lombardia,Regione Lombardia,via_info,https://www.regione.lombardia.it/ambiente-e-territorio/valutazione-di-impatto-ambientale-via/sistema-informativo-lombardo-per-la-valutazione-di-impatto-ambientale-%28silvia%29,Pagina informativa SILVIA.
+lazio_via_projects,Lazio,Regione Lazio,VIA,https://www.regione.lazio.it/imprese/tutela-ambientale-difesa-suolo/valutazione-impatto-ambientale-progetti,Motore/lista progetti VIA Lazio.
+lazio_via_overview,Lazio,Regione Lazio,VIA,https://www.regione.lazio.it/cittadini/tutela-ambientale-difesa-suolo/valutazione-impatto-ambientale,Pagina VIA Lazio.
+lazio_vas_overview,Lazio,Regione Lazio,VAS,https://www.regione.lazio.it/enti/urbanistica/valutazione-ambientale-strategica,Pagina VAS Lazio.
+lazio_vas_verifica,Lazio,Regione Lazio,VAS,https://www.regione.lazio.it/enti/urbanistica/valutazione-ambientale-strategica/procedura-verifica-assoggetabilita-vas-art-12,Verifica assoggettabilità VAS Lazio.
