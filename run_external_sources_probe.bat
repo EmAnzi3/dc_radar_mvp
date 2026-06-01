@@ -28,5 +28,8 @@ if errorlevel 1 exit /b 1
 "%PYTHON%" -m app.external_sources.datacentermap_curator
 if errorlevel 1 exit /b 1
 
+"%PYTHON%" -m app.external_sources.datacentermap_new_candidates_export
+if errorlevel 1 exit /b 1
+
 echo External sources probe completato
 pause
