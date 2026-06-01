@@ -19,5 +19,8 @@ if errorlevel 1 exit /b 1
 "%PYTHON%" -m app.external_sources.regional_environmental_curator
 if errorlevel 1 exit /b 1
 
+"%PYTHON%" -m app.external_sources.draft_external_enriched_report
+if errorlevel 1 exit /b 1
+
 echo External sources probe completato
 pause
