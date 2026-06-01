@@ -89,6 +89,10 @@ def extract_authorization_proponent(summary_facts: str) -> str:
         "Retelit Datacenter S.r.l.",
         "Retelit Datacenter Srl",
         "Retelit Datacenter S.R.L.",
+        "Infrastructure Italia Land 4 S.r.l.",
+        "INFRASTRUCTURE ITALIA LAND 4 S.r.l.",
+        "Infrastructure Italia Land 4 Srl",
+        "INFRASTRUCTURE ITALIA LAND 4 S.R.L.",
     ]
 
     upper_facts = facts.upper()
@@ -142,6 +146,10 @@ def extract_it_power(summary_facts: str) -> str:
     return ""
 
 
+def format_int_it(value: float) -> str:
+    return f"{round(value):,}".replace(",", ".")
+
+
 def normalize_area_number(raw: str) -> str:
     raw = clean(raw)
 
@@ -153,20 +161,58 @@ def normalize_area_number(raw: str) -> str:
     return raw
 
 
+def numeric_value(raw: str) -> float:
+    raw = clean(raw)
+
+    # 204,387 / 48,000 / 71,364 -> 204387 / 48000 / 71364
+    if "," in raw and "." not in raw:
+        return float(raw.replace(",", ""))
+
+    return float(raw.replace(",", "."))
+
+
 def extract_area_m2(summary_facts: str) -> str:
     facts = clean(summary_facts)
 
-    patterns = [
+    # 1) Preferisci valori già espressi in metri quadrati.
+    sqm_patterns = [
         r"(\d[\d,.]*)\s*m²",
         r"(\d[\d,.]*)\s*square\s+meters",
         r"(\d[\d,.]*)\s*sq\s*m",
         r"(\d[\d,.]*)\s*sqm",
     ]
 
-    for pattern in patterns:
+    for pattern in sqm_patterns:
         m = re.search(pattern, facts, re.I)
         if m:
             return f"{normalize_area_number(m.group(1))} m²"
+
+    # 2) Acres -> solo m².
+    acre_patterns = [
+        r"(\d[\d,.]*)\s*acres?",
+        r"(\d[\d,.]*)\s*acre\b",
+    ]
+
+    for pattern in acre_patterns:
+        m = re.search(pattern, facts, re.I)
+        if m:
+            acres = numeric_value(m.group(1))
+            sqm = acres * 4046.8564224
+            return f"{format_int_it(sqm)} m²"
+
+    # 3) Square feet -> solo m².
+    sqft_patterns = [
+        r"(\d[\d,.]*)\s*square\s+feet",
+        r"(\d[\d,.]*)\s*sq\s*ft",
+        r"(\d[\d,.]*)\s*sqft",
+    ]
+
+    for pattern in sqft_patterns:
+        m = re.search(pattern, facts, re.I)
+        if m:
+            sqft = numeric_value(m.group(1))
+            sqm = sqft * 0.09290304
+            return f"{format_int_it(sqm)} m²"
 
     return ""
 
