@@ -649,7 +649,7 @@ tbody tr:hover td {
 .vista-filter-panel {
   position:sticky;
   top:10px;
-  z-index:50;
+  z-index:80;
   display:grid;
   grid-template-columns:repeat(4,minmax(160px,1fr));
   gap:10px;
@@ -711,6 +711,19 @@ tbody tr:hover td {
     grid-template-columns:1fr;
   }
 }
+
+:root {
+  --vista-filter-sticky-top: 10px;
+  --vista-table-header-top: 130px;
+}
+.vista-sticky-table thead th {
+  position:sticky;
+  top:var(--vista-table-header-top);
+  z-index:45;
+  background:#f8fafc;
+  box-shadow:0 2px 0 rgba(15,23,42,.12);
+}
+
 /* VISTA_IMMEDIATA_FILTERS_END */
 
 </style>
@@ -1456,7 +1469,23 @@ tbody tr:hover td {
     actions.appendChild(reset);
     panel.appendChild(actions);
 
+    table.classList.add("vista-sticky-table");
     table.parentElement.insertBefore(panel, table);
+
+    function updateStickyHeaderOffset() {
+      var panelHeight = panel.offsetHeight || 0;
+      var top = 10;
+      var gap = 10;
+      document.documentElement.style.setProperty(
+        "--vista-table-header-top",
+        (top + panelHeight + gap) + "px"
+      );
+    }
+
+    updateStickyHeaderOffset();
+    window.addEventListener("resize", updateStickyHeaderOffset);
+    panel.addEventListener("change", updateStickyHeaderOffset);
+    panel.addEventListener("input", updateStickyHeaderOffset);
 
     function matchExact(row, key, idxValue) {
       var control = panel.querySelector('[data-filter="' + key + '"]');
