@@ -641,7 +641,6 @@ def render(row: dict[str, str]) -> str:
   <section class="panel">
     <div class="section-title">
       <h2>Dati principali</h2>
-      <span class="badge {esc(q_cls)}" title="{esc(q_title)}">{esc(q_label)}</span>
     </div>
     <div class="grid">
       {field("Operatore", row.get("operator_or_main_subject"))}
