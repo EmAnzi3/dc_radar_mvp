@@ -647,6 +647,9 @@ tbody tr:hover td {
 
 /* VISTA_IMMEDIATA_FILTERS_START */
 .vista-filter-panel {
+  position:sticky;
+  top:10px;
+  z-index:50;
   display:grid;
   grid-template-columns:repeat(4,minmax(160px,1fr));
   gap:10px;
@@ -655,7 +658,8 @@ tbody tr:hover td {
   border:1px solid var(--line, #dfe4ea);
   border-radius:16px;
   background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);
-  box-shadow:0 8px 22px rgba(15,23,42,.06);
+  box-shadow:0 12px 28px rgba(15,23,42,.14);
+  backdrop-filter:blur(8px);
 }
 .vista-filter-field {
   display:flex;
