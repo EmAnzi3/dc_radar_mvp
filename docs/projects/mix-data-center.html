@@ -20,8 +20,6 @@
   --warn:#92400e;
   --neutral-bg:#eff6ff;
   --neutral:#0f4c81;
-  --low-bg:#f1f5f9;
-  --low:#475569;
 }
 * { box-sizing:border-box; }
 body {
@@ -35,14 +33,8 @@ header {
   color:white;
   padding:26px 30px;
 }
-header h1 {
-  margin:0;
-  font-size:30px;
-}
-header p {
-  margin:8px 0 0;
-  color:#dbeafe;
-}
+header h1 { margin:0; font-size:30px; }
+header p { margin:8px 0 0; color:#dbeafe; }
 main {
   max-width:1500px;
   margin:0 auto;
@@ -75,14 +67,8 @@ main {
   gap:12px;
   margin-bottom:14px;
 }
-h2 {
-  margin:0;
-  font-size:20px;
-}
-.subtle {
-  color:var(--muted);
-  font-size:13px;
-}
+h2 { margin:0; font-size:20px; }
+.subtle { color:var(--muted); font-size:13px; }
 .grid {
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
@@ -110,9 +96,6 @@ h2 {
   height:4px;
   background:linear-gradient(90deg,#0ea5e9,#6366f1,#22c55e);
 }
-.field:hover {
-  background:#ffffff;
-}
 .label {
   color:var(--muted);
   font-size:12px;
@@ -129,9 +112,7 @@ h2 {
   color:#0f172a;
   overflow-wrap:anywhere;
 }
-.value .badge {
-  font-size:12px;
-}
+.value .badge { font-size:12px; }
 .badge {
   display:inline-block;
   padding:5px 10px;
@@ -139,18 +120,9 @@ h2 {
   font-weight:800;
   font-size:12px;
 }
-.badge.good {
-  background:var(--good-bg);
-  color:var(--good);
-}
-.badge.warn {
-  background:var(--warn-bg);
-  color:var(--warn);
-}
-.badge.neutral {
-  background:var(--neutral-bg);
-  color:var(--neutral);
-}
+.badge.good { background:var(--good-bg); color:var(--good); }
+.badge.warn { background:var(--warn-bg); color:var(--warn); }
+.badge.neutral { background:var(--neutral-bg); color:var(--neutral); }
 .actions {
   display:flex;
   flex-wrap:wrap;
@@ -171,7 +143,8 @@ h2 {
   background:var(--good-bg);
   color:var(--good);
 }
-.location-card {
+.location-card,
+.content-card {
   position:relative;
   overflow:hidden;
   background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);
@@ -180,7 +153,8 @@ h2 {
   box-shadow:0 8px 22px rgba(15,23,42,.07);
   padding:20px 18px 18px;
 }
-.location-card::before {
+.location-card::before,
+.content-card::before {
   content:"";
   position:absolute;
   top:0;
@@ -189,20 +163,20 @@ h2 {
   height:4px;
   background:linear-gradient(90deg,#0ea5e9,#6366f1,#22c55e);
 }
-.location-card h2 {
+.location-card h2,
+.content-card h2 {
   color:var(--muted);
   font-size:12px;
   text-transform:uppercase;
   letter-spacing:.055em;
   font-weight:800;
-  margin:0;
+  margin:0 0 14px;
 }
 .location-address {
   color:#0f172a;
   font-size:15px;
   font-weight:800;
 }
-
 .map-wrap {
   border:1px solid var(--line);
   border-radius:16px;
@@ -221,71 +195,21 @@ h2 {
   grid-template-columns:1fr 1fr;
   gap:16px;
 }
-.content-card {
-  position:relative;
-  overflow:hidden;
-  background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);
-  border:1px solid var(--line);
-  border-radius:18px;
-  box-shadow:0 8px 22px rgba(15,23,42,.07);
-  padding:20px 18px 18px;
-}
-.content-card::before {
-  content:"";
-  position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  height:4px;
-  background:linear-gradient(90deg,#0ea5e9,#6366f1,#22c55e);
-}
-.content-card h2 {
-  color:var(--muted);
-  font-size:12px;
-  text-transform:uppercase;
-  letter-spacing:.055em;
-  font-weight:800;
-  margin:0 0 14px;
-}
-.content-card p,
-.content-card li {
-  font-size:15px;
-  line-height:1.5;
-}
-.content-card strong {
-  color:#0f172a;
-}
-.content-card .source-pill {
-  margin:0 6px 8px 0;
-}
-
-ul.clean {
-  margin:0;
-  padding-left:20px;
-}
-ul.clean li {
-  margin:0 0 8px;
-  line-height:1.45;
-}
+ul.clean,
 .evidence-list {
   margin:0;
   padding-left:20px;
 }
-.evidence-list li {
-  margin:0 0 10px;
-  line-height:1.45;
+ul.clean li,
+.evidence-list li,
+.content-card p {
+  font-size:15px;
+  line-height:1.5;
+  margin-bottom:8px;
 }
-.muted {
-  color:var(--muted);
-}
-.warning-box {
-  background:#fff7ed;
-  border:1px solid #fed7aa;
-  color:#92400e;
-  border-radius:14px;
-  padding:12px 14px;
-  font-weight:700;
-}
+.content-card strong { color:#0f172a; }
+.content-card .source-pill { margin:0 6px 8px 0; }
+.muted { color:var(--muted); }
 @media (max-width:1000px) {
   .grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .two-col { grid-template-columns:1fr; }
@@ -300,12 +224,12 @@ ul.clean li {
 <body>
 <header>
   <h1>MIX Data Center</h1>
-  <p>MIX SRL · Milano · Fonti ext. · scheda generata il 2026-06-02T08:46:07</p>
+  <p>MIX SRL · Milano · Fonti ext. · scheda generata il 2026-06-02T09:30:58</p>
 </header>
 <main>
   <div class="nav">
     <a href="../index.html">← Torna alla dashboard principale</a>
-    <span class="subtle">Fonte discovery: DataCenterMap + review interna</span>
+    <span class="subtle">Data Center Radar</span>
   </div>
 
   <section class="panel">
@@ -334,7 +258,7 @@ ul.clean li {
 
       <div class="field">
         <div class="label">Stato fonte</div>
-        <p class="value">Planned</p>
+        <p class="value">Pianificato</p>
       </div>
 
 
@@ -351,14 +275,14 @@ ul.clean li {
 
 
       <div class="field">
-        <div class="label">Superficie</div>
+        <div class="label">Superficie m²</div>
         <p class="value">—</p>
       </div>
 
 
       <div class="field">
         <div class="label">Qualità dati</div>
-        <p class="value"><span class="badge neutral" title="Record utile come fonte esterna o enrichment, da non trattare automaticamente come nuovo master.">Fonti ext.</span></p>
+        <p class="value"><span class="badge neutral" title="Servono fonti aggiuntive o verifica manuale.">Fonti ext.</span></p>
       </div>
 
     </div>
@@ -370,8 +294,7 @@ ul.clean li {
       <span class="location-address">Via Caldera 21, Building D, 20153, Milano, Italy</span>
     </div>
     <div class="actions">
-      <a class="btn maps" href="https://www.google.com/maps/search/?api=1&amp;query=Via+Caldera+21%2C+Building+D%2C+20153%2C+Milano%2C+Italy" target="_blank" rel="noopener">Apri in Google Maps</a>
-      <a class="btn " href="https://www.datacentermap.com/italy/milan/mix/" target="_blank" rel="noopener">DataCenterMap</a>
+      <a class="btn maps" href="https://www.google.com/maps/search/?api=1&amp;query=Via+Caldera+21%2C+Building+D%2C+20153%2C+Milano%2C+Italy" target="_blank" rel="noopener">Apri in Google Maps</a> <a class="btn" href="https://www.datacentermap.com/italy/milan/mix/" target="_blank" rel="noopener">DataCenterMap</a>
     </div>
     <div class="map-wrap">
       <iframe src="https://www.google.com/maps?q=Via+Caldera+21%2C+Building+D%2C+20153%2C+Milano%2C+Italy&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -381,18 +304,18 @@ ul.clean li {
   <section class="two-col">
     <div class="panel content-card">
       <h2>Sintesi progetto</h2>
-      <ul class="clean"><li>Operatore individuato: MIX SRL.</li><li>Ubicazione commerciale censita: Milano.</li><li>Stato indicato dalla fonte DataCenterMap: Planned.</li><li>GC/contractor ancora da identificare.</li><li>Il record sembra riferirsi a un asset esistente/reference, non a una pipeline futura da promuovere come nuovo progetto.</li></ul>
+      <ul class="clean"><li>Operatore individuato: MIX SRL.</li><li>Ubicazione commerciale censita: Milano.</li><li>Stato indicato dalla fonte DataCenterMap: Pianificato.</li><li>Proponente/soggetto autorizzativo individuato: Da verificare.</li><li>GC/contractor ancora da identificare.</li></ul>
     </div>
 
     <div class="panel content-card">
       <h2>Note operative</h2>
-      <ul class="clean"><li>Non considerare come nuova pipeline: utile come riferimento di mercato o asset esistente.</li><li>Priorità informativa: identificare GC, EPC, impresa esecutrice o partner tecnico.</li><li>Lo stato DataCenterMap va letto come indicazione commerciale grezza: Planned.</li></ul>
+      <ul class="clean"><li>Asset esistente/reference: utile da mostrare in tabella generale, ma non promuovere come nuova pipeline.</li><li>Priorità informativa: identificare GC, EPC, impresa esecutrice o partner tecnico.</li><li>Lo stato DataCenterMap va letto come indicazione commerciale grezza: Pianificato.</li></ul>
     </div>
   </section>
 
   <section class="panel content-card">
     <h2>Evidenze disponibili</h2>
-    <ul class="evidence-list"><li><strong>Fonte operatore:</strong> MIX official site describes MIX as one of the few IXPs in Europe equipped with its own data center. MIX S.r.l. is located at Via Caldera 21, Building Orange/3, 20153 Milan. DataCenterMap lists MIX Data Center by MIX SRL at Via Caldera 21, Building D, Milano. This appears to be an existing operational asset/reference, not a new development pipeline candidate.</li><li><strong>Fonte regionale:</strong> MIX Report 2016 refers to the new MIX Data Center as an investment already completed. No current Regione Lombardia VIA/VAS project evidence identified for a new MIX Data Center development.</li><li><strong>Comune / SUAP:</strong> MIX official site confirms operating address in Via Caldera 21. No direct Comune di Milano / SUAP / albo source identified for a new MIX Data Center project in this pass.</li><li><strong>GC / contractor:</strong> No GC/contractor search applicable for a currently identified new development. MIX appears as existing operational/reference infrastructure.</li></ul>
+    <ul class="evidence-list"><li><strong>DataCenterMap:</strong> Scheda DataCenterMap disponibile per MIX Data Center.</li><li><strong>Stato fonte:</strong> La fonte DataCenterMap indica stato: Pianificato.</li><li><strong>Ubicazione:</strong> Il record è localizzato commercialmente su Milano.</li><li><strong>Proponente:</strong> Soggetto/proponente indicato: Da verificare.</li><li><strong>Classificazione:</strong> Asset esistente o reference commerciale: non trattare come nuova pipeline.</li></ul>
   </section>
 
   <section class="panel content-card">

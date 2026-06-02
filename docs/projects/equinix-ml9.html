@@ -1,710 +1,327 @@
 <!doctype html>
 <html lang="it">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Equinix ML9 · Data Center Pipeline Radar</title>
-
-  <style>
-    :root {
-      --bg:#f5f7fb;
-      --panel:#fff;
-      --text:#172033;
-      --muted:#667085;
-      --border:#dfe4ea;
-      --shadow:0 10px 24px rgba(15,23,42,.08);
-      --green:#166534;
-      --blue:#1d4ed8;
-      --amber:#92400e;
-      --red:#991b1b;
-      --slate:#475569;
-    }
-
-    * { box-sizing:border-box; }
-
-    body {
-      margin:0;
-      font-family:Arial, Helvetica, sans-serif;
-      background:var(--bg);
-      color:var(--text);
-      line-height:1.35;
-    }
-
-    header {
-      background:#111827;
-      color:white;
-      padding:24px 28px;
-    }
-
-    header h1 {
-      margin:0 0 6px;
-      font-size:28px;
-    }
-
-    header p {
-      margin:0;
-      color:#cbd5e1;
-    }
-
-    main {
-      max-width:1440px;
-      margin:0 auto;
-      padding:18px;
-    }
-
-    .nav {
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      margin-bottom:16px;
-    }
-
-    .nav a, .project-link {
-      color:#0f4c81;
-      text-decoration:none;
-      font-weight:800;
-    }
-
-    .nav a {
-      background:white;
-      border:1px solid var(--border);
-      border-radius:999px;
-      padding:7px 11px;
-      box-shadow:0 4px 10px rgba(15,23,42,.04);
-    }
-
-    .project-link:hover, .nav a:hover {
-      text-decoration:underline;
-    }
-
-    .kpis {
-      display:grid;
-      grid-template-columns:repeat(4,minmax(0,1fr));
-      gap:12px;
-      margin-bottom:16px;
-    }
-
-    .kpi, .panel {
-      background:var(--panel);
-      border:1px solid var(--border);
-      border-radius:16px;
-      box-shadow:var(--shadow);
-    }
-
-    .kpi {
-      padding:14px;
-    }
-
-    .kpi-label {
-      color:var(--muted);
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:.05em;
-    }
-
-    .kpi-value {
-      margin-top:4px;
-      font-size:26px;
-      font-weight:800;
-    }
-
-    .panel {
-      padding:14px;
-      margin-bottom:16px;
-    }
-
-    .panel h2 {
-      margin:0 0 12px;
-      font-size:20px;
-    }
-
-    .table-wrap {
-      max-height:72vh;
-      overflow-y:auto;
-      overflow-x:hidden;
-      border:1px solid var(--border);
-      border-radius:14px;
-    }
-
-    table {
-      width:100%;
-      table-layout:fixed;
-      border-collapse:separate;
-      border-spacing:0;
-      font-size:12px;
-    }
-
-    thead th {
-      position:sticky;
-      top:0;
-      z-index:3;
-      background:#f8fafc;
-      box-shadow:0 1px 0 var(--border);
-    }
-
-    th, td {
-      padding:8px 7px;
-      border-bottom:1px solid var(--border);
-      text-align:left;
-      vertical-align:top;
-      overflow-wrap:anywhere;
-      word-break:normal;
-    }
-
-    th {
-      color:var(--muted);
-      font-size:10px;
-      text-transform:uppercase;
-      letter-spacing:.04em;
-    }
-
-    th:nth-child(1), td:nth-child(1) { width:13%; }
-    th:nth-child(2), td:nth-child(2) { width:9%; }
-    th:nth-child(3), td:nth-child(3) { width:12%; }
-    th:nth-child(4), td:nth-child(4) { width:15%; }
-    th:nth-child(5), td:nth-child(5) { width:8%; }
-    th:nth-child(6), td:nth-child(6) { width:6%; }
-    th:nth-child(7), td:nth-child(7) { width:6%; }
-    th:nth-child(8), td:nth-child(8) { width:10%; }
-    th:nth-child(9), td:nth-child(9) { width:8%; }
-    th:nth-child(10), td:nth-child(10) { width:13%; }
-
-    .num { text-align:right; }
-
-    .project-cell strong {
-      font-size:13px;
-    }
-
-    .muted {
-      color:var(--muted);
-      font-size:11px;
-      font-weight:400;
-    }
-
-    .badge {
-      display:inline-flex;
-      align-items:center;
-      border-radius:999px;
-      padding:3px 7px;
-      font-size:10px;
-      color:white;
-      max-width:100%;
-      white-space:nowrap;
-      font-weight:700;
-      margin:1px 2px 1px 0;
-    }
-
-    .grade-a { background:var(--green); }
-    .grade-b { background:var(--blue); }
-    .grade-c { background:var(--amber); }
-    .grade-d { background:var(--red); }
-    .priority-high { background:var(--red); }
-    .priority-mid { background:var(--amber); }
-    .priority-low { background:var(--slate); }
-
-    .confidence {
-      display:inline-flex;
-      align-items:center;
-      border-radius:999px;
-      padding:3px 7px;
-      font-size:10px;
-      font-weight:800;
-      margin:3px 0 0 5px;
-      white-space:nowrap;
-    }
-
-    .conf-high {
-      background:#dcfce7;
-      color:#166534;
-      border:1px solid #86efac;
-    }
-
-    .conf-mid {
-      background:#fef3c7;
-      color:#92400e;
-      border:1px solid #fcd34d;
-    }
-
-    .conf-low {
-      background:#fee2e2;
-      color:#991b1b;
-      border:1px solid #fca5a5;
-    }
-
-    .link-pill {
-      display:inline-flex;
-      border:1px solid var(--border);
-      border-radius:999px;
-      padding:3px 6px;
-      margin:1px 2px 1px 0;
-      color:#0f4c81;
-      background:#f8fafc;
-      text-decoration:none;
-      font-weight:700;
-      font-size:10px;
-      white-space:nowrap;
-    }
-
-    .sources-cell {
-      line-height:1.35;
-    }
-
-    .detail-head {
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-      gap:16px;
-      margin-bottom:12px;
-    }
-
-    .badges {
-      min-width:170px;
-      text-align:right;
-    }
-
-    .detail-grid {
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:12px;
-      margin:0;
-    }
-
-    .detail-field {
-      background:#f8fafc;
-      border:1px solid var(--border);
-      border-radius:14px;
-      padding:12px;
-    }
-
-    dt {
-      color:var(--muted);
-      font-size:10px;
-      text-transform:uppercase;
-      letter-spacing:.05em;
-    }
-
-    dd {
-      margin:2px 0 0;
-      font-weight:700;
-      word-break:break-word;
-    }
-
-    .source-box, .next, .note-box {
-      margin-top:10px;
-      padding:12px;
-      border-radius:14px;
-      font-size:13px;
-    }
-
-    .source-box {
-      border:1px solid #bfdbfe;
-      background:#eff6ff;
-    }
-
-    .source-box div + div {
-      margin-top:8px;
-    }
-
-    .next {
-      border:1px solid #fed7aa;
-      background:#fff7ed;
-    }
-
-    .note-box {
-      border:1px solid var(--border);
-      background:#f8fafc;
-    }
-
-    footer {
-      max-width:1440px;
-      margin:0 auto;
-      padding:0 18px 30px;
-      color:var(--muted);
-      font-size:12px;
-    }
-
-
-    /* --- Tech skin ------------------------------------------------ */
-
-    body {
-      background:
-        radial-gradient(circle at 10% 0%, rgba(14,165,233,.18), transparent 28%),
-        radial-gradient(circle at 92% 12%, rgba(99,102,241,.16), transparent 30%),
-        linear-gradient(180deg, #eef4fb 0%, #f8fafc 52%, #eef2f7 100%);
-    }
-
-    header {
-      position:relative;
-      overflow:hidden;
-      background:
-        radial-gradient(circle at 12% 20%, rgba(56,189,248,.35), transparent 26%),
-        radial-gradient(circle at 86% 5%, rgba(129,140,248,.28), transparent 28%),
-        linear-gradient(135deg, #08111f 0%, #10243f 44%, #0f4c81 100%);
-      border-bottom:1px solid rgba(255,255,255,.16);
-      box-shadow:0 18px 46px rgba(15,23,42,.22);
-    }
-
-    header::before {
-      content:"";
-      position:absolute;
-      inset:-80px -120px auto auto;
-      width:360px;
-      height:360px;
-      border-radius:999px;
-      background:radial-gradient(circle, rgba(34,211,238,.26), transparent 66%);
-      filter:blur(4px);
-      pointer-events:none;
-    }
-
-    header::after {
-      content:"";
-      position:absolute;
-      inset:0;
-      background:
-        linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px),
-        linear-gradient(180deg, rgba(255,255,255,.04) 1px, transparent 1px);
-      background-size:44px 44px;
-      mask-image:linear-gradient(90deg, rgba(0,0,0,.35), transparent 80%);
-      pointer-events:none;
-    }
-
-    header h1,
-    header p {
-      position:relative;
-      z-index:1;
-    }
-
-    header h1 {
-      letter-spacing:-.03em;
-    }
-
-    header p {
-      max-width:840px;
-    }
-
-    .kpi {
-      position:relative;
-      overflow:hidden;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.78));
-      backdrop-filter: blur(12px);
-      transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-    }
-
-    .kpi::before {
-      content:"";
-      position:absolute;
-      left:0;
-      top:0;
-      right:0;
-      height:3px;
-      background:linear-gradient(90deg, #0ea5e9, #6366f1, #22c55e);
-    }
-
-    .kpi:hover {
-      transform:translateY(-2px);
-      box-shadow:0 16px 32px rgba(15,23,42,.12);
-      border-color:#c7d2fe;
-    }
-
-    .kpi-value {
-      background:linear-gradient(135deg, #0f172a, #0f4c81);
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
-    }
-
-    .panel {
-      background:rgba(255,255,255,.86);
-      backdrop-filter: blur(14px);
-      border-color:rgba(148,163,184,.32);
-    }
-
-    .panel h2 {
-      letter-spacing:-.02em;
-    }
-
-    .toolbar {
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin:0 0 12px;
-      flex-wrap:wrap;
-    }
-
-    .search-box {
-      flex:1 1 360px;
-      display:flex;
-      align-items:center;
-      gap:8px;
-      height:40px;
-      padding:0 12px;
-      border:1px solid rgba(148,163,184,.42);
-      border-radius:999px;
-      background:rgba(248,250,252,.94);
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.7);
-    }
-
-    .search-icon {
-      color:#0f4c81;
-      font-weight:900;
-      font-size:18px;
-      line-height:1;
-    }
-
-    .search-box input {
-      width:100%;
-      border:0;
-      outline:0;
-      background:transparent;
-      color:var(--text);
-      font-size:13px;
-      font-weight:700;
-    }
-
-    .search-box input::placeholder {
-      color:#94a3b8;
-      font-weight:600;
-    }
-
-    .toolbar select {
-      height:40px;
-      border:1px solid rgba(148,163,184,.42);
-      border-radius:999px;
-      background:#fff;
-      color:#172033;
-      padding:0 12px;
-      font-weight:800;
-      font-size:12px;
-      outline:0;
-    }
-
-    .counter {
-      height:40px;
-      display:inline-flex;
-      align-items:center;
-      padding:0 12px;
-      border-radius:999px;
-      color:#0f4c81;
-      background:#eff6ff;
-      border:1px solid #bfdbfe;
-      font-weight:900;
-      font-size:12px;
-      white-space:nowrap;
-    }
-
-    .table-wrap {
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.7);
-      background:white;
-    }
-
-    thead th {
-      background:linear-gradient(180deg, #f8fafc 0%, #eef4fb 100%);
-      color:#536078;
-    }
-
-    tbody tr {
-      transition:background .14s ease, transform .14s ease, box-shadow .14s ease;
-    }
-
-    tbody tr:hover {
-      background:#f8fbff;
-    }
-
-    tbody tr:hover td:first-child {
-      box-shadow:inset 3px 0 0 #0ea5e9;
-    }
-
-    .project-link strong {
-      color:#0f172a;
-      transition:color .14s ease;
-    }
-
-    .project-link:hover strong {
-      color:#0f4c81;
-    }
-
-    .badge,
-    .confidence,
-    .link-pill {
-      box-shadow:0 1px 0 rgba(255,255,255,.42) inset;
-    }
-
-    .grade-a {
-      background:linear-gradient(135deg, #15803d, #16a34a);
-    }
-
-    .grade-b {
-      background:linear-gradient(135deg, #1d4ed8, #2563eb);
-    }
-
-    .grade-c {
-      background:linear-gradient(135deg, #9a3412, #ea580c);
-    }
-
-    .grade-d {
-      background:linear-gradient(135deg, #991b1b, #dc2626);
-    }
-
-    .link-pill {
-      background:linear-gradient(180deg, #ffffff, #f1f5f9);
-      border-color:#d8e2ee;
-    }
-
-    .link-pill:hover {
-      background:#eff6ff;
-      border-color:#93c5fd;
-      text-decoration:none;
-    }
-
-    .detail-field {
-      transition:transform .16s ease, box-shadow .16s ease;
-    }
-
-    .detail-field:hover {
-      transform:translateY(-1px);
-      box-shadow:0 10px 20px rgba(15,23,42,.07);
-    }
-
-    @media (max-width:1000px) {
-      .kpis { grid-template-columns:repeat(2,minmax(0,1fr)); }
-      .table-wrap { overflow-x:auto; }
-      table { min-width:1050px; }
-      .detail-grid { grid-template-columns:1fr; }
-      .detail-head { flex-direction:column; }
-      .badges { text-align:left; }
-    }
-
-    @media (max-width:560px) {
-      main { padding:12px; }
-      header { padding:20px 16px; }
-      .kpis { grid-template-columns:1fr; }
-    }
-  </style>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Equinix ML9 - Data Center Radar</title>
+<style>
+
+:root {
+  --bg:#f5f7fb;
+  --text:#172033;
+  --muted:#667085;
+  --line:#dfe4ea;
+  --panel:#ffffff;
+  --blue:#0f4c81;
+  --dark:#08111f;
+  --good-bg:#ecfdf3;
+  --good:#166534;
+  --warn-bg:#fff7ed;
+  --warn:#92400e;
+  --neutral-bg:#eff6ff;
+  --neutral:#0f4c81;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+header {
+  background:linear-gradient(135deg,var(--dark),var(--blue));
+  color:white;
+  padding:26px 30px;
+}
+header h1 { margin:0; font-size:30px; }
+header p { margin:8px 0 0; color:#dbeafe; }
+main {
+  max-width:1500px;
+  margin:0 auto;
+  padding:20px;
+}
+.nav {
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+  margin-bottom:16px;
+}
+.nav a {
+  color:var(--blue);
+  font-weight:800;
+  text-decoration:none;
+}
+.panel {
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:18px;
+  box-shadow:0 8px 22px rgba(15,23,42,.07);
+  padding:18px;
+  margin-bottom:16px;
+}
+.section-title {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:14px;
+}
+h2 { margin:0; font-size:20px; }
+.subtle { color:var(--muted); font-size:13px; }
+.grid {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+}
+.field {
+  position:relative;
+  overflow:hidden;
+  min-height:112px;
+  background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);
+  border:1px solid var(--line);
+  border-radius:16px;
+  box-shadow:0 8px 22px rgba(15,23,42,.07);
+  padding:18px 16px 16px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.field::before {
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:4px;
+  background:linear-gradient(90deg,#0ea5e9,#6366f1,#22c55e);
+}
+.label {
+  color:var(--muted);
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.055em;
+  margin-bottom:8px;
+  font-weight:700;
+}
+.value {
+  margin:0;
+  font-size:20px;
+  line-height:1.22;
+  font-weight:900;
+  color:#0f172a;
+  overflow-wrap:anywhere;
+}
+.value .badge { font-size:12px; }
+.badge {
+  display:inline-block;
+  padding:5px 10px;
+  border-radius:999px;
+  font-weight:800;
+  font-size:12px;
+}
+.badge.good { background:var(--good-bg); color:var(--good); }
+.badge.warn { background:var(--warn-bg); color:var(--warn); }
+.badge.neutral { background:var(--neutral-bg); color:var(--neutral); }
+.actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:12px;
+}
+.btn, .source-pill {
+  display:inline-block;
+  padding:7px 11px;
+  border-radius:999px;
+  background:var(--neutral-bg);
+  color:var(--neutral);
+  text-decoration:none;
+  font-weight:800;
+  font-size:13px;
+}
+.btn.maps {
+  background:var(--good-bg);
+  color:var(--good);
+}
+.location-card,
+.content-card {
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);
+  border:1px solid var(--line);
+  border-radius:18px;
+  box-shadow:0 8px 22px rgba(15,23,42,.07);
+  padding:20px 18px 18px;
+}
+.location-card::before,
+.content-card::before {
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:4px;
+  background:linear-gradient(90deg,#0ea5e9,#6366f1,#22c55e);
+}
+.location-card h2,
+.content-card h2 {
+  color:var(--muted);
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.055em;
+  font-weight:800;
+  margin:0 0 14px;
+}
+.location-address {
+  color:#0f172a;
+  font-size:15px;
+  font-weight:800;
+}
+.map-wrap {
+  border:1px solid var(--line);
+  border-radius:16px;
+  overflow:hidden;
+  background:#e5e7eb;
+  margin-top:14px;
+}
+.map-wrap iframe {
+  display:block;
+  width:100%;
+  height:360px;
+  border:0;
+}
+.two-col {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+ul.clean,
+.evidence-list {
+  margin:0;
+  padding-left:20px;
+}
+ul.clean li,
+.evidence-list li,
+.content-card p {
+  font-size:15px;
+  line-height:1.5;
+  margin-bottom:8px;
+}
+.content-card strong { color:#0f172a; }
+.content-card .source-pill { margin:0 6px 8px 0; }
+.muted { color:var(--muted); }
+@media (max-width:1000px) {
+  .grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .two-col { grid-template-columns:1fr; }
+}
+@media (max-width:640px) {
+  .grid { grid-template-columns:1fr; }
+  header h1 { font-size:24px; }
+}
+
+</style>
 </head>
 <body>
 <header>
   <h1>Equinix ML9</h1>
-  <p>Dettaglio progetto · generato il 2026-06-01T14:02:28</p>
+  <p>Equinix · Settimo Milanese · OK · scheda generata il 2026-06-02T09:30:58</p>
 </header>
-
 <main>
-  <nav class="nav">
-    <a href="../index.html">← Torna alla pipeline</a>
-  </nav>
+  <div class="nav">
+    <a href="../index.html">← Torna alla dashboard principale</a>
+    <span class="subtle">Data Center Radar</span>
+  </div>
 
   <section class="panel">
-    <div class="detail-head">
-      <div>
-        <h2>Quadro sintetico</h2>
-        <p class="muted">Scheda multi-fonte con separazione tra operatore, proponente MASE, partner tecnico e dati tecnici.</p>
+    <div class="section-title">
+      <h2>Dati principali</h2>
+    </div>
+    <div class="grid">
+
+      <div class="field">
+        <div class="label">Operatore</div>
+        <p class="value">Equinix</p>
       </div>
-      <div class="badges">
-        <span class="badge grade-a" title="Dati principali coerenti e già usabili.">OK</span>
-        <span class="badge priority-low">Monitoraggio</span>
+
+
+      <div class="field">
+        <div class="label">Proponente</div>
+        <p class="value">EQUINIX HYPERSCALE 2 (ML9) S.r.l.</p>
       </div>
-    </div>
-
-    <dl class="detail-grid">
-
-    <div class="detail-field">
-      <dt>Operatore / soggetto principale</dt>
-      <dd>Equinix</dd>
-    </div>
 
 
-    <div class="detail-field">
-      <dt>Proponente MASE</dt>
-      <dd>EQUINIX HYPERSCALE 2 (ML9) S.r.l.</dd>
-    </div>
+      <div class="field">
+        <div class="label">GC / contractor</div>
+        <p class="value">Techbau</p>
+      </div>
 
 
-    <div class="detail-field">
-      <dt>Realizzatore / partner tecnico</dt>
-      <dd><strong>Techbau</strong> <span class="confidence conf-high" title="Affidabilità della fonte contractor/partner: 100%">Aff. 100%</span></dd>
-    </div>
+      <div class="field">
+        <div class="label">Stato fonte</div>
+        <p class="value">Consolidato</p>
+      </div>
 
 
-    <div class="detail-field">
-      <dt>Ruolo sintetico</dt>
-      <dd>Techbau · CSA | Techbau</dd>
-    </div>
+      <div class="field">
+        <div class="label">MWt</div>
+        <p class="value">108</p>
+      </div>
 
 
-    <div class="detail-field">
-      <dt>Comune</dt>
-      <dd>Settimo Milanese</dd>
-    </div>
+      <div class="field">
+        <div class="label">MW IT</div>
+        <p class="value">24</p>
+      </div>
 
 
-    <div class="detail-field">
-      <dt>Regione</dt>
-      <dd>Lombardia</dd>
-    </div>
+      <div class="field">
+        <div class="label">Superficie m²</div>
+        <p class="value">22000 | 15480</p>
+      </div>
 
 
-    <div class="detail-field">
-      <dt>MASE ID</dt>
-      <dd>10745</dd>
-    </div>
+      <div class="field">
+        <div class="label">Qualità dati</div>
+        <p class="value"><span class="badge good" title="Dati principali coerenti e utilizzabili.">OK</span></p>
+      </div>
 
-
-    <div class="detail-field">
-      <dt>Campus</dt>
-      <dd>ML9</dd>
-    </div>
-
-
-    <div class="detail-field">
-      <dt>MW IT</dt>
-      <dd>24</dd>
-    </div>
-
-
-    <div class="detail-field">
-      <dt>MWt</dt>
-      <dd>108</dd>
-    </div>
-
-
-    <div class="detail-field">
-      <dt>Area lotto m²</dt>
-      <dd>22.000 (15.480 sup. costruita)</dd>
-    </div>
-
-
-    <div class="detail-field">
-      <dt>Qualità dati</dt>
-      <dd><span class="badge grade-a" title="Dati principali coerenti e già usabili.">OK</span></dd>
-    </div>
-
-    </dl>
-  </section>
-
-  <section class="panel">
-    <h2>Fonti principali</h2>
-    <div class="source-box">
-      <div><strong>MASE:</strong> <a class="link-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/10745" target="_blank" rel="noopener">MASE</a></div><div><strong>Contractor / partner:</strong> <a class="link-pill" href="https://techbau.it/realizzazioni/ml9" target="_blank" rel="noopener">Techbau</a> <a class="link-pill" href="https://techbau.it/realizzazioni-data-center" target="_blank" rel="noopener">Techbau</a></div><div><strong>MW IT:</strong> <a class="link-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/10745" target="_blank" rel="noopener">MASE</a> <a class="link-pill" href="https://techbau.it/realizzazioni/ml9" target="_blank" rel="noopener">Techbau</a></div><div><strong>MWt:</strong> <a class="link-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/10745" target="_blank" rel="noopener">MASE</a></div><div><strong>Superficie:</strong> <a class="link-pill" href="https://techbau.it/realizzazioni/ml9" target="_blank" rel="noopener">Techbau</a></div>
     </div>
   </section>
 
-  <section class="panel">
-    <h2>Azioni e note</h2>
-    <div class="next">
-      <strong>Prossima azione:</strong> Scheda pronta: mantenere in monitoraggio e aggiornare se emergono nuovi documenti. || Monitoring
+  <section class="panel location-card">
+    <div class="section-title">
+      <h2>Ubicazione</h2>
+      <span class="location-address">Settimo Milanese</span>
+    </div>
+    <div class="actions">
+      <a class="btn maps" href="https://www.google.com/maps/search/?api=1&amp;query=Equinix+ML9+Settimo+Milanese+data+center+Italia" target="_blank" rel="noopener">Apri in Google Maps</a>
+    </div>
+    <div class="map-wrap">
+      <iframe src="https://www.google.com/maps?q=Equinix+ML9+Settimo+Milanese+data+center+Italia&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </section>
+
+  <section class="two-col">
+    <div class="panel content-card">
+      <h2>Sintesi progetto</h2>
+      <ul class="clean"><li>Operatore individuato: Equinix.</li><li>Proponente/soggetto autorizzativo: EQUINIX HYPERSCALE 2 (ML9) S.r.l.</li><li>GC/contractor o partner: Techbau.</li><li>Localizzazione censita: Settimo Milanese.</li><li>Stato commerciale: Consolidato.</li><li>Priorità commerciale: Monitoraggio.</li><li>Potenza termica censita: 108 MWt.</li><li>Potenza IT censita: 24 MW.</li><li>Superficie censita: 22000 | 15480 m².</li></ul>
     </div>
 
-    <div class="note-box">
-      <p><strong>Dati mancanti:</strong> superficie</p>
-      <p><strong>Note tecniche:</strong> ML9 isolato; ML7/ML8 e MXP2 sono riferimenti di contesto/cumulativi.</p>
+    <div class="panel content-card">
+      <h2>Note operative</h2>
+      <ul class="clean"><li>Prossima azione: Scheda pronta: mantenere in monitoraggio e aggiornare se emergono nuovi documenti. || Monitoring.</li><li>Campi mancanti: superficie.</li><li>Affidabilità contractor/partner: 100%.</li></ul>
     </div>
+  </section>
+
+  <section class="panel content-card">
+    <h2>Evidenze disponibili</h2>
+    <ul class="evidence-list"><li><strong>MASE:</strong> Oggetto/i MASE: 10745.</li><li><strong>Ruoli contractor/partner:</strong> Techbau: contractor: Civil, Structural and Architectural; Techbau: contractor portfolio / site evidence: data center construction; Techbau: contractor project page: data center construction</li><li><strong>Note tecniche:</strong> ML9 isolato; ML7/ML8 e MXP2 sono riferimenti di contesto/cumulativi.</li></ul>
+  </section>
+
+  <section class="panel content-card">
+    <h2>Fonti</h2>
+    <p><a class="source-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/10745" target="_blank" rel="noopener">MASE</a> <a class="source-pill" href="https://techbau.it/realizzazioni/ml9" target="_blank" rel="noopener">Techbau</a> <a class="source-pill" href="https://techbau.it/realizzazioni-data-center" target="_blank" rel="noopener">Contractor / partner</a> <a class="source-pill" href="https://va.mite.gov.it/it-IT/Oggetti/Info/10745" target="_blank" rel="noopener">MASE facts</a> <a class="source-pill" href="https://techbau.it/realizzazioni/ml9" target="_blank" rel="noopener">Contractor project page</a></p>
   </section>
 </main>
-
-<footer>
-  Fonte base: dc_project_fused_master.csv.
-</footer>
-
 </body>
 </html>

@@ -20,8 +20,6 @@
   --warn:#92400e;
   --neutral-bg:#eff6ff;
   --neutral:#0f4c81;
-  --low-bg:#f1f5f9;
-  --low:#475569;
 }
 * { box-sizing:border-box; }
 body {
@@ -35,14 +33,8 @@ header {
   color:white;
   padding:26px 30px;
 }
-header h1 {
-  margin:0;
-  font-size:30px;
-}
-header p {
-  margin:8px 0 0;
-  color:#dbeafe;
-}
+header h1 { margin:0; font-size:30px; }
+header p { margin:8px 0 0; color:#dbeafe; }
 main {
   max-width:1500px;
   margin:0 auto;
@@ -75,14 +67,8 @@ main {
   gap:12px;
   margin-bottom:14px;
 }
-h2 {
-  margin:0;
-  font-size:20px;
-}
-.subtle {
-  color:var(--muted);
-  font-size:13px;
-}
+h2 { margin:0; font-size:20px; }
+.subtle { color:var(--muted); font-size:13px; }
 .grid {
   display:grid;
   grid-template-columns:repeat(4,minmax(0,1fr));
@@ -110,9 +96,6 @@ h2 {
   height:4px;
   background:linear-gradient(90deg,#0ea5e9,#6366f1,#22c55e);
 }
-.field:hover {
-  background:#ffffff;
-}
 .label {
   color:var(--muted);
   font-size:12px;
@@ -129,9 +112,7 @@ h2 {
   color:#0f172a;
   overflow-wrap:anywhere;
 }
-.value .badge {
-  font-size:12px;
-}
+.value .badge { font-size:12px; }
 .badge {
   display:inline-block;
   padding:5px 10px;
@@ -139,18 +120,9 @@ h2 {
   font-weight:800;
   font-size:12px;
 }
-.badge.good {
-  background:var(--good-bg);
-  color:var(--good);
-}
-.badge.warn {
-  background:var(--warn-bg);
-  color:var(--warn);
-}
-.badge.neutral {
-  background:var(--neutral-bg);
-  color:var(--neutral);
-}
+.badge.good { background:var(--good-bg); color:var(--good); }
+.badge.warn { background:var(--warn-bg); color:var(--warn); }
+.badge.neutral { background:var(--neutral-bg); color:var(--neutral); }
 .actions {
   display:flex;
   flex-wrap:wrap;
@@ -171,7 +143,8 @@ h2 {
   background:var(--good-bg);
   color:var(--good);
 }
-.location-card {
+.location-card,
+.content-card {
   position:relative;
   overflow:hidden;
   background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);
@@ -180,7 +153,8 @@ h2 {
   box-shadow:0 8px 22px rgba(15,23,42,.07);
   padding:20px 18px 18px;
 }
-.location-card::before {
+.location-card::before,
+.content-card::before {
   content:"";
   position:absolute;
   top:0;
@@ -189,20 +163,20 @@ h2 {
   height:4px;
   background:linear-gradient(90deg,#0ea5e9,#6366f1,#22c55e);
 }
-.location-card h2 {
+.location-card h2,
+.content-card h2 {
   color:var(--muted);
   font-size:12px;
   text-transform:uppercase;
   letter-spacing:.055em;
   font-weight:800;
-  margin:0;
+  margin:0 0 14px;
 }
 .location-address {
   color:#0f172a;
   font-size:15px;
   font-weight:800;
 }
-
 .map-wrap {
   border:1px solid var(--line);
   border-radius:16px;
@@ -221,71 +195,21 @@ h2 {
   grid-template-columns:1fr 1fr;
   gap:16px;
 }
-.content-card {
-  position:relative;
-  overflow:hidden;
-  background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);
-  border:1px solid var(--line);
-  border-radius:18px;
-  box-shadow:0 8px 22px rgba(15,23,42,.07);
-  padding:20px 18px 18px;
-}
-.content-card::before {
-  content:"";
-  position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  height:4px;
-  background:linear-gradient(90deg,#0ea5e9,#6366f1,#22c55e);
-}
-.content-card h2 {
-  color:var(--muted);
-  font-size:12px;
-  text-transform:uppercase;
-  letter-spacing:.055em;
-  font-weight:800;
-  margin:0 0 14px;
-}
-.content-card p,
-.content-card li {
-  font-size:15px;
-  line-height:1.5;
-}
-.content-card strong {
-  color:#0f172a;
-}
-.content-card .source-pill {
-  margin:0 6px 8px 0;
-}
-
-ul.clean {
-  margin:0;
-  padding-left:20px;
-}
-ul.clean li {
-  margin:0 0 8px;
-  line-height:1.45;
-}
+ul.clean,
 .evidence-list {
   margin:0;
   padding-left:20px;
 }
-.evidence-list li {
-  margin:0 0 10px;
-  line-height:1.45;
+ul.clean li,
+.evidence-list li,
+.content-card p {
+  font-size:15px;
+  line-height:1.5;
+  margin-bottom:8px;
 }
-.muted {
-  color:var(--muted);
-}
-.warning-box {
-  background:#fff7ed;
-  border:1px solid #fed7aa;
-  color:#92400e;
-  border-radius:14px;
-  padding:12px 14px;
-  font-weight:700;
-}
+.content-card strong { color:#0f172a; }
+.content-card .source-pill { margin:0 6px 8px 0; }
+.muted { color:var(--muted); }
 @media (max-width:1000px) {
   .grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .two-col { grid-template-columns:1fr; }
@@ -300,12 +224,12 @@ ul.clean li {
 <body>
 <header>
   <h1>Vantage MXP1 - Milan</h1>
-  <p>Vantage Data Centers · Melegnano · OK · scheda generata il 2026-06-02T08:46:07</p>
+  <p>Vantage Data Centers · Melegnano · OK · scheda generata il 2026-06-02T09:30:58</p>
 </header>
 <main>
   <div class="nav">
     <a href="../index.html">← Torna alla dashboard principale</a>
-    <span class="subtle">Fonte discovery: DataCenterMap + review interna</span>
+    <span class="subtle">Data Center Radar</span>
   </div>
 
   <section class="panel">
@@ -334,7 +258,7 @@ ul.clean li {
 
       <div class="field">
         <div class="label">Stato fonte</div>
-        <p class="value">Under Construction</p>
+        <p class="value">In costruzione</p>
       </div>
 
 
@@ -346,19 +270,19 @@ ul.clean li {
 
       <div class="field">
         <div class="label">MW IT</div>
-        <p class="value">64 MW</p>
+        <p class="value">64</p>
       </div>
 
 
       <div class="field">
-        <div class="label">Superficie</div>
-        <p class="value">48.000 m²</p>
+        <div class="label">Superficie m²</div>
+        <p class="value">48.000</p>
       </div>
 
 
       <div class="field">
         <div class="label">Qualità dati</div>
-        <p class="value"><span class="badge good" title="Dati principali coerenti e utilizzabili per review master.">OK</span></p>
+        <p class="value"><span class="badge good" title="Dati principali coerenti e utilizzabili.">OK</span></p>
       </div>
 
     </div>
@@ -370,8 +294,7 @@ ul.clean li {
       <span class="location-address">Via per Carpiano 30, 20077, Melegnano, Italy</span>
     </div>
     <div class="actions">
-      <a class="btn maps" href="https://www.google.com/maps/search/?api=1&amp;query=Via+per+Carpiano+30%2C+20077%2C+Melegnano%2C+Italy" target="_blank" rel="noopener">Apri in Google Maps</a>
-      <a class="btn " href="https://www.datacentermap.com/italy/milan/vantage-mxp1-milan/" target="_blank" rel="noopener">DataCenterMap</a>
+      <a class="btn maps" href="https://www.google.com/maps/search/?api=1&amp;query=Via+per+Carpiano+30%2C+20077%2C+Melegnano%2C+Italy" target="_blank" rel="noopener">Apri in Google Maps</a> <a class="btn" href="https://www.datacentermap.com/italy/milan/vantage-mxp1-milan/" target="_blank" rel="noopener">DataCenterMap</a>
     </div>
     <div class="map-wrap">
       <iframe src="https://www.google.com/maps?q=Via+per+Carpiano+30%2C+20077%2C+Melegnano%2C+Italy&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -381,18 +304,18 @@ ul.clean li {
   <section class="two-col">
     <div class="panel content-card">
       <h2>Sintesi progetto</h2>
-      <ul class="clean"><li>Operatore individuato: Vantage Data Centers.</li><li>Ubicazione commerciale censita: Melegnano.</li><li>Stato indicato dalla fonte DataCenterMap: Under Construction.</li><li>Potenza IT censita: 64 MW.</li><li>Superficie censita: 48.000 m².</li><li>Proponente/soggetto autorizzativo individuato: VDC MXP 11 S.r.l.</li><li>GC/contractor ancora da identificare.</li><li>Il record è abbastanza solido per essere valutato insieme ai progetti principali.</li></ul>
+      <ul class="clean"><li>Operatore individuato: Vantage Data Centers.</li><li>Ubicazione commerciale censita: Melegnano.</li><li>Stato indicato dalla fonte DataCenterMap: In costruzione.</li><li>Potenza IT censita: 64 MW.</li><li>Superficie censita: 48.000 m².</li><li>Proponente/soggetto autorizzativo individuato: VDC MXP 11 S.r.l.</li><li>GC/contractor ancora da identificare.</li></ul>
     </div>
 
     <div class="panel content-card">
       <h2>Note operative</h2>
-      <ul class="clean"><li>Da trattare come candidato commerciale ad alta priorità di review.</li><li>Priorità informativa: identificare GC, EPC, impresa esecutrice o partner tecnico.</li><li>Lo stato DataCenterMap va letto come indicazione commerciale grezza: Under Construction.</li></ul>
+      <ul class="clean"><li>Promuovibile in draft: progetto confermato; GC/contractor ancora da identificare.</li><li>Priorità informativa: identificare GC, EPC, impresa esecutrice o partner tecnico.</li><li>Lo stato DataCenterMap va letto come indicazione commerciale grezza: In costruzione.</li></ul>
     </div>
   </section>
 
   <section class="panel content-card">
     <h2>Evidenze disponibili</h2>
-    <ul class="evidence-list"><li><strong>Fonte operatore:</strong> Official Vantage page confirms Milan I / MXP1 campus in Melegnano; 30 acre / 12 hectare campus; 4 data centers; 64 MW critical IT load; 517,000 square feet / 48,000 square meters; power provided by Enel and Terna.</li><li><strong>Fonte regionale:</strong> No separate Regione Lombardia VIA/VAS source identified in this pass. The project is traceable through MASE object 10753.</li><li><strong>Comune / SUAP:</strong> Municipality document found in MASE documentation set. It refers to Comune/Città di Melegnano, VDC MXP 11 S.r.l., related instance and local administrative documentation.</li><li><strong>MASE:</strong> MASE project object found for completion of data center MXP1 and emergency electrical power system in Melegnano (MI); proponent VDC MXP 11 S.r.l.</li><li><strong>GC / contractor:</strong> Vantage post confirms construction milestone for MXP1/MXP11 and thanks its general contractor and construction partners, but does not name the GC. A comment mentions Bouygues Energies &amp; Services Italia, but this is not enough for official attribution.</li></ul>
+    <ul class="evidence-list"><li><strong>DataCenterMap:</strong> Scheda DataCenterMap disponibile per Vantage MXP1 - Milan.</li><li><strong>Stato fonte:</strong> La fonte DataCenterMap indica stato: In costruzione.</li><li><strong>Ubicazione:</strong> Il record è localizzato commercialmente su Melegnano.</li><li><strong>Proponente:</strong> Soggetto/proponente indicato: VDC MXP 11 S.r.l.</li><li><strong>Layer confermati:</strong> fonte operatore | Comune / SUAP / albo pretorio | MASE</li></ul>
   </section>
 
   <section class="panel content-card">

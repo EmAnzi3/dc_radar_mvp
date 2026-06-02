@@ -66,8 +66,8 @@ echo [11/13] External candidates site page
 if errorlevel 1 exit /b 1
 
 echo.
-echo [12/13] External candidates project pages
-"%PYTHON%" -m app.external_sources.external_candidates_project_pages
+echo [12/13] Unified project pages
+"%PYTHON%" -m app.external_sources.generate_project_pages_unified --apply
 if errorlevel 1 exit /b 1
 
 echo.
