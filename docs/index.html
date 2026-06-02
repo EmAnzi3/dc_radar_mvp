@@ -644,6 +644,71 @@ tbody tr:hover td {
   background:#eff6ff;
 }
 
+
+/* VISTA_IMMEDIATA_FILTERS_START */
+.vista-filter-panel {
+  display:grid;
+  grid-template-columns:repeat(4,minmax(160px,1fr));
+  gap:10px;
+  margin:12px 0 16px;
+  padding:14px;
+  border:1px solid var(--line, #dfe4ea);
+  border-radius:16px;
+  background:linear-gradient(180deg,#ffffff 0%,#fbfdff 100%);
+  box-shadow:0 8px 22px rgba(15,23,42,.06);
+}
+.vista-filter-field {
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+.vista-filter-field label {
+  color:var(--muted, #667085);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.055em;
+  font-weight:800;
+}
+.vista-filter-field select,
+.vista-filter-field input {
+  width:100%;
+  border:1px solid var(--line, #dfe4ea);
+  border-radius:12px;
+  padding:8px 10px;
+  background:#fff;
+  color:#0f172a;
+  font-weight:700;
+}
+.vista-filter-actions {
+  display:flex;
+  align-items:end;
+  gap:8px;
+}
+.vista-filter-reset {
+  width:100%;
+  border:0;
+  border-radius:12px;
+  padding:9px 12px;
+  background:#eff6ff;
+  color:#0f4c81;
+  font-weight:900;
+  cursor:pointer;
+}
+.vista-filter-reset:hover {
+  filter:brightness(.97);
+}
+@media (max-width:1000px) {
+  .vista-filter-panel {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+@media (max-width:640px) {
+  .vista-filter-panel {
+    grid-template-columns:1fr;
+  }
+}
+/* VISTA_IMMEDIATA_FILTERS_END */
+
 </style>
 
 </head>
@@ -715,8 +780,6 @@ tbody tr:hover td {
         <option value="Fonti esterne necessarie">Fonti ext.</option>
         <option value="Debole">Debole</option>
       </select>
-
-      <span id="visibleCount" class="counter">16 progetti</span>
     </div>
 
     <div class="table-wrap">
@@ -1203,6 +1266,246 @@ tbody tr:hover td {
 <footer>
   Nota: la tabella fonde fonti MASE, fonti contractor/developer e dati commerciali già  censiti. La confidence si riferisce al dato contractor/partner.
 </footer>
+
+
+<!-- VISTA_IMMEDIATA_FILTERS_SCRIPT_START -->
+<script>
+(function () {
+  function norm(s) {
+    return (s || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .trim();
+  }
+
+  function findVistaHeading() {
+    return Array.from(document.querySelectorAll("h1,h2,h3,h4"))
+      .find(function (h) {
+        return norm(h.textContent).includes("vista immediata progetti");
+      });
+  }
+
+  function findTableAfterHeading(heading) {
+    var container = heading.closest("section, .panel, .card, .table-section, div");
+    if (container) {
+      var direct = container.querySelector("table");
+      if (direct) return direct;
+    }
+
+    var node = heading;
+    for (var i = 0; i < 12; i++) {
+      node = node.nextElementSibling || (node.parentElement ? node.parentElement.nextElementSibling : null);
+      if (!node) break;
+      if (node.matches && node.matches("table")) return node;
+      var nested = node.querySelector ? node.querySelector("table") : null;
+      if (nested) return nested;
+    }
+
+    return null;
+  }
+
+  function removeProjectCountChip(heading) {
+    var scope = heading.parentElement || document;
+    Array.from(scope.querySelectorAll("span,div,small,strong,b")).forEach(function (el) {
+      if (/^\s*\d+\s+progetti\s*$/i.test(el.textContent || "")) {
+        el.remove();
+      }
+    });
+  }
+
+  function cellText(row, idx) {
+    if (idx < 0 || !row.cells[idx]) return "";
+    return row.cells[idx].textContent.trim();
+  }
+
+  function uniqueValues(rows, idx) {
+    var set = new Set();
+    rows.forEach(function (row) {
+      var value = cellText(row, idx);
+      if (value && value !== "—") set.add(value);
+    });
+    return Array.from(set).sort(function (a, b) {
+      return a.localeCompare(b, "it");
+    });
+  }
+
+  function hasValue(value) {
+    value = norm(value);
+    return value && value !== "—" && value !== "-" && value !== "da identificare" && value !== "da verificare";
+  }
+
+  function buildFilters(table) {
+    if (document.getElementById("vista-immediata-filters")) return;
+
+    var headers = Array.from(table.querySelectorAll("thead th")).map(function (th) {
+      return norm(th.textContent);
+    });
+
+    if (!headers.length) return;
+
+    function idx(tokens) {
+      return headers.findIndex(function (h) {
+        return tokens.some(function (t) {
+          return h.includes(norm(t));
+        });
+      });
+    }
+
+    var col = {
+      operatore: idx(["operatore", "developer", "cliente"]),
+      proponente: idx(["proponente"]),
+      contractor: idx(["contractor", "partner", "realizzatore", "gc"]),
+      stato: idx(["stato", "fase"]),
+      regione: idx(["regione"]),
+      qualita: idx(["qualita", "qualità"]),
+      mwt: idx(["mwt"]),
+      mwit: idx(["mw it", "potenza it"]),
+      superficie: idx(["superficie", "m2", "m²"])
+    };
+
+    var rows = Array.from(table.querySelectorAll("tbody tr"));
+    if (!rows.length) return;
+
+    var panel = document.createElement("div");
+    panel.id = "vista-immediata-filters";
+    panel.className = "vista-filter-panel";
+
+    function addSelect(key, label, values) {
+      var wrap = document.createElement("div");
+      wrap.className = "vista-filter-field";
+
+      var lab = document.createElement("label");
+      lab.textContent = label;
+
+      var sel = document.createElement("select");
+      sel.dataset.filter = key;
+
+      var all = document.createElement("option");
+      all.value = "";
+      all.textContent = "Tutti";
+      sel.appendChild(all);
+
+      values.forEach(function (value) {
+        var opt = document.createElement("option");
+        opt.value = value;
+        opt.textContent = value;
+        sel.appendChild(opt);
+      });
+
+      wrap.appendChild(lab);
+      wrap.appendChild(sel);
+      panel.appendChild(wrap);
+
+      sel.addEventListener("change", applyFilters);
+    }
+
+    function addPresenceSelect(key, label) {
+      addSelect(key, label, ["Con dato", "Senza dato"]);
+    }
+
+    function addTextSearch() {
+      var wrap = document.createElement("div");
+      wrap.className = "vista-filter-field";
+
+      var lab = document.createElement("label");
+      lab.textContent = "Cerca";
+
+      var input = document.createElement("input");
+      input.type = "search";
+      input.placeholder = "Testo libero";
+      input.dataset.filter = "text";
+
+      wrap.appendChild(lab);
+      wrap.appendChild(input);
+      panel.appendChild(wrap);
+
+      input.addEventListener("input", applyFilters);
+    }
+
+    addTextSearch();
+
+    if (col.qualita >= 0) addSelect("qualita", "Qualità dati", uniqueValues(rows, col.qualita));
+    if (col.stato >= 0) addSelect("stato", "Stato / fase", uniqueValues(rows, col.stato));
+    if (col.regione >= 0) addSelect("regione", "Regione", uniqueValues(rows, col.regione));
+    if (col.operatore >= 0) addSelect("operatore", "Operatore", uniqueValues(rows, col.operatore));
+
+    if (col.contractor >= 0) addPresenceSelect("contractor", "GC / partner");
+    if (col.mwit >= 0) addPresenceSelect("mwit", "MW IT");
+    if (col.mwt >= 0) addPresenceSelect("mwt", "MWt");
+    if (col.superficie >= 0) addPresenceSelect("superficie", "Superficie");
+
+    var actions = document.createElement("div");
+    actions.className = "vista-filter-actions";
+
+    var reset = document.createElement("button");
+    reset.type = "button";
+    reset.className = "vista-filter-reset";
+    reset.textContent = "Reset filtri";
+    reset.addEventListener("click", function () {
+      panel.querySelectorAll("select,input").forEach(function (el) {
+        el.value = "";
+      });
+      applyFilters();
+    });
+
+    actions.appendChild(reset);
+    panel.appendChild(actions);
+
+    table.parentElement.insertBefore(panel, table);
+
+    function matchExact(row, key, idxValue) {
+      var control = panel.querySelector('[data-filter="' + key + '"]');
+      if (!control || !control.value || idxValue < 0) return true;
+      return cellText(row, idxValue) === control.value;
+    }
+
+    function matchPresence(row, key, idxValue) {
+      var control = panel.querySelector('[data-filter="' + key + '"]');
+      if (!control || !control.value || idxValue < 0) return true;
+
+      var present = hasValue(cellText(row, idxValue));
+      return control.value === "Con dato" ? present : !present;
+    }
+
+    function applyFilters() {
+      var textControl = panel.querySelector('[data-filter="text"]');
+      var text = norm(textControl ? textControl.value : "");
+
+      rows.forEach(function (row) {
+        var visible = true;
+
+        if (text && !norm(row.textContent).includes(text)) visible = false;
+
+        if (visible) visible = matchExact(row, "qualita", col.qualita);
+        if (visible) visible = matchExact(row, "stato", col.stato);
+        if (visible) visible = matchExact(row, "regione", col.regione);
+        if (visible) visible = matchExact(row, "operatore", col.operatore);
+
+        if (visible) visible = matchPresence(row, "contractor", col.contractor);
+        if (visible) visible = matchPresence(row, "mwit", col.mwit);
+        if (visible) visible = matchPresence(row, "mwt", col.mwt);
+        if (visible) visible = matchPresence(row, "superficie", col.superficie);
+
+        row.style.display = visible ? "" : "none";
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var heading = findVistaHeading();
+    if (!heading) return;
+
+    removeProjectCountChip(heading);
+
+    var table = findTableAfterHeading(heading);
+    if (!table) return;
+
+    buildFilters(table);
+  });
+})();
+</script>
+<!-- VISTA_IMMEDIATA_FILTERS_SCRIPT_END -->
 
 </body>
 </html>
