@@ -119,11 +119,12 @@
     }
 
     .table-wrap {
-      max-height:72vh;
-      overflow-y:auto;
-      overflow-x:hidden;
+      overflow:auto;
+      max-height:640px;
       border:1px solid var(--border);
       border-radius:14px;
+      background:white;
+      -webkit-overflow-scrolling:touch;
     }
 
     table {
@@ -726,7 +727,47 @@ tbody tr:hover td {
 
 /* VISTA_IMMEDIATA_FILTERS_END */
 
-</style>
+
+    .project-table-shell {
+      border:1px solid var(--border);
+      border-radius:14px;
+      overflow:hidden;
+      background:white;
+    }
+
+    .project-table-head {
+      overflow:hidden;
+      background:#f8fafc;
+      border-bottom:1px solid var(--border);
+    }
+
+    .project-table-body {
+      max-height:640px;
+      overflow-y:auto;
+      overflow-x:hidden;
+      -webkit-overflow-scrolling:touch;
+    }
+
+    .project-table-head table,
+    .project-table-body table {
+      width:100%;
+      table-layout:fixed;
+      border-collapse:separate;
+      border-spacing:0;
+      font-size:12px;
+    }
+
+    .project-table-head thead th {
+      position:static;
+      top:auto;
+      z-index:auto;
+    }
+
+    .project-table-body tr:last-child td {
+      border-bottom:0;
+    }
+
+  </style>
 
 </head>
 <body>
@@ -799,9 +840,11 @@ tbody tr:hover td {
       </select>
     </div>
 
-    <div class="table-wrap">
-      <table>
-        <thead>
+    
+<div class="project-table-shell">
+  <div class="project-table-head">
+    <table>
+      <thead>
           <tr>
             <th>Progetto</th>
             <th>Operatore</th>
@@ -815,7 +858,11 @@ tbody tr:hover td {
             <th>Fonti</th>
           </tr>
         </thead>
-        <tbody>
+    </table>
+  </div>
+  <div class="project-table-body">
+    <table>
+      <tbody>
 
         <tr data-search="Noovle Data Center Noovle Noovle SpA Da identificare Da identificare Da identificare Parziale Alta 11218" data-status="Parziale">
           <td class="project-cell">
@@ -1274,8 +1321,10 @@ tbody tr:hover td {
         </tr>
         <!-- EXTERNAL_CANDIDATES_END -->
 </tbody>
-      </table>
-    </div>
+    </table>
+  </div>
+</div>
+
 
   </section>
 </main>
